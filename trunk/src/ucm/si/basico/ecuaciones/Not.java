@@ -1,6 +1,8 @@
 package ucm.si.basico.ecuaciones;
 
-import ucm.si.Checker.ModelChecker; 
+
+import ucm.si.Checker.Resultado;
+import ucm.si.Checker.Visitante;
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.7AE3FC8A-1924-11A1-E384-B388D3300E65]
@@ -12,10 +14,27 @@ public class Not extends Operacion {
     // </editor-fold> 
     private Formula mFormula;
 
+    public Not(Formula exp) {
+    	mFormula = exp;
+	}
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.506068F1-D9CD-05CC-F288-B51C99A9D5A7]
     // </editor-fold> 
-    public void accept (ModelChecker mc) {
+    public void accept (Visitante v) {
+    	//
+    	mFormula.accept(v);
+		Resultado resp = v.getResParcial();
+		Resultado resul = new Resultado(Resultado.COD_ERROR);
+
+		if (resp.getResultado().equals(Resultado.COD_FALSE)) {
+			resul.setResultado(Resultado.COD_TRUE);
+		} else if (resp.getResultado().equals(Resultado.COD_TRUE)) {
+			resul.setResultado(Resultado.COD_FALSE);
+		} else {
+			resul = resp;
+		}
+		//
+		v.setResParcial(resul);
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 

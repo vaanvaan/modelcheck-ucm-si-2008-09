@@ -1,6 +1,7 @@
 package ucm.si.basico.ecuaciones;
 
 import ucm.si.Checker.ModelChecker; 
+import ucm.si.Checker.Visitante;
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.709D66FA-53B6-D1F5-0872-724E95CC588D]
@@ -15,7 +16,7 @@ public class EX extends Operacion {
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.75B4568D-9DEC-897F-BBC3-DD66406B2892]
     // </editor-fold> 
-    public void accept (ModelChecker mc) {
+    public void accept (Visitante v) {
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
