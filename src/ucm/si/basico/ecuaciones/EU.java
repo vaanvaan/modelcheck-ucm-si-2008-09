@@ -1,6 +1,7 @@
 package ucm.si.basico.ecuaciones;
 
 import ucm.si.Checker.ModelChecker; 
+import ucm.si.Checker.Visitante;
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.232CA67B-758C-D54D-26EC-244346BE81DA]
@@ -12,11 +13,6 @@ public class EU extends Operacion {
     // </editor-fold> 
     private Formula mFormula;
 
-    // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
-    // #[regen=yes,id=DCE.F2B516B0-EC21-C4F1-085D-E636B39F98C8]
-    // </editor-fold> 
-    public void accept (ModelChecker mc) {
-    }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,regenBody=yes,id=DCE.BF866D23-4A26-293E-A5AC-C4FB5401E57A]
@@ -31,6 +27,12 @@ public class EU extends Operacion {
     public void setFormula (Formula val) {
         this.mFormula = val;
     }
+
+	@Override
+	public void accept(Visitante v) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
 

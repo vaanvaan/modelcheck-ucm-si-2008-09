@@ -1,6 +1,6 @@
 package ucm.si.basico.ecuaciones;
 
-import ucm.si.Checker.ModelChecker; 
+import ucm.si.Checker.Visitante;
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.2AD68957-6A72-B3B8-D7C3-5328088B8926]
@@ -15,7 +15,7 @@ public class AX extends Operacion {
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.DEFB382B-8390-7765-B764-831D2F599BFA]
     // </editor-fold> 
-    public void accept (ModelChecker mc) {
+    public void accept (Visitante v) {
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
