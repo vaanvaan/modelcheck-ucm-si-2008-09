@@ -13,7 +13,8 @@ public class Resultado {
 
 	public static final String COD_TRUE= "true";
 	public static final String COD_FALSE= "false";
-	public static final String COD_MAYBE= "maybe";
+	public static final String COD_MAYBET= "maybet";
+	public static final String COD_MAYBEF= "maybef";
 	public static final String COD_ERROR= "error";
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -57,6 +58,28 @@ public class Resultado {
     // </editor-fold> 
     public void aniadirEstado (Estado e) {
     }
+    
+    public boolean equals(String s)
+    {
+    	return this.resultado.equals(s);
+    	
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Resultado other = (Resultado) obj;
+        if (this.resultado != other.resultado && (this.resultado == null || !this.resultado.equals(other.resultado))) {
+            return false;
+        }
+        return true;
+    }
+    
 
 }
 
