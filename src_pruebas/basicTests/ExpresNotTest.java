@@ -30,7 +30,7 @@ public class ExpresNotTest extends TestCase{
 	
 	public void testOr() throws Exception{
 		Visitante visitante = new Visitante();
-		Formula ctlexp = new Or(new Proposicion(Resultado.COD_MAYBE),new Not(new Proposicion(Resultado.COD_FALSE)));
+		Formula ctlexp = new Or(new Proposicion(Resultado.COD_MAYBEF),new Not(new Proposicion(Resultado.COD_FALSE)));
 		visitante.visita(ctlexp);
 		System.out.println(visitante.getResParcial().getResultado());
 		assertEquals(Resultado.COD_TRUE, visitante.getResParcial().getResultado());
