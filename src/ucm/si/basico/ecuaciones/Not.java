@@ -22,19 +22,8 @@ public class Not extends Operacion {
     // </editor-fold> 
     public void accept (Visitante v) {
     	//
-    	mFormula.accept(v);
-		Resultado resp = v.getResParcial();
-		Resultado resul = new Resultado(Resultado.COD_ERROR);
-
-		if (resp.getResultado().equals(Resultado.COD_FALSE)) {
-			resul.setResultado(Resultado.COD_TRUE);
-		} else if (resp.getResultado().equals(Resultado.COD_TRUE)) {
-			resul.setResultado(Resultado.COD_FALSE);
-		} else {
-			resul = resp;
-		}
-		//
-		v.setResParcial(resul);
+    	v.visita(this);
+//    	mFormula.accept(v);
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 

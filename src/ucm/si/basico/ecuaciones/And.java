@@ -33,25 +33,26 @@ public class And extends Operacion {
 	@Override
 	public void accept(Visitante v) {
 		// TODO Auto-generated method stub
-		expIzq.accept(v);
-		Resultado resIzq = v.getResParcial();
-		expDer.accept(v);
-		Resultado resDer = v.getResParcial();
-		Resultado resAND;
-		try{
-			boolean part1 = Boolean.parseBoolean(resIzq.getResultado());
-			boolean part2 = Boolean.parseBoolean(resDer.getResultado());
-			part1 = part1 && part2;
-			resAND = new Resultado(String.valueOf(part1));
-		}catch(Exception e){
-			if((resIzq.getResultado().equals(Resultado.COD_FALSE)) ||
-					(resDer.getResultado().equals(Resultado.COD_FALSE)) ){
-				resAND = new Resultado(Resultado.COD_FALSE);
-			}else{
-				resAND = new Resultado(Resultado.COD_MAYBE);
-			}
-		}
-		v.setResParcial(resAND);
+//		expIzq.accept(v);
+//		Resultado resIzq = v.getResParcial();
+//		expDer.accept(v);
+//		Resultado resDer = v.getResParcial();
+//		Resultado resAND;
+//		try{
+//			boolean part1 = Boolean.parseBoolean(resIzq.getResultado());
+//			boolean part2 = Boolean.parseBoolean(resDer.getResultado());
+//			part1 = part1 && part2;
+//			resAND = new Resultado(String.valueOf(part1));
+//		}catch(Exception e){
+//			if((resIzq.getResultado().equals(Resultado.COD_FALSE)) ||
+//					(resDer.getResultado().equals(Resultado.COD_FALSE)) ){
+//				resAND = new Resultado(Resultado.COD_FALSE);
+//			}else{
+//				resAND = new Resultado(Resultado.COD_MAYBEF);
+//			}
+//		}
+//		v.setResParcial(resAND);
+		v.visita(this);
 	}
 	public And(){
 		expIzq = null;
@@ -60,6 +61,22 @@ public class And extends Operacion {
 	public And(Formula eIzq, Formula eDer){
 		expIzq = eIzq;
 		expDer = eDer;
+	}
+
+	public Formula getExpIzq() {
+		return expIzq;
+	}
+
+	public void setExpIzq(Formula expIzq) {
+		this.expIzq = expIzq;
+	}
+
+	public Formula getExpDer() {
+		return expDer;
+	}
+
+	public void setExpDer(Formula expDer) {
+		this.expDer = expDer;
 	}
 
 }
