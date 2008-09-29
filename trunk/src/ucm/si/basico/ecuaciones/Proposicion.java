@@ -19,7 +19,7 @@ public class Proposicion extends Formula {
 		valor = val;
 	}
 	public Proposicion (){
-		valor = Resultado.COD_MAYBE; 
+		valor = Resultado.COD_MAYBEF; 
 	}
 
 	public String getValor() {
