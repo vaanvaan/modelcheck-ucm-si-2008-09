@@ -12,6 +12,22 @@ public class AU extends Operacion {
     // #[regen=yes,id=DCE.69C3CA39-095E-B121-8D66-8FDA84593686]
     // </editor-fold> 
     private Formula mFormula;
+    private Formula exprIzq;
+    private Formula exprDer;
+
+    public Formula getExprDer() {
+        return exprDer;
+    }
+
+    public Formula getExprIzq() {
+        return exprIzq;
+    }
+    
+    public AU(Formula exprIzq, Formula exprDer) {
+        this.exprIzq = exprIzq;
+        this.exprDer = exprDer;
+    }
+    
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,regenBody=yes,id=DCE.98EC09BD-E8C6-0EC9-E85F-C07B900048B5]
