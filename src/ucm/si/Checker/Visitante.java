@@ -2,6 +2,8 @@ package ucm.si.Checker;
 
 import java.util.Stack;
 
+import java.util.concurrent.LinkedBlockingQueue;
+import ucm.si.basico.ecuaciones.AU;
 import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.Formula;
 import ucm.si.basico.ecuaciones.Not;
@@ -9,12 +11,21 @@ import ucm.si.basico.ecuaciones.Or;
 
 
 // a�adir constructora para usar logs globales, si es necesario.
+
 public  class Visitante<S> {
 	
 	private Resultado resParcial = null;
 	private Stack<Formula> pilaFormulas = new Stack<Formula>();
 	private boolean inicio = false;
-	
+	private Interprete<S> interprete;
+        private S estadoActual;
+
+    public Visitante(Interprete<S> interprete, S estadoInicial) {
+        this.interprete = interprete;
+        this.estadoActual = estadoInicial;
+    }
+
+        
 	public Resultado visita(Formula expresion){
 		expresion.accept(this);
 		/*while (!pilaFormulas.isEmpty())
@@ -44,6 +55,7 @@ public  class Visitante<S> {
 			resParcial.setResultado(Resultado.COD_MAYBET);
 		else resParcial.setResultado(Resultado.COD_MAYBEF);		
 	}
+        
 	public void visita(Or or){
 		or.getExpIzq().accept(this);
 		Resultado resIzq = resParcial;
@@ -89,4 +101,24 @@ public  class Visitante<S> {
 		resParcial=resAND;
 	
 	}
+        
+        public void visita(AU au){
+            S eanterior = estadoActual;
+            LinkedBlockingQueue<S> cola =
+              new LinkedBlockingQueue<S>(interprete.transitar(estadoActual));
+            while (!cola.isEmpty()){
+                estadoActual = cola.poll();
+                au.getExprDer().accept(this);
+                if (!resParcial.equals(Resultado.COD_TRUE)){
+                    au.getExprIzq().accept(this);
+                    if (resParcial.equals(Resultado.COD_TRUE)){
+                        cola.addAll(interprete.transitar(estadoActual));
+                    } else {
+                        cola.clear();
+                        resParcial.setResultado(Resultado.COD_FALSE);
+                    }
+                }
+            }
+            estadoActual = eanterior;
+        }
 }
