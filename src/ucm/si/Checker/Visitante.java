@@ -3,6 +3,8 @@ package ucm.si.Checker;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import java.util.concurrent.LinkedBlockingQueue;
+import ucm.si.basico.ecuaciones.AU;
 import ucm.si.basico.ecuaciones.AX;
 import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.Formula;
@@ -10,7 +12,7 @@ import ucm.si.basico.ecuaciones.Not;
 import ucm.si.basico.ecuaciones.Or;
 
 
-// añadir constructora para usar logs globales, si es necesario.
+// aï¿½adir constructora para usar logs globales, si es necesario.
 public  class Visitante<S> {
 	private Resultado resParcial = null;
 	private Stack<Formula> pilaFormulas = new Stack<Formula>();
@@ -108,17 +110,17 @@ public  class Visitante<S> {
 	}
         
         public void visita(AU au){
-            S eanterior = estadoActual;
+            S eanterior = estado;
             LinkedBlockingQueue<S> cola =
-              new LinkedBlockingQueue<S>(interprete.transitar(estadoActual));
+              new LinkedBlockingQueue<S>(interprete.transitar(estado));
             boolean seguir = true;
             while (seguir&&(!cola.isEmpty())){
-                estadoActual = cola.poll();
+                estado = cola.poll();
                 au.getExprDer().accept(this);
                 if (!resParcial.equals(Resultado.COD_TRUE)){
                     au.getExprIzq().accept(this);
                     if (resParcial.equals(Resultado.COD_TRUE)){
-                        cola.addAll(interprete.transitar(estadoActual));
+                        cola.addAll(interprete.transitar(estado));
                     } else {
                         seguir = false;
                     }
@@ -129,6 +131,6 @@ public  class Visitante<S> {
             } else {
                 resParcial.setResultado(Resultado.COD_FALSE);
             } 
-            estadoActual = eanterior;
+            estado = eanterior;
         }
 }

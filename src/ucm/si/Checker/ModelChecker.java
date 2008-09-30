@@ -16,6 +16,6 @@ public interface ModelChecker<S> {
     // #[regen=yes,id=DCE.4CABA78F-38BB-549A-D70B-BD44F2FE74CB]
     // </editor-fold> 
     public Resultado chequear (Interprete<S> interprete, Formula formula, S estado);
-
+    
 }
 
