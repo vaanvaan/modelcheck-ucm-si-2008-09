@@ -8,8 +8,8 @@ import ucm.si.basico.ecuaciones.Not;
 import ucm.si.basico.ecuaciones.Or;
 
 
-// añadir constructora para usar logs globales, si es necesario.
-public  class Visitante {
+// aï¿½adir constructora para usar logs globales, si es necesario.
+public  class Visitante<S> {
 	
 	private Resultado resParcial = null;
 	private Stack<Formula> pilaFormulas = new Stack<Formula>();

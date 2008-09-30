@@ -9,14 +9,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import ucm.si.Checker.Estado;
 import ucm.si.Checker.Interprete;
 
 /**
  *
  * @author Pilar
  */
-public class Laberinto implements Interprete {
+public class Laberinto implements Interprete<Posicion> {
 
     // supongamos siempre un laberinto en el cual la salida 
     // se realiza en la posicion 0,0
@@ -95,8 +94,8 @@ public class Laberinto implements Interprete {
         p.posX = p.posX + 1;
     }
 
-    public List<Estado> iniciales() {
-        ArrayList<Estado> l = new ArrayList<Estado>();
+    public List<Posicion> iniciales() {
+        ArrayList<Posicion> l = new ArrayList<Posicion>();
         l.add(new Posicion(0, 0));
         return l;
     }
@@ -105,9 +104,9 @@ public class Laberinto implements Interprete {
         return new Posicion(p.getPosX(), p.getPosY());
     }
 
-    public List<Estado> transitar(Estado state) {
-        List<Estado> lista = new ArrayList<Estado>();
-        Posicion lab = (Posicion) state;
+    public List<Posicion> transitar(Posicion state) { 
+        List<Posicion> lista = new ArrayList<Posicion>();
+        Posicion lab =  state;
         if (posible("DOWN", lab)) {
             Posicion l = copyOf(lab);
             down(l);
@@ -133,4 +132,8 @@ public class Laberinto implements Interprete {
         return lista;
 
     }
+
+   
 }
+    
+    

@@ -11,7 +11,7 @@ import ucm.si.Checker.Visitante;
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.0FFB3057-BDFA-07A4-5C6D-3B50EE5B4DAC]
 // </editor-fold> 
-public class Proposicion extends Formula {
+public abstract class Proposicion<S> extends Formula {
 	
 	private String valor=Resultado.COD_FALSE;
 	
@@ -19,13 +19,15 @@ public class Proposicion extends Formula {
 		valor = val;
 	}
 	public Proposicion (){
-		valor = Resultado.COD_MAYBEF; 
+		valor = Resultado.COD_MAYBEF;                 
 	}
 
-	public String getValor() {
-		return valor;
-	}
+	public abstract boolean esCierta(S s);
 
+        public String getValor(){
+            return valor;
+        }
+        
 	public void setValor(String valor) {
 		this.valor = valor;
 	}
