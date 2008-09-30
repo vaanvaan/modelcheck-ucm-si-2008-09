@@ -9,7 +9,15 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import ucm.si.Checker.DefaultModelChecker;
 import ucm.si.Checker.Interprete;
+import ucm.si.Checker.InterpreteWrapper;
+import ucm.si.Checker.ModelChecker;
+import ucm.si.Checker.Resultado;
+import ucm.si.basico.ecuaciones.AU;
+import ucm.si.basico.ecuaciones.Formula;
+import ucm.si.basico.ecuaciones.Not;
+import ucm.si.basico.ecuaciones.Proposicion;
 
 /**
  *
@@ -133,7 +141,27 @@ public class Laberinto implements Interprete<Posicion> {
 
     }
 
-   
+    public static void main(){
+        ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>();
+        Interprete<Posicion> lab = new Laberinto();
+        Interprete<Posicion> wrapper = new InterpreteWrapper<Posicion>(lab);
+        Formula formula = new AU(new Not(new Proposicion() {
+
+            @Override
+            public boolean esCierta(Object s) {
+                return false;
+            }
+        }), 
+          new Proposicion() {
+
+            @Override
+            public boolean esCierta(Object s) {
+                return true;
+            }
+        } );
+        System.out.println(m.chequear(wrapper, formula));
+    }
+    
 }
     
     
