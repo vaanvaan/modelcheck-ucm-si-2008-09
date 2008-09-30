@@ -1,40 +1,35 @@
 package ucm.si.Checker;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
-import java.util.concurrent.LinkedBlockingQueue;
-import ucm.si.basico.ecuaciones.AU;
+import ucm.si.basico.ecuaciones.AX;
 import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.Formula;
 import ucm.si.basico.ecuaciones.Not;
 import ucm.si.basico.ecuaciones.Or;
 
 
-// aï¿½adir constructora para usar logs globales, si es necesario.
-
+// añadir constructora para usar logs globales, si es necesario.
 public  class Visitante<S> {
-	
 	private Resultado resParcial = null;
 	private Stack<Formula> pilaFormulas = new Stack<Formula>();
 	private boolean inicio = false;
-	private Interprete<S> interprete;
-        private S estadoActual;
+	private S estado;
+	private Interprete<S> interprete= null;
+	
+	public Visitante(){
+		
+	}
+	
+	public Visitante(S estado, Interprete<S> interprete) {
+		super();
+		this.estado = estado;
+		this.interprete = interprete;
+	}
 
-    public Visitante(Interprete<S> interprete, S estadoInicial) {
-        this.interprete = interprete;
-        this.estadoActual = estadoInicial;
-    }
-
-        
 	public Resultado visita(Formula expresion){
 		expresion.accept(this);
-		/*while (!pilaFormulas.isEmpty())
-		{ 
-			Formula e = pilaFormulas.pop();
-			e.accept(this);
-		}
-		*/
-		//actualizo el resultado parcial
 		return resParcial;
 	}
 
@@ -55,7 +50,6 @@ public  class Visitante<S> {
 			resParcial.setResultado(Resultado.COD_MAYBET);
 		else resParcial.setResultado(Resultado.COD_MAYBEF);		
 	}
-        
 	public void visita(Or or){
 		or.getExpIzq().accept(this);
 		Resultado resIzq = resParcial;
@@ -100,6 +94,17 @@ public  class Visitante<S> {
 		}
 		resParcial=resAND;
 	
+	}
+	
+	public void visita(AX allnext){
+		ArrayList<S> listaEstados;
+		
+	}
+	
+	public void visita(ucm.si.basico.ecuaciones.Proposicion<S> p){
+		if (p.esCierta(estado)) {
+			resParcial.setResultado(Resultado.COD_TRUE);
+		} else resParcial.setResultado(Resultado.COD_FALSE);
 	}
         
         public void visita(AU au){

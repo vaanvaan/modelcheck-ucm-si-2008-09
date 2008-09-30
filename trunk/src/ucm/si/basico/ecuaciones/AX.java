@@ -16,6 +16,7 @@ public class AX extends Operacion {
     // #[regen=yes,id=DCE.DEFB382B-8390-7765-B764-831D2F599BFA]
     // </editor-fold> 
     public void accept (Visitante v) {
+    	v.visita(this);
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
