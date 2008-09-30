@@ -5,6 +5,7 @@
 
 package ucm.si.Checker;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,7 +13,7 @@ import java.util.logging.Logger;
  *
  * @author nico
  */
-public class InterpreteWraper {
+public class InterpreteWraper<S> implements Interprete<S> {
     
     private String nombre;
     private Interprete interprete;
@@ -35,8 +36,15 @@ public class InterpreteWraper {
             Logger.getLogger(InterpreteWraper.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
+    public List<S> iniciales() {
+       return this.interprete.iniciales(); 
+    }
+
+    public List<S> transitar(S state) {
+        return this.interprete.transitar(state);
+    }
+
     
     
     
