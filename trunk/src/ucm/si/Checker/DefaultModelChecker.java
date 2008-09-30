@@ -10,6 +10,7 @@ import java.util.List;
 import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.Formula;
 
+
 /**
  *
  * @author nico
@@ -24,7 +25,7 @@ public class DefaultModelChecker<S> implements ModelChecker<S>{
         Iterator<S> it = iniciales.iterator();
         while (seguir&&it.hasNext()) {
             S e = it.next();
-            v = new Visitante<S>(interprete,e);
+            v = new Visitante<S>(e,interprete);
             if (!v.visita(formula).equals(Resultado.COD_TRUE))
                 seguir = false;
         }
@@ -32,7 +33,7 @@ public class DefaultModelChecker<S> implements ModelChecker<S>{
     }
 
     public Resultado chequear(Interprete<S> interprete, Formula formula, S estado) {
-        Visitante<S> v = new Visitante<S>(interprete,estado);
+        Visitante<S> v = new Visitante(estado,interprete);
         return v.visita(formula);
     }
 

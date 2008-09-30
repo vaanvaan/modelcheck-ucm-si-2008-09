@@ -13,7 +13,7 @@ import ucm.si.basico.ecuaciones.Or;
 
 
 // a�adir constructora para usar logs globales, si es necesario.
-public  class Visitante<S> {
+public  class Visitante <S> {
 	private Resultado resParcial = null;
 	private Stack<Formula> pilaFormulas = new Stack<Formula>();
 	private boolean inicio = false;
