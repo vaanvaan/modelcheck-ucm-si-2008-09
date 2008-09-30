@@ -106,7 +106,8 @@ public  class Visitante<S> {
             S eanterior = estadoActual;
             LinkedBlockingQueue<S> cola =
               new LinkedBlockingQueue<S>(interprete.transitar(estadoActual));
-            while (!cola.isEmpty()){
+            boolean seguir = true;
+            while (seguir&&(!cola.isEmpty())){
                 estadoActual = cola.poll();
                 au.getExprDer().accept(this);
                 if (!resParcial.equals(Resultado.COD_TRUE)){
@@ -114,11 +115,15 @@ public  class Visitante<S> {
                     if (resParcial.equals(Resultado.COD_TRUE)){
                         cola.addAll(interprete.transitar(estadoActual));
                     } else {
-                        cola.clear();
-                        resParcial.setResultado(Resultado.COD_FALSE);
+                        seguir = false;
                     }
                 }
             }
+            if (seguir){
+                resParcial.setResultado(Resultado.COD_TRUE);
+            } else {
+                resParcial.setResultado(Resultado.COD_FALSE);
+            } 
             estadoActual = eanterior;
         }
 }
