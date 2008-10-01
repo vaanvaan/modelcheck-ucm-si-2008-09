@@ -2,23 +2,26 @@ package ucm.si.Checker;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import ucm.si.basico.ecuaciones.AU;
 import ucm.si.basico.ecuaciones.AX;
 import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.EU;
+import ucm.si.basico.ecuaciones.EU;
 import ucm.si.basico.ecuaciones.Formula;
 import ucm.si.basico.ecuaciones.Not;
 import ucm.si.basico.ecuaciones.Or;
 
 
-// a�adir constructora para usar logs globales, si es necesario.
-import ucm.si.basico.ecuaciones.Proposicion;
 public  class Visitante <S> {
 	private Resultado resParcial = new Resultado(Resultado.COD_TRUE);
 	private Stack<Formula> pilaFormulas = new Stack<Formula>();
