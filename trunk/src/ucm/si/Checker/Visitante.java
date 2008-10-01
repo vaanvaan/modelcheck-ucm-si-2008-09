@@ -13,8 +13,9 @@ import ucm.si.basico.ecuaciones.Or;
 
 
 // a�adir constructora para usar logs globales, si es necesario.
+import ucm.si.basico.ecuaciones.Proposicion;
 public  class Visitante <S> {
-	private Resultado resParcial = null;
+	private Resultado resParcial = new Resultado(Resultado.COD_TRUE);
 	private Stack<Formula> pilaFormulas = new Stack<Formula>();
 	private boolean inicio = false;
 	private S estado;
@@ -42,7 +43,8 @@ public  class Visitante <S> {
 	public void setResParcial(Resultado resParcial) {
 		this.resParcial = resParcial;
 	}
-	public void visita(Not n){
+        
+    	public void visita(Not n){
 		n.getFormula().accept(this);
 		if (resParcial.equals(Resultado.COD_TRUE)){
 			resParcial.setResultado(Resultado.COD_FALSE);

@@ -33,8 +33,9 @@ public abstract class Proposicion<S> extends Formula {
 	}
 	@Override
 	public void accept(Visitante v) {
-		v.setResParcial(new Resultado(valor));
-		
+            // cuidado con las burradas..
+            //v.setResParcial(new Resultado(valor));
+               v.visita(this);		
 	}
 
 }

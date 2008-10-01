@@ -16,7 +16,7 @@ public class Posicion
     protected int posX;
     protected int posY;
 
-    Posicion(int x, int y) {
+    public Posicion(int x, int y) {
         this.posX = x;
         this.posY = y;
     }
