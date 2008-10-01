@@ -14,6 +14,7 @@ import ucm.si.Checker.Interprete;
 import ucm.si.Checker.ModelChecker;
 import ucm.si.Checker.Resultado;
 import ucm.si.basico.ecuaciones.AU;
+import ucm.si.basico.ecuaciones.EU;
 import ucm.si.basico.ecuaciones.Formula;
 import ucm.si.basico.ecuaciones.Not;
 
@@ -69,11 +70,4 @@ public class AdHoc implements Interprete<Integer>{
         }
     }
 
-    public static void main(String args[]){
-        ModelChecker<Integer> m = new DefaultModelChecker<Integer>();        
-        AdHoc a = new AdHoc("0", "0 1;1 2 4;4 2 1");
-        Primo p = new Primo();
-        String r = m.chequear(a, new AU(new Not(p), p)).getResultado();       
-        System.out.println("El resultado es: "+r);
-    }
 }

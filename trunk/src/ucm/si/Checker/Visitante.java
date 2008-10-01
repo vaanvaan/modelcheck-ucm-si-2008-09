@@ -158,6 +158,7 @@ public  class Visitante <S> {
             S eanterior = estado;
             LinkedBlockingQueue<S> cola =
               new LinkedBlockingQueue<S>(interprete.transitar(estado));
+            HashSet<S> visitados = new HashSet<S>();
             boolean seguir = true;
             boolean encontrado = false;
             while (seguir&&(!cola.isEmpty())){
@@ -169,7 +170,12 @@ public  class Visitante <S> {
                 } else {
                     eu.getExprIzq().accept(this);
                     if (resParcial.equals(Resultado.COD_TRUE)){
-                        cola.addAll(interprete.transitar(estado));
+                        visitados.add(estado);                
+                        List<S> listaux = interprete.transitar(estado);
+                        // quitamos los q ya hemos visitado
+                        listaux.removeAll(visitados);
+                        // aniadimos los q todavia no hemos visitado
+                        cola.addAll(listaux);
                     } else {
                         seguir = false;
                     }
