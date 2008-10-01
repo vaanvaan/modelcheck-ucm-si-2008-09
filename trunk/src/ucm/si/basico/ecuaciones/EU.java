@@ -12,6 +12,22 @@ public class EU extends Operacion {
     // #[regen=yes,id=DCE.C0FEF54A-FC5C-8312-A682-A522F92AFEBD]
     // </editor-fold> 
     private Formula mFormula;
+        private Formula exprIzq;
+    private Formula exprDer;
+
+    public Formula getExprDer() {
+        return exprDer;
+    }
+
+    public Formula getExprIzq() {
+        return exprIzq;
+    }
+    
+    public EU(Formula exprIzq, Formula exprDer) {
+        this.exprIzq = exprIzq;
+        this.exprDer = exprDer;
+    }
+
 
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -27,11 +43,9 @@ public class EU extends Operacion {
     public void setFormula (Formula val) {
         this.mFormula = val;
     }
-
 	@Override
 	public void accept(Visitante v) {
-		// TODO Auto-generated method stub
-		
+		v.visita(this);		
 	}
 
 }

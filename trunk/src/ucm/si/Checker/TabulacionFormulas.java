@@ -42,6 +42,10 @@ public class TabulacionFormulas<S> {
     
     public void aniadirEstado(S estado, Set<Formula> etiquetas){
     }
+    
+    public boolean tieneEstado(S estado){
+        return false;
+    }
 
 }
 

@@ -45,8 +45,7 @@ public class AU extends Operacion {
 
 	@Override
 	public void accept(Visitante v) {
-		// TODO Auto-generated method stub
-		
+		v.visita(this);		
 	}
 
 }
