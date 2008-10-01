@@ -18,7 +18,7 @@ import ucm.si.basico.ecuaciones.Formula;
 public class DefaultModelChecker<S> implements ModelChecker<S>{
 
     public Resultado chequear(Interprete<S> interprete, Formula formula) {
-        Resultado<S> parcial = new Resultado<S>(Resultado.COD_TRUE);
+        Resultado<S> parcial = new Resultado<S>(Resultado.COD_MAYBET);
         List<S> iniciales = interprete.iniciales();
         Visitante<S> v;
         boolean seguir = true;
@@ -26,7 +26,8 @@ public class DefaultModelChecker<S> implements ModelChecker<S>{
         while (seguir&&it.hasNext()) {
             S e = it.next();
             v = new Visitante<S>(e,interprete);
-            if (!v.visita(formula).equals(Resultado.COD_TRUE))
+            parcial = v.visita(formula);
+            if (!parcial.equals(Resultado.COD_TRUE))
                 seguir = false;
         }
         return parcial;
