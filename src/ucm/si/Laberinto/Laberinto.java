@@ -140,7 +140,12 @@ public class Laberinto implements Interprete<Posicion> {
         return lista;
 
     }
-
+    
+    public boolean checkPos(Posicion p){
+    	boolean res = laberinto[p.posX][p.posY];
+    	return res;
+    }
+    
     public static void main(){
         ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>();
         Interprete<Posicion> lab = new Laberinto();
