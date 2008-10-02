@@ -2,26 +2,24 @@ package ucm.si.Checker;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import java.util.concurrent.LinkedBlockingQueue;
 import ucm.si.basico.ecuaciones.AU;
 import ucm.si.basico.ecuaciones.AX;
 import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.EU;
-import ucm.si.basico.ecuaciones.EU;
+import ucm.si.basico.ecuaciones.EX;
 import ucm.si.basico.ecuaciones.Formula;
 import ucm.si.basico.ecuaciones.Not;
 import ucm.si.basico.ecuaciones.Or;
+import ucm.si.basico.ecuaciones.Proposicion;
 
 
+// aï¿½adir constructora para usar logs globales, si es necesario.
 public  class Visitante <S> {
 	private Resultado resParcial = new Resultado(Resultado.COD_TRUE);
 	private Stack<Formula> pilaFormulas = new Stack<Formula>();
@@ -112,10 +110,47 @@ public  class Visitante <S> {
 	
 	public void visita(AX allnext){
 		ArrayList<S> listaEstados;
-		
+		S epadre = estado;
+		listaEstados = (ArrayList<S>) interprete.transitar(estado);
+		Iterator it = listaEstados.iterator();
+		boolean seguir = true;
+		while (it.hasNext() && seguir){
+//			Visitante vhijo = new Visitante<S>();
+//			vhijo.estado= it.next();
+			estado = (S) it.next();
+			allnext.getFormula().accept(this);
+			// supongo que el get formula nos devolverá la fórmula interna
+			// del all next
+			if (!resParcial.equals(Resultado.COD_TRUE)){
+				seguir=false;
+				//resParcial se queda con false, asi que no lo tocamos.
+			}
+		}
+		estado = epadre;
 	}
 	
-	public void visita(ucm.si.basico.ecuaciones.Proposicion<S> p){
+	public void visita(EX eventx){
+		ArrayList<S> listaEstados;
+		S epadre = estado;
+		listaEstados = (ArrayList<S>) interprete.transitar(estado);
+		Iterator it = listaEstados.iterator();
+		boolean seguir = true;
+		while (it.hasNext() && seguir){
+			estado = (S) it.next();
+			eventx.getFormula().accept(this);
+			if(resParcial.equals(Resultado.COD_TRUE)){
+				//hemos encontrado uno que nos vale
+				seguir = false;
+			}
+		}
+		if(seguir){
+			// entonces, es que no hemos encontrado ninguno
+			resParcial.setResultado(Resultado.COD_FALSE);
+		}
+		estado = epadre;
+	}
+	
+	public void visita(Proposicion<S> p){
 		if (p.esCierta(estado)) {
 			resParcial.setResultado(Resultado.COD_TRUE);
 		} else resParcial.setResultado(Resultado.COD_FALSE);
