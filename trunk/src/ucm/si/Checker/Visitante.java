@@ -39,11 +39,6 @@ public  class Visitante <S> {
                 this.tabFormulas = new TabulacionFormulas<S>();
 	}
 
-	public Resultado visita(Formula expresion){
-		expresion.accept(this);
-		return resParcial;
-	}
-
 	public Resultado getResParcial() {
 		return resParcial;
 	}
@@ -119,7 +114,7 @@ public  class Visitante <S> {
 //			vhijo.estado= it.next();
 			estado = (S) it.next();
 			allnext.getFormula().accept(this);
-			// supongo que el get formula nos devolverá la fórmula interna
+			// supongo que el get formula nos devolverï¿½ la fï¿½rmula interna
 			// del all next
 			if (!resParcial.equals(Resultado.COD_TRUE)){
 				seguir=false;
