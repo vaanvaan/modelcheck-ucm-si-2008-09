@@ -53,7 +53,7 @@ public class ExpresNotTest extends TestCase{
                     new Posicion(0,0),
                     new Laberinto());            
 	    Formula ctlexp = new Not(new Not(pfalsa));
-		visitante.visita(ctlexp);
+		ctlexp.accept(visitante);
 		System.out.println(visitante.getResParcial().getResultado());
 	    assertEquals(Resultado.COD_FALSE, visitante.getResParcial().getResultado());
 	}
@@ -63,7 +63,7 @@ public class ExpresNotTest extends TestCase{
                     new Posicion(0,0),
                     new Laberinto());
 		Formula ctlexp = new And(new Not(pfalsa),pcierta);
-		visitante.visita(ctlexp);
+		ctlexp.accept(visitante);
 		System.out.println(visitante.getResParcial().getResultado());
 	    assertEquals(Resultado.COD_TRUE, visitante.getResParcial().getResultado());
 	}
@@ -73,7 +73,7 @@ public class ExpresNotTest extends TestCase{
                     new Posicion(0,0),
                     new Laberinto());
 		Formula ctlexp = new Or(pmaybefalsa,new Not(pfalsa));
-		visitante.visita(ctlexp);
+		ctlexp.accept(visitante);
 		System.out.println(visitante.getResParcial().getResultado());
 		assertEquals(Resultado.COD_TRUE, visitante.getResParcial().getResultado());
 	}

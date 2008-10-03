@@ -26,7 +26,8 @@ public class DefaultModelChecker<S> implements ModelChecker<S>{
         while (seguir&&it.hasNext()) {
             S e = it.next();
             v = new Visitante<S>(e,interprete);
-            parcial = v.visita(formula);
+            formula.accept(v);
+            parcial = v.getResParcial();
             if (!parcial.equals(Resultado.COD_TRUE))
                 seguir = false;
         }
@@ -35,7 +36,8 @@ public class DefaultModelChecker<S> implements ModelChecker<S>{
 
     public Resultado chequear(Interprete<S> interprete, Formula formula, S estado) {
         Visitante<S> v = new Visitante(estado,interprete);
-        return v.visita(formula);
+        formula.accept(v);
+        return v.getResParcial();
     }
 
     
