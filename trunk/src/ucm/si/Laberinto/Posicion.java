@@ -5,13 +5,15 @@
 
 package ucm.si.Laberinto;
 
+import ucm.si.Checker.Estado;
+
 
 
 /**
  *
  * @author Pilar
  */
-public class Posicion 
+public class Posicion extends Estado 
 {
     protected int posX;
     protected int posY;
