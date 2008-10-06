@@ -28,15 +28,12 @@ public  class Visitante <S> {
 	private Interprete<S> interprete= null;
         private TabulacionFormulas<S> tabFormulas;
 	
-	public Visitante(){
-		
-	}
 	
 	public Visitante(S estado, Interprete<S> interprete) {
 		super();
 		this.estado = estado;
 		this.interprete = interprete;
-                this.tabFormulas = new TabulacionFormulas<S>();
+                //this.tabFormulas = new TabulacionFormulas<S>();
 	}
 
 	public Resultado getResParcial() {
@@ -48,7 +45,7 @@ public  class Visitante <S> {
 	}
         
     	public void visita(Not n){
-		n.getFormula().accept(this);
+		n.getOperando(0).accept(this);
 		if (resParcial.equals(Resultado.COD_TRUE)){
 			resParcial.setResultado(Resultado.COD_FALSE);
 		} else if (resParcial.equals(Resultado.COD_FALSE)){
@@ -58,9 +55,9 @@ public  class Visitante <S> {
 		else resParcial.setResultado(Resultado.COD_MAYBEF);		
 	}
 	public void visita(Or or){
-		or.getExpIzq().accept(this);
+		or.getOperando(0).accept(this);
 		Resultado resIzq = resParcial;
-		or.getExpDer().accept(this);
+		or.getOperando(1).accept(this);
 		Resultado resDer = resParcial;
 		Resultado resAND;
 		try{
@@ -81,9 +78,9 @@ public  class Visitante <S> {
 	public void visita(And and){
 
 		// TODO Auto-generated method stub
-		and.getExpIzq().accept(this);
+		and.getOperando(0).accept(this);
 		Resultado resIzq = resParcial;
-		and.getExpDer().accept(this);
+		and.getOperando(1).accept(this);
 		Resultado resDer = resParcial;
 		Resultado resAND;
 		try{
@@ -113,7 +110,7 @@ public  class Visitante <S> {
 //			Visitante vhijo = new Visitante<S>();
 //			vhijo.estado= it.next();
 			estado = (S) it.next();
-			allnext.getFormula().accept(this);
+			allnext.getOperando(0).accept(this);
 			// supongo que el get formula nos devolver� la f�rmula interna
 			// del all next
 			if (!resParcial.equals(Resultado.COD_TRUE)){
@@ -132,7 +129,7 @@ public  class Visitante <S> {
 		boolean seguir = true;
 		while (it.hasNext() && seguir){
 			estado = (S) it.next();
-			eventx.getFormula().accept(this);
+			eventx.getOperando(0).accept(this);
 			if(resParcial.equals(Resultado.COD_TRUE)){
 				//hemos encontrado uno que nos vale
 				seguir = false;
@@ -159,9 +156,9 @@ public  class Visitante <S> {
             boolean seguir = true;
             while (seguir&&(!cola.isEmpty())){
                 estado = cola.poll();                
-                au.getExprDer().accept(this);
+                au.getOperando(1).accept(this);
                 if (!resParcial.equals(Resultado.COD_TRUE)){
-                    au.getExprIzq().accept(this);
+                    au.getOperando(0).accept(this);
                     if (resParcial.equals(Resultado.COD_TRUE)){
                         visitados.add(estado);                
                         List<S> listaux = interprete.transitar(estado);
@@ -196,12 +193,12 @@ public  class Visitante <S> {
             boolean encontrado = false;
             while (seguir&&(!cola.isEmpty())){
                 estado = cola.poll();
-                eu.getExprDer().accept(this);
+                eu.getOperando(1).accept(this);
                 if (resParcial.equals(Resultado.COD_TRUE)){
                     encontrado = true;
                     seguir = false;                    
                 } else {
-                    eu.getExprIzq().accept(this);
+                    eu.getOperando(0).accept(this);
                     if (resParcial.equals(Resultado.COD_TRUE)){
                         visitados.add(estado);                
                         List<S> listaux = interprete.transitar(estado);

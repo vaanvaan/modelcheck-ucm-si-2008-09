@@ -10,7 +10,7 @@ public interface ModelChecker<S> {
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.7976A13B-E5F7-6A8F-1AD3-4E19D7E8B67B]
     // </editor-fold> 
-    public Resultado chequear (Interprete<S> interprete, Formula formula);
+    public Resultado chequear ( Formula formula);
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.4CABA78F-38BB-549A-D70B-BD44F2FE74CB]
