@@ -147,9 +147,8 @@ public class Laberinto implements Interprete<Posicion> {
     }
     
     public static void main(){
-        ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>();
         Interprete<Posicion> lab = new Laberinto();
-        Interprete<Posicion> wrapper = new InterpreteWrapper<Posicion>(lab);
+        ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>(lab);        
         Formula formula = new AU(new Not(new Proposicion() {
 
             @Override
@@ -164,7 +163,7 @@ public class Laberinto implements Interprete<Posicion> {
                 return true;
             }
         } );
-        System.out.println(m.chequear(wrapper, formula));
+        System.out.println(m.chequear(formula));
     }
     
 }

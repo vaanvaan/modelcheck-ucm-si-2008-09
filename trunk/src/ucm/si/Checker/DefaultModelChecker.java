@@ -17,7 +17,9 @@ import ucm.si.basico.ecuaciones.Formula;
  */
 public class DefaultModelChecker<S> implements ModelChecker<S>{
 
-    public Resultado chequear(Interprete<S> interprete, Formula formula) {
+    private InterpreteWrapper<S> interprete;
+    
+    public Resultado chequear( Formula formula) {
         Resultado<S> parcial = new Resultado<S>(Resultado.COD_MAYBET);
         List<S> iniciales = interprete.iniciales();
         Visitante<S> v;
@@ -34,6 +36,14 @@ public class DefaultModelChecker<S> implements ModelChecker<S>{
         return parcial;
     }
 
+    
+
+    public DefaultModelChecker(Interprete<S> interprete) {
+        this.interprete = new InterpreteWrapper<S>(interprete);
+    }
+
+    
+    
     public Resultado chequear(Interprete<S> interprete, Formula formula, S estado) {
         Visitante<S> v = new Visitante(estado,interprete);
         formula.accept(v);

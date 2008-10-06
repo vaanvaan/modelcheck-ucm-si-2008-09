@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ucm.si.Laberinto.Posicion;
 
 /**
  *
@@ -23,6 +24,8 @@ public class InterpreteWrapper<S> implements Interprete<S> {
     private HashMap<S, List<S>> hijos = new HashMap(); // PAra un estado dado los hijos que genera
     private HashMap<S, List<S>> padres = new HashMap(); // Para un estado dado desde los estados que se alcanza a este
 
+    
+    
     public InterpreteWrapper(Interprete interprete) {
         this.interprete = interprete;
         this.nombre = this.interprete.getClass().getName();

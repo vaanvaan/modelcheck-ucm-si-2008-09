@@ -1,8 +1,6 @@
 package ucm.si.basico.ecuaciones;
 
 
-import ucm.si.Checker.ModelChecker; 
-import ucm.si.Checker.Resultado;
 import ucm.si.Checker.Visitante;
 
 /**
@@ -13,28 +11,10 @@ import ucm.si.Checker.Visitante;
 // </editor-fold> 
 public abstract class Proposicion<S> extends Formula {
 	
-	private String valor=Resultado.COD_FALSE;
-	
-	public Proposicion (String val){
-		valor = val;
-	}
-	public Proposicion (){
-		valor = Resultado.COD_MAYBEF;                 
-	}
-
 	public abstract boolean esCierta(S s);
-
-        public String getValor(){
-            return valor;
-        }
         
-	public void setValor(String valor) {
-		this.valor = valor;
-	}
 	@Override
 	public void accept(Visitante v) {
-            // cuidado con las burradas..
-            //v.setResParcial(new Resultado(valor));
                v.visita(this);		
 	}
 
