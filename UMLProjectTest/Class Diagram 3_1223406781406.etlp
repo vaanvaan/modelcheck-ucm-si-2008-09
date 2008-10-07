@@ -43,6 +43,7 @@
       <entry type="objectnodeborder" stringid="50"/>
       <entry type="junctionstatelightgradientfill" stringid="110"/>
       <entry type="packageoperation" stringid="19"/>
+      <entry type="packagelightgradient" stringid="201"/>
       <entry type="flowfinallightgradientfill" stringid="38"/>
       <entry type="deephistorystatefill" stringid="97"/>
       <entry type="LifelineDrawEngine" stringid="80"/>
@@ -152,6 +153,7 @@
       <entry type="deploymentspecfill" stringid="64"/>
       <entry type="flowfinalfill" stringid="37"/>
       <entry type="QualifierDrawEngine" stringid="197"/>
+      <entry type="classlightgradient" stringid="202"/>
       <entry type="invocationnodefill" stringid="44"/>
       <entry type="PackageDrawEngine" stringid="191"/>
       <entry type="artifactlightgradientfill" stringid="142"/>
@@ -188,6 +190,7 @@
       <entry type="ClassRobustnessDrawEngine" stringid="146"/>
       <entry type="AssociationEdgeDrawEngine" stringid="144"/>
       <entry type="GraphicDrawEngine" stringid="67"/>
+      <entry type="derivationclassifierlightgradient" stringid="203"/>
       <entry type="usecaselightgradientfill" stringid="132"/>
       <entry type="deephistorystatefont" stringid="96"/>
       <entry type="nametagcolor" stringid="74"/>
@@ -277,6 +280,7 @@
       <entry combinedstringid="51,54" colorid="65"/>
       <entry combinedstringid="51,53" colorid="64"/>
       <entry combinedstringid="51,52" colorid="63"/>
+      <entry combinedstringid="1,202" colorid="322"/>
       <entry combinedstringid="150,11" colorid="227"/>
       <entry combinedstringid="188,91" colorid="293"/>
       <entry combinedstringid="150,10" colorid="226"/>
@@ -446,6 +450,8 @@
       <entry combinedstringid="70,71" colorid="110"/>
       <entry combinedstringid="144,145" colorid="209"/>
       <entry combinedstringid="126,127" colorid="177"/>
+      <entry combinedstringid="173,203" colorid="323"/>
+      <entry combinedstringid="191,201" colorid="321"/>
       <entry combinedstringid="43,46" colorid="47"/>
       <entry combinedstringid="43,45" colorid="46"/>
       <entry combinedstringid="43,44" colorid="45"/>
@@ -527,6 +533,9 @@
       <entry combinedstringid="63,6" colorid="96"/>
     </ColorIDs>
     <ColorTable>
+      <entry colorid="323" colorref="254,254,254" combinedstringid="0,0"/>
+      <entry colorid="322" colorref="254,254,254" combinedstringid="0,0"/>
+      <entry colorid="321" colorref="188,223,198" combinedstringid="0,0"/>
       <entry colorid="320" colorref="0,0,0" combinedstringid="0,0"/>
       <entry colorid="319" colorref="0,0,0" combinedstringid="0,0"/>
       <entry colorid="318" colorref="0,0,0" combinedstringid="0,0"/>
@@ -1221,5 +1230,423 @@
       <entry fontholderid="1" name="SansSerif" CharSet="0" Height="12" Italic="false" Strikeout="false" Underline="false" Weight="400"/>
     </FontHolderTable>
   </resources>
-  <diagramInfo zoom="1.0" xPos="0.0" yPos="0.0" name="Class Diagram 3" alias="" docs="" diagramKind="Class Diagram" lastShowAliasState="false" namespaceToplevelID="DCE.AC787966-FB60-2F93-DECF-1666D07991DC" namespaceMEID="DCE.AC787966-FB60-2F93-DECF-1666D07991DC" diagramXMIID="DCE.F12EEF9B-5DED-7434-E74D-7B10B34F1108"/>
+  <diagramInfo zoom="1.0" xPos="60.0" yPos="213.0" name="Class Diagram 3" alias="" docs="" diagramKind="Class Diagram" lastShowAliasState="false" namespaceToplevelID="DCE.AC787966-FB60-2F93-DECF-1666D07991DC" namespaceMEID="DCE.AC787966-FB60-2F93-DECF-1666D07991DC" diagramXMIID="DCE.F12EEF9B-5DED-7434-E74D-7B10B34F1108"/>
+  <DCE.4CCFA30D-C81B-7D70-EE74-0B9B392EEBFD PEID="DCE.4CCFA30D-C81B-7D70-EE74-0B9B392EEBFD" MEID="DCE.1CD3612E-E52C-29A4-27BE-5DF699A75FCB" toplevelMEID="DCE.AC787966-FB60-2F93-DECF-1666D07991DC" initString="org.netbeans.modules.uml.ui.products.ad.viewfactory.ETGenericNodeUI Package">
+    <engine name="PackageDrawEngine" editLocked="false" TabLocation="false">
+      <resources>
+        <resource type="font" resourceStringID="9" fontID="172"/>
+        <resource type="font" resourceStringID="6" fontID="169"/>
+        <resource type="color" resourceStringID="9" colorID="309"/>
+        <resource type="color" resourceStringID="194" colorID="303"/>
+        <resource type="color" resourceStringID="6" colorID="306"/>
+        <resource type="color" resourceStringID="192" colorID="301"/>
+        <resource type="color" resourceStringID="201" colorID="321"/>
+      </resources>
+      <compartment name="1" MEID="DCE.1CD3612E-E52C-29A4-27BE-5DF699A75FCB" value="" textStyles="VCENTER|HCENTER|SINGLELINE" DefaultCompartment="ADClassNameCompartment" staticText="">
+        <resources/>
+        <compartment name="2" MEID="DCE.1CD3612E-E52C-29A4-27BE-5DF699A75FCB" value="adhoc" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="6" fontID="169"/>
+            <resource type="color" resourceStringID="6" colorID="306"/>
+          </resources>
+        </compartment>
+        <compartment name="3" MEID="DCE.1CD3612E-E52C-29A4-27BE-5DF699A75FCB" value="{ From si }" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="9" fontID="172"/>
+            <resource type="color" resourceStringID="9" colorID="309"/>
+          </resources>
+        </compartment>
+      </compartment>
+    </engine>
+  </DCE.4CCFA30D-C81B-7D70-EE74-0B9B392EEBFD>
+  <CompartmentNameTable MaxIndexValue="11">
+    <ADClassNameListCompartment TableIndex="1"/>
+    <ADClassNameCompartment TableIndex="2"/>
+    <PackageImportCompartment TableIndex="3"/>
+    <ADAttributeListCompartment TableIndex="4"/>
+    <ADClassAttributeCompartment TableIndex="5"/>
+    <ADOperationListCompartment TableIndex="6"/>
+    <ADClassOperationCompartment TableIndex="7"/>
+    <TemplateParametersCompartment TableIndex="8"/>
+    <ADRedefinedOperationListCompartment TableIndex="9"/>
+    <StereotypeCompartment TableIndex="10"/>
+    <ADLabelNameCompartment TableIndex="11"/>
+  </CompartmentNameTable>
+  <DCE.2B092382-0F97-CF70-572D-BA34CF67688E PEID="DCE.2B092382-0F97-CF70-572D-BA34CF67688E" MEID="DCE.978FB29E-259F-60B6-249A-3A958C754982" toplevelMEID="DCE.AC787966-FB60-2F93-DECF-1666D07991DC" initString="org.netbeans.modules.uml.ui.products.ad.viewfactory.ETGenericNodeUI Class">
+    <engine name="ClassDrawEngine" editLocked="false">
+      <resources>
+        <resource type="font" resourceStringID="9" fontID="5"/>
+        <resource type="font" resourceStringID="17" fontID="13"/>
+        <resource type="font" resourceStringID="6" fontID="2"/>
+        <resource type="font" resourceStringID="16" fontID="12"/>
+        <resource type="font" resourceStringID="13" fontID="9"/>
+        <resource type="color" resourceStringID="9" colorID="8"/>
+        <resource type="color" resourceStringID="17" colorID="16"/>
+        <resource type="color" resourceStringID="6" colorID="5"/>
+        <resource type="color" resourceStringID="16" colorID="15"/>
+        <resource type="color" resourceStringID="4" colorID="3"/>
+        <resource type="color" resourceStringID="202" colorID="322"/>
+        <resource type="color" resourceStringID="13" colorID="12"/>
+        <resource type="color" resourceStringID="2" colorID="1"/>
+      </resources>
+      <compartment name="1" MEID="DCE.978FB29E-259F-60B6-249A-3A958C754982" value="" textStyles="VCENTER|HCENTER|SINGLELINE" DefaultCompartment="ADClassNameCompartment" staticText="">
+        <resources/>
+        <compartment name="2" MEID="DCE.978FB29E-259F-60B6-249A-3A958C754982" value="AdHoc" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="6" fontID="2"/>
+            <resource type="color" resourceStringID="6" colorID="5"/>
+          </resources>
+        </compartment>
+        <compartment name="3" MEID="DCE.978FB29E-259F-60B6-249A-3A958C754982" value="{ From adhoc }" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="9" fontID="5"/>
+            <resource type="color" resourceStringID="9" colorID="8"/>
+          </resources>
+        </compartment>
+      </compartment>
+      <compartment name="4" value="Attributes" textStyles="VCENTER|HCENTER|SINGLELINE">
+        <resources/>
+        <compartment name="5" MEID="DCE.258530DF-E61B-D11D-C5EB-1B0CD8350167" value="private Integer iniciales[0..*]" textStyles="VCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="13" fontID="9"/>
+            <resource type="color" resourceStringID="13" colorID="12"/>
+          </resources>
+        </compartment>
+      </compartment>
+      <compartment name="6" value="Operations" textStyles="VCENTER|HCENTER|SINGLELINE">
+        <resources/>
+        <compartment name="7" MEID="DCE.78EF586E-A500-94D5-3C3B-C5A93F73D739" value="public AdHoc( String ini, String transiciones )" textStyles="VCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="16" fontID="12"/>
+            <resource type="color" resourceStringID="16" colorID="15"/>
+          </resources>
+        </compartment>
+        <compartment name="7" MEID="DCE.5B8BE21C-FB49-9037-87FC-6A91624221CA" value="public Integer[0..*]  iniciales(  )" textStyles="VCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="16" fontID="12"/>
+            <resource type="color" resourceStringID="16" colorID="15"/>
+          </resources>
+        </compartment>
+        <compartment name="7" MEID="DCE.3A6C7925-2B23-2D9D-677E-4C4ADE914BCF" value="public Integer[0..*]  transitar( Integer state )" textStyles="VCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="16" fontID="12"/>
+            <resource type="color" resourceStringID="16" colorID="15"/>
+          </resources>
+        </compartment>
+        <compartment name="7" MEID="DCE.5EF69F53-83EE-2C1C-1856-3E5EDCC68F38" value="private void  rellenarDesdeCadena( Integer iniciales[0..*], String iniaux )" textStyles="VCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="17" fontID="13"/>
+            <resource type="color" resourceStringID="17" colorID="16"/>
+          </resources>
+        </compartment>
+      </compartment>
+    </engine>
+  </DCE.2B092382-0F97-CF70-572D-BA34CF67688E>
+  <DCE.AB1B2B93-D06A-EF00-6EAF-6938C3D2BF55 PEID="DCE.AB1B2B93-D06A-EF00-6EAF-6938C3D2BF55" MEID="DCE.FA960C33-BEB4-C650-822D-6177A541238A" toplevelMEID="DCE.AC787966-FB60-2F93-DECF-1666D07991DC" initString="org.netbeans.modules.uml.ui.products.ad.viewfactory.ETGenericNodeUI Class">
+    <engine name="ClassDrawEngine" editLocked="false">
+      <resources>
+        <resource type="font" resourceStringID="9" fontID="5"/>
+        <resource type="font" resourceStringID="17" fontID="13"/>
+        <resource type="font" resourceStringID="6" fontID="2"/>
+        <resource type="font" resourceStringID="16" fontID="12"/>
+        <resource type="font" resourceStringID="13" fontID="9"/>
+        <resource type="color" resourceStringID="9" colorID="8"/>
+        <resource type="color" resourceStringID="17" colorID="16"/>
+        <resource type="color" resourceStringID="6" colorID="5"/>
+        <resource type="color" resourceStringID="16" colorID="15"/>
+        <resource type="color" resourceStringID="4" colorID="3"/>
+        <resource type="color" resourceStringID="202" colorID="322"/>
+        <resource type="color" resourceStringID="13" colorID="12"/>
+        <resource type="color" resourceStringID="2" colorID="1"/>
+      </resources>
+      <compartment name="1" MEID="DCE.FA960C33-BEB4-C650-822D-6177A541238A" value="" textStyles="VCENTER|HCENTER|SINGLELINE" DefaultCompartment="ADClassNameCompartment" staticText="">
+        <resources/>
+        <compartment name="2" MEID="DCE.FA960C33-BEB4-C650-822D-6177A541238A" value="Primo" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="6" fontID="2"/>
+            <resource type="color" resourceStringID="6" colorID="5"/>
+          </resources>
+        </compartment>
+        <compartment name="3" MEID="DCE.FA960C33-BEB4-C650-822D-6177A541238A" value="{ From adhoc }" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="9" fontID="5"/>
+            <resource type="color" resourceStringID="9" colorID="8"/>
+          </resources>
+        </compartment>
+      </compartment>
+      <compartment name="4" value="Attributes" textStyles="VCENTER|HCENTER|SINGLELINE">
+        <resources/>
+        <compartment name="5" MEID="DCE.F609CD1F-DC5A-B6A2-406D-2BD63E7B9815" value="private boolean criba[0..*]" textStyles="VCENTER|SINGLELINE" nameCompartmentBorderKind="0" isStatic="1">
+          <resources>
+            <resource type="font" resourceStringID="13" fontID="9"/>
+            <resource type="color" resourceStringID="13" colorID="12"/>
+          </resources>
+        </compartment>
+        <compartment name="5" MEID="DCE.FB46C6E9-9243-CABF-3C81-26014DB7058C" value="private int calculado" textStyles="VCENTER|SINGLELINE" nameCompartmentBorderKind="0" isStatic="1">
+          <resources>
+            <resource type="font" resourceStringID="13" fontID="9"/>
+            <resource type="color" resourceStringID="13" colorID="12"/>
+          </resources>
+        </compartment>
+      </compartment>
+      <compartment name="6" value="Operations" textStyles="VCENTER|HCENTER|SINGLELINE">
+        <resources/>
+        <compartment name="7" MEID="DCE.9AFDC906-044C-EE03-1A95-8F9E6559C5AB" value="public Primo(  )" textStyles="VCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="16" fontID="12"/>
+            <resource type="color" resourceStringID="16" colorID="15"/>
+          </resources>
+        </compartment>
+        <compartment name="7" MEID="DCE.9D2BA6DC-709F-8767-F8C7-46D96647315C" value="public boolean  esCierta( Integer s )" textStyles="VCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="16" fontID="12"/>
+            <resource type="color" resourceStringID="16" colorID="15"/>
+          </resources>
+        </compartment>
+        <compartment name="7" MEID="DCE.8E682E9C-6FF8-C10B-927C-306BDC59E3F5" value="private void  calcular( int este )" textStyles="VCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="17" fontID="13"/>
+            <resource type="color" resourceStringID="17" colorID="16"/>
+          </resources>
+        </compartment>
+        <compartment name="7" MEID="DCE.D27B46F3-BDD9-A4D7-9B5A-12B27838C9E9" value="public void  main( String args[0..*] )" textStyles="VCENTER|SINGLELINE" nameCompartmentBorderKind="0" isStatic="1">
+          <resources>
+            <resource type="font" resourceStringID="16" fontID="12"/>
+            <resource type="color" resourceStringID="16" colorID="15"/>
+          </resources>
+        </compartment>
+      </compartment>
+    </engine>
+  </DCE.AB1B2B93-D06A-EF00-6EAF-6938C3D2BF55>
+  <DCE.BEC7BAB1-E2E4-A8CF-F0F4-531B0E3BFF4D PEID="DCE.BEC7BAB1-E2E4-A8CF-F0F4-531B0E3BFF4D" MEID="DCE.5E4E9218-3588-0CAC-0794-2234F980FD71" toplevelMEID="DCE.AC787966-FB60-2F93-DECF-1666D07991DC" initString="org.netbeans.modules.uml.ui.products.ad.viewfactory.ETGenericNodeUI Class">
+    <engine name="ClassDrawEngine" editLocked="false">
+      <resources>
+        <resource type="font" resourceStringID="9" fontID="5"/>
+        <resource type="font" resourceStringID="6" fontID="2"/>
+        <resource type="font" resourceStringID="16" fontID="12"/>
+        <resource type="font" resourceStringID="11" fontID="7"/>
+        <resource type="color" resourceStringID="9" colorID="8"/>
+        <resource type="color" resourceStringID="6" colorID="5"/>
+        <resource type="color" resourceStringID="16" colorID="15"/>
+        <resource type="color" resourceStringID="4" colorID="3"/>
+        <resource type="color" resourceStringID="202" colorID="322"/>
+        <resource type="color" resourceStringID="2" colorID="1"/>
+      </resources>
+      <compartment name="8" MEID="DCE.5E4E9218-3588-0CAC-0794-2234F980FD71" value="S" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+        <resources>
+          <resource type="font" resourceStringID="11" fontID="7"/>
+        </resources>
+      </compartment>
+      <compartment name="1" MEID="DCE.5E4E9218-3588-0CAC-0794-2234F980FD71" value="" textStyles="VCENTER|HCENTER|SINGLELINE" DefaultCompartment="ADClassNameCompartment" staticText="">
+        <resources/>
+        <compartment name="2" MEID="DCE.5E4E9218-3588-0CAC-0794-2234F980FD71" value="Proposicion" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0" isAbstract="1">
+          <resources>
+            <resource type="font" resourceStringID="6" fontID="2"/>
+            <resource type="color" resourceStringID="6" colorID="5"/>
+          </resources>
+        </compartment>
+        <compartment name="3" MEID="DCE.5E4E9218-3588-0CAC-0794-2234F980FD71" value="{ From ecuaciones }" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0" isAbstract="1">
+          <resources>
+            <resource type="font" resourceStringID="9" fontID="5"/>
+            <resource type="color" resourceStringID="9" colorID="8"/>
+          </resources>
+        </compartment>
+      </compartment>
+      <compartment name="4" value="Attributes" textStyles="VCENTER|HCENTER|SINGLELINE">
+        <resources/>
+      </compartment>
+      <compartment name="6" value="Operations" textStyles="VCENTER|HCENTER|SINGLELINE">
+        <resources/>
+        <compartment name="7" MEID="DCE.B2E55F92-9C91-9F7A-2DBE-F4B407133C72" value="public boolean  esCierta( S s )" textStyles="VCENTER|SINGLELINE" nameCompartmentBorderKind="0" isAbstract="1">
+          <resources>
+            <resource type="font" resourceStringID="16" fontID="12"/>
+            <resource type="color" resourceStringID="16" colorID="15"/>
+          </resources>
+        </compartment>
+      </compartment>
+      <compartment name="9" MEID="DCE.C61453F7-8CC0-2A2A-D769-3091017525FF" value="Operations Redefined From Formula" textStyles="VCENTER|HCENTER|SINGLELINE">
+        <resources/>
+        <compartment name="7" MEID="DCE.BA139D83-9157-91D0-F723-96ECBD706E0F" value="public void  accept( Visitante v )" textStyles="VCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="16" fontID="12"/>
+            <resource type="color" resourceStringID="16" colorID="15"/>
+          </resources>
+        </compartment>
+      </compartment>
+    </engine>
+  </DCE.BEC7BAB1-E2E4-A8CF-F0F4-531B0E3BFF4D>
+  <DCE.A51206AD-F704-735B-9112-40C519E2E4D9 PEID="DCE.A51206AD-F704-735B-9112-40C519E2E4D9" MEID="DCE.E82BEA8B-862E-44C5-514D-4B6BEFA17D19" toplevelMEID="DCE.AC787966-FB60-2F93-DECF-1666D07991DC" initString="org.netbeans.modules.uml.ui.products.ad.viewfactory.ETGenericNodeUI DerivationClassifier">
+    <engine name="DerivationClassifierDrawEngine" editLocked="false">
+      <resources>
+        <resource type="font" resourceStringID="9" fontID="143"/>
+        <resource type="font" resourceStringID="6" fontID="140"/>
+        <resource type="color" resourceStringID="9" colorID="267"/>
+        <resource type="color" resourceStringID="174" colorID="261"/>
+        <resource type="color" resourceStringID="6" colorID="264"/>
+        <resource type="color" resourceStringID="203" colorID="323"/>
+        <resource type="color" resourceStringID="176" colorID="263"/>
+      </resources>
+      <compartment name="1" MEID="DCE.E82BEA8B-862E-44C5-514D-4B6BEFA17D19" value="" textStyles="VCENTER|HCENTER|SINGLELINE" DefaultCompartment="ADClassNameCompartment" staticText="">
+        <resources/>
+        <compartment name="2" MEID="DCE.E82BEA8B-862E-44C5-514D-4B6BEFA17D19" value="Proposicion&lt;Integer&gt;" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="6" fontID="140"/>
+            <resource type="color" resourceStringID="6" colorID="264"/>
+          </resources>
+        </compartment>
+        <compartment name="3" MEID="DCE.E82BEA8B-862E-44C5-514D-4B6BEFA17D19" value="{ From ecuaciones }" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="9" fontID="143"/>
+            <resource type="color" resourceStringID="9" colorID="267"/>
+          </resources>
+        </compartment>
+      </compartment>
+    </engine>
+  </DCE.A51206AD-F704-735B-9112-40C519E2E4D9>
+  <DCE.1FCBDAF7-709C-41BE-D6BF-1FDC05893DF0 PEID="DCE.1FCBDAF7-709C-41BE-D6BF-1FDC05893DF0" MEID="DCE.6581340A-8FF6-871E-6764-31C46752A64A" toplevelMEID="DCE.AC787966-FB60-2F93-DECF-1666D07991DC" initString="org.netbeans.modules.uml.ui.products.ad.viewfactory.ETGenericNodeUI Class">
+    <engine name="ClassDrawEngine" editLocked="false">
+      <resources>
+        <resource type="font" resourceStringID="9" fontID="5"/>
+        <resource type="font" resourceStringID="6" fontID="2"/>
+        <resource type="font" resourceStringID="16" fontID="12"/>
+        <resource type="color" resourceStringID="9" colorID="8"/>
+        <resource type="color" resourceStringID="6" colorID="5"/>
+        <resource type="color" resourceStringID="16" colorID="15"/>
+        <resource type="color" resourceStringID="4" colorID="3"/>
+        <resource type="color" resourceStringID="202" colorID="322"/>
+        <resource type="color" resourceStringID="2" colorID="1"/>
+      </resources>
+      <compartment name="1" MEID="DCE.6581340A-8FF6-871E-6764-31C46752A64A" value="" textStyles="VCENTER|HCENTER|SINGLELINE" DefaultCompartment="ADClassNameCompartment" staticText="">
+        <resources/>
+        <compartment name="2" MEID="DCE.6581340A-8FF6-871E-6764-31C46752A64A" value="Estado" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="6" fontID="2"/>
+            <resource type="color" resourceStringID="6" colorID="5"/>
+          </resources>
+        </compartment>
+        <compartment name="3" MEID="DCE.6581340A-8FF6-871E-6764-31C46752A64A" value="{ From Checker }" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="9" fontID="5"/>
+            <resource type="color" resourceStringID="9" colorID="8"/>
+          </resources>
+        </compartment>
+      </compartment>
+      <compartment name="4" value="Attributes" textStyles="VCENTER|HCENTER|SINGLELINE">
+        <resources/>
+      </compartment>
+      <compartment name="6" value="Operations" textStyles="VCENTER|HCENTER|SINGLELINE">
+        <resources/>
+        <compartment name="7" MEID="DCE.6470A743-7213-FCAE-B1AA-8C9FAAEFEE96" value="public Estado(  )" textStyles="VCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+          <resources>
+            <resource type="font" resourceStringID="16" fontID="12"/>
+            <resource type="color" resourceStringID="16" colorID="15"/>
+          </resources>
+        </compartment>
+      </compartment>
+    </engine>
+  </DCE.1FCBDAF7-709C-41BE-D6BF-1FDC05893DF0>
+  <DCE.833A0AA1-583C-1143-DB66-E0BA59BCF293 PEID="DCE.833A0AA1-583C-1143-DB66-E0BA59BCF293" MEID="DCE.548F5ABE-AE89-FCDB-9286-792969CE0256" toplevelMEID="DCE.AC787966-FB60-2F93-DECF-1666D07991DC" initString="org.netbeans.modules.uml.ui.products.ad.viewfactory.ETGenericNodeUI Interface ClassNotation">
+    <engine name="ClassDrawEngine" editLocked="false">
+      <resources>
+        <resource type="font" resourceStringID="9" fontID="5"/>
+        <resource type="font" resourceStringID="7" fontID="3"/>
+        <resource type="font" resourceStringID="6" fontID="2"/>
+        <resource type="font" resourceStringID="16" fontID="12"/>
+        <resource type="font" resourceStringID="11" fontID="7"/>
+        <resource type="color" resourceStringID="9" colorID="8"/>
+        <resource type="color" resourceStringID="7" colorID="6"/>
+        <resource type="color" resourceStringID="6" colorID="5"/>
+        <resource type="color" resourceStringID="16" colorID="15"/>
+        <resource type="color" resourceStringID="4" colorID="3"/>
+        <resource type="color" resourceStringID="202" colorID="322"/>
+        <resource type="color" resourceStringID="2" colorID="1"/>
+      </resources>
+      <compartment name="8" MEID="DCE.548F5ABE-AE89-FCDB-9286-792969CE0256" value="S" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+        <resources>
+          <resource type="font" resourceStringID="11" fontID="7"/>
+        </resources>
+      </compartment>
+      <compartment name="1" MEID="DCE.548F5ABE-AE89-FCDB-9286-792969CE0256" value="" textStyles="VCENTER|HCENTER|SINGLELINE" DefaultCompartment="ADClassNameCompartment" staticText="">
+        <resources/>
+        <compartment name="10" MEID="DCE.548F5ABE-AE89-FCDB-9286-792969CE0256" value="&lt;&lt;interface&gt;&gt;" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0" isAbstract="1" ShowStereotypesAsIcons="true">
+          <resources>
+            <resource type="font" resourceStringID="7" fontID="3"/>
+            <resource type="color" resourceStringID="7" colorID="6"/>
+          </resources>
+        </compartment>
+        <compartment name="2" MEID="DCE.548F5ABE-AE89-FCDB-9286-792969CE0256" value="Interprete" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0" isAbstract="1">
+          <resources>
+            <resource type="font" resourceStringID="6" fontID="2"/>
+            <resource type="color" resourceStringID="6" colorID="5"/>
+          </resources>
+        </compartment>
+        <compartment name="3" MEID="DCE.548F5ABE-AE89-FCDB-9286-792969CE0256" value="{ From Checker }" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0" isAbstract="1">
+          <resources>
+            <resource type="font" resourceStringID="9" fontID="5"/>
+            <resource type="color" resourceStringID="9" colorID="8"/>
+          </resources>
+        </compartment>
+      </compartment>
+      <compartment name="4" value="Attributes" textStyles="VCENTER|HCENTER|SINGLELINE">
+        <resources/>
+      </compartment>
+      <compartment name="6" value="Operations" textStyles="VCENTER|HCENTER|SINGLELINE">
+        <resources/>
+        <compartment name="7" MEID="DCE.930E8822-825E-E389-0F1B-DAA399E84808" value="public S[0..*]  iniciales(  )" textStyles="VCENTER|SINGLELINE" nameCompartmentBorderKind="0" isAbstract="1">
+          <resources>
+            <resource type="font" resourceStringID="16" fontID="12"/>
+            <resource type="color" resourceStringID="16" colorID="15"/>
+          </resources>
+        </compartment>
+        <compartment name="7" MEID="DCE.B056A472-D906-D8AF-89D7-84EB22CF2D33" value="public S[0..*]  transitar( S state )" textStyles="VCENTER|SINGLELINE" nameCompartmentBorderKind="0" isAbstract="1">
+          <resources>
+            <resource type="font" resourceStringID="16" fontID="12"/>
+            <resource type="color" resourceStringID="16" colorID="15"/>
+          </resources>
+        </compartment>
+      </compartment>
+    </engine>
+  </DCE.833A0AA1-583C-1143-DB66-E0BA59BCF293>
+  <DCE.B31B47C1-7F44-40B8-6331-CB16A858FBEF PEID="DCE.B31B47C1-7F44-40B8-6331-CB16A858FBEF" MEID="DCE.978FB29E-259F-60B6-249A-3A958C754982" toplevelMEID="DCE.AC787966-FB60-2F93-DECF-1666D07991DC" initString="org.netbeans.modules.uml.ui.products.ad.viewfactory.RelationEdge NestedLink">
+    <engine name="NestedLinkDrawEngine">
+      <resources>
+        <resource type="color" resourceStringID="190" colorID="300"/>
+      </resources>
+    </engine>
+  </DCE.B31B47C1-7F44-40B8-6331-CB16A858FBEF>
+  <DCE.F63D8286-6557-6D9F-B384-E8278B1EDFEA PEID="DCE.F63D8286-6557-6D9F-B384-E8278B1EDFEA" MEID="DCE.FA960C33-BEB4-C650-822D-6177A541238A" toplevelMEID="DCE.AC787966-FB60-2F93-DECF-1666D07991DC" initString="org.netbeans.modules.uml.ui.products.ad.viewfactory.RelationEdge NestedLink">
+    <engine name="NestedLinkDrawEngine">
+      <resources>
+        <resource type="color" resourceStringID="190" colorID="300"/>
+      </resources>
+    </engine>
+  </DCE.F63D8286-6557-6D9F-B384-E8278B1EDFEA>
+  <DCE.87176B1F-1910-36AB-5B39-82F59A0F2643 PEID="DCE.87176B1F-1910-36AB-5B39-82F59A0F2643" MEID="DCE.39695512-7582-3317-B778-F71B03EC9BCA" toplevelMEID="DCE.AC787966-FB60-2F93-DECF-1666D07991DC" initString="org.netbeans.modules.uml.ui.products.ad.viewfactory.RelationEdge Generalization">
+    <engine name="GeneralizationEdgeDrawEngine">
+      <resources>
+        <resource type="color" resourceStringID="185" colorID="289"/>
+      </resources>
+    </engine>
+  </DCE.87176B1F-1910-36AB-5B39-82F59A0F2643>
+  <DCE.F341C1BB-E0B5-0B35-23CD-EF2E598D022C PEID="DCE.F341C1BB-E0B5-0B35-23CD-EF2E598D022C" MEID="DCE.A287E846-DC69-3315-2578-D79BCA90FDAB" toplevelMEID="DCE.AC787966-FB60-2F93-DECF-1666D07991DC" initString="org.netbeans.modules.uml.ui.products.ad.viewfactory.RelationEdge Derivation">
+    <engine name="DerivationEdgeDrawEngine">
+      <resources>
+        <resource type="color" resourceStringID="178" colorID="270"/>
+      </resources>
+    </engine>
+  </DCE.F341C1BB-E0B5-0B35-23CD-EF2E598D022C>
+  <DCE.8EF86D9E-C43E-A362-2042-4A2BC8DF06A8 TSLabelKind="13" TSLabelPlacementKind="2" PEID="DCE.8EF86D9E-C43E-A362-2042-4A2BC8DF06A8" MEID="DCE.A287E846-DC69-3315-2578-D79BCA90FDAB" toplevelMEID="DCE.AC787966-FB60-2F93-DECF-1666D07991DC" initString="org.netbeans.modules.uml.ui.products.ad.viewfactory.ETGenericEdgeLabelUI EdgeLabel">
+    <engine name="ADLabelDrawEngine" labelText="&lt;&lt;bind&gt;&gt;S::Integer">
+      <resources>
+        <resource type="font" resourceStringID="138" fontID="102"/>
+        <resource type="color" resourceStringID="138" colorID="198"/>
+      </resources>
+      <compartment name="11" MEID="DCE.A287E846-DC69-3315-2578-D79BCA90FDAB" value="&lt;&lt;bind&gt;&gt;S::Integer" textStyles="VCENTER|HCENTER|SINGLELINE" nameCompartmentBorderKind="0">
+        <resources>
+          <resource type="font" resourceStringID="138" fontID="102"/>
+          <resource type="color" resourceStringID="138" colorID="198"/>
+        </resources>
+      </compartment>
+    </engine>
+  </DCE.8EF86D9E-C43E-A362-2042-4A2BC8DF06A8>
 </EMBT:DiagramArchive>
