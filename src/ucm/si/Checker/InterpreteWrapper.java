@@ -49,7 +49,7 @@ public class InterpreteWrapper<S> implements Interprete<S> {
     public List<S> iniciales() 
     {
        List<S> l = this.interprete.iniciales();
-       
+       /*
        // cojemos los iniciales y los añandimos al grafo
        int max = l.size();
        for(int i = 0; i<max ; i++)
@@ -57,7 +57,7 @@ public class InterpreteWrapper<S> implements Interprete<S> {
            S s = l.get(i);
            this.hijos.put(s, new ArrayList<S>() ) ;
            this.padres.put(s, new ArrayList<S>());
-       }
+       }*/
        
        return l;
        
@@ -72,7 +72,7 @@ public class InterpreteWrapper<S> implements Interprete<S> {
             return this.hijos.get(state);
         }
         else
-            // si no hay entrada le ordenamos al setado transitar que gnere la lilsta de estados y luego actualizas hijos con esa lista y despues pares con el estado dado
+            // si no hay entrada le ordenamos al estado transitar que genere la lista de estados y luego actualizas hijos con esa lista y despues pares con el estado dado
         {
             List<S> retorno = this.interprete.transitar(state);
             ArrayList<S> l = new ArrayList(retorno);
@@ -84,9 +84,9 @@ public class InterpreteWrapper<S> implements Interprete<S> {
                 S s = l.get(i);
                 
                  List<S> laux = null;
-                if( padres.containsValue(l))
+                if( padres.containsKey(s))
                 {
-                    laux = this.padres.get(l);
+                    laux = this.padres.get(s);
                     if( !laux.contains(state) )
                     {
                         laux.add(state);
@@ -104,7 +104,7 @@ public class InterpreteWrapper<S> implements Interprete<S> {
             
             this.hijos.put(state, l );
             
-            // devolvemos la lista original que genera rtransitar;
+            // devolvemos la lista original que genera transitar;
             return retorno;
             
             
