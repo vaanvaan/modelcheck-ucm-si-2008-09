@@ -56,9 +56,9 @@ public  class Visitante <S> {
 	}
 	public void visita(Or or){
 		or.getOperando(0).accept(this);
-		Resultado resIzq = resParcial;
+		Resultado resIzq = new Resultado(resParcial.getResultado());
 		or.getOperando(1).accept(this);
-		Resultado resDer = resParcial;
+		Resultado resDer = new Resultado(resParcial.getResultado());
 		Resultado resAND;
 		try{
 			boolean part1 = Boolean.parseBoolean(resIzq.getResultado());

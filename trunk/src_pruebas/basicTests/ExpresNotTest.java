@@ -15,8 +15,10 @@ import ucm.si.Checker.ModelChecker;
 import ucm.si.Laberinto.Laberinto;
 import ucm.si.Laberinto.Posicion;
 import ucm.si.adhoc.AdHoc;
+import ucm.si.adhoc.Multiplo;
 import ucm.si.adhoc.Primo;
 import ucm.si.basico.ecuaciones.AU;
+import ucm.si.basico.ecuaciones.AX;
 import ucm.si.basico.ecuaciones.EU;
 
 public class ExpresNotTest extends TestCase {
@@ -98,7 +100,7 @@ public class ExpresNotTest extends TestCase {
         AdHoc a = new AdHoc("0 1", "0 1 4;1 3 4;4 5;3 4");
         ModelChecker<Integer> m = new DefaultModelChecker<Integer>(a);
         Primo p = new Primo();
-        InterpreteWrapper<Integer> w = new InterpreteWrapper<Integer>(a);
+        //InterpreteWrapper<Integer> w = new InterpreteWrapper<Integer>(a);
         String r = m.chequear(new AU(new Not(p), p)).getResultado();
         System.out.println("El resultado de AU1 es: " + r);
         assertEquals(Resultado.COD_TRUE, r);
@@ -108,7 +110,7 @@ public class ExpresNotTest extends TestCase {
         AdHoc a = new AdHoc("0", "0 1 4;1 1 4 6;4 1 4;6 2");
         ModelChecker<Integer> m = new DefaultModelChecker<Integer>(a);
         Primo p = new Primo();
-        InterpreteWrapper<Integer> w = new InterpreteWrapper<Integer>(a);
+        //InterpreteWrapper<Integer> w = new InterpreteWrapper<Integer>(a);
         String r = m.chequear(new EU(new Not(p), p)).getResultado();
         System.out.println("El resultado de EU0 es: " + r);
         assertEquals(Resultado.COD_TRUE, r);
@@ -118,9 +120,25 @@ public class ExpresNotTest extends TestCase {
         AdHoc a = new AdHoc("0", "0 1 4;1 1 4;4 1 4 8;6 4 2");
         ModelChecker<Integer> m = new DefaultModelChecker<Integer>(a);
         Primo p = new Primo();
-        InterpreteWrapper<Integer> w = new InterpreteWrapper<Integer>(a);
+        //InterpreteWrapper<Integer> w = new InterpreteWrapper<Integer>(a);
         String r = m.chequear(new EU(new Not(p), p)).getResultado();
         System.out.println("El resultado de EU1 es: " + r);
         assertEquals(Resultado.COD_FALSE, r);
     }
+    
+    public void testComplicada1() throws Exception {
+        AdHoc a = new AdHoc("100", "100 10 5;5 10 6;10 10;6 35 12;12 5;35 105;105 35 11");
+        ModelChecker<Integer> m = new DefaultModelChecker<Integer>(a);
+        Multiplo p = new Multiplo(2);
+        Multiplo q = new Multiplo(3);
+        Multiplo r = new Multiplo(5);
+        Multiplo w = new Multiplo(7);
+        Multiplo s = new Multiplo(11);
+        Formula f = new EU(new AU(new And(p,q),r), new AX(new Or(w,s)));
+        //InterpreteWrapper<Integer> wr = new InterpreteWrapper<Integer>(a);
+        String res = m.chequear(f).getResultado();
+        System.out.println("El resultado de f es: " + res);
+        assertEquals(Resultado.COD_TRUE, res);
+    }
+    
 }
