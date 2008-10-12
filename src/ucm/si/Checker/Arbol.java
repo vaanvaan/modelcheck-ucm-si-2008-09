@@ -15,9 +15,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import ucm.si.adhoc.AdHoc;
+import ucm.si.adhoc.Multiplo;
 import ucm.si.adhoc.Primo;
 import ucm.si.basico.ecuaciones.AU;
 import ucm.si.basico.ecuaciones.AX;
+import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.EU;
 import ucm.si.basico.ecuaciones.EX;
 import ucm.si.basico.ecuaciones.Not;
@@ -91,11 +93,11 @@ public class Arbol<S> {
     }
 
     public static void main(String args[]){
-        AdHoc a = new AdHoc("0", "0 4 1;1 4 8;4 6 9;6 9; 8 2; 9 8");
+        AdHoc a = new AdHoc("0", "0 4 1;1 1 4 8 7;4 6 9 4;6 9; 8 7; 9 8");
         ModelChecker<Integer> m = new DefaultModelChecker<Integer>(a);
         Primo p = new Primo();
         //InterpreteWrapper<Integer> w = new InterpreteWrapper<Integer>(a);
-        Resultado res = m.chequear(new EU(new Not(p), p));
+        Resultado res = m.chequear(new EU(new Not(p), new And(p,new Multiplo(2))));
         String r = res.getResultado();
         System.out.println("El resultado de AU es: " + r);
         JFrame frame = new JFrame();        
