@@ -16,11 +16,13 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import ucm.si.adhoc.AdHoc;
 import ucm.si.adhoc.Primo;
+import ucm.si.basico.ecuaciones.AU;
 import ucm.si.basico.ecuaciones.AX;
 import ucm.si.basico.ecuaciones.EU;
 import ucm.si.basico.ecuaciones.EX;
 import ucm.si.basico.ecuaciones.Not;
 import ucm.si.basico.ecuaciones.Or;
+import ucm.si.basico.ecuaciones.Proposicion;
 
 /**
  *
@@ -29,6 +31,7 @@ import ucm.si.basico.ecuaciones.Or;
 public class Arbol<S> {
     private S info;
     private List<Arbol<S>> hijos;
+    private Arbol<S> padre;
 
     public Arbol(S info) {
         this.info = info;
@@ -37,8 +40,14 @@ public class Arbol<S> {
 
     public Arbol(S info, List<Arbol<S>> hijos) {
         this.info = info;
-        this.hijos = hijos;
+        this.hijos = hijos;        
+        for (Iterator<Arbol<S>> it = hijos.iterator(); it.hasNext();) {
+            Arbol<S> arbol = it.next();
+            arbol.padre = this;
+        }
     }
+    
+    
     
     public List<Arbol<S>> getHijos() {
         return hijos;
@@ -46,6 +55,10 @@ public class Arbol<S> {
 
     public void setHijos(List<Arbol<S>> hijos) {
         this.hijos = hijos;
+        for (Iterator<Arbol<S>> it = hijos.iterator(); it.hasNext();) {
+            Arbol<S> arbol = it.next();
+            arbol.padre = this;
+        }
     }
 
     public S getInfo() {
@@ -58,6 +71,12 @@ public class Arbol<S> {
     
     public void aniadirHijo(Arbol<S> nuevoHijo){
         this.hijos.add(nuevoHijo);
+        nuevoHijo.padre = this;
+    }
+    
+   
+    public Arbol<S> getPadre() {
+        return padre;
     }
     
     public DefaultMutableTreeNode getArbolTreeNode(){
@@ -72,13 +91,13 @@ public class Arbol<S> {
     }
 
     public static void main(String args[]){
-        AdHoc a = new AdHoc("0", "0 1 4;1 1 4;4 1 4 8;6 4 2");
+        AdHoc a = new AdHoc("0", "0 4 1;1 4 8;4 6 9;6 9; 8 2; 9 8");
         ModelChecker<Integer> m = new DefaultModelChecker<Integer>(a);
         Primo p = new Primo();
         //InterpreteWrapper<Integer> w = new InterpreteWrapper<Integer>(a);
-        Resultado res = m.chequear(new EX(new EX(p)));
+        Resultado res = m.chequear(new EU(new Not(p), p));
         String r = res.getResultado();
-        System.out.println("El resultado de Ex es: " + r);
+        System.out.println("El resultado de AU es: " + r);
         JFrame frame = new JFrame();        
         DefaultMutableTreeNode nodo;
         if (res.equals(Resultado.COD_TRUE)){
