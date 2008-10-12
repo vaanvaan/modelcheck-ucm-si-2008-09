@@ -1,5 +1,19 @@
 package basicTests;
 
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import ucm.si.Checker.Resultado;
 import ucm.si.Checker.Visitante;
 import ucm.si.basico.ecuaciones.And;
@@ -8,6 +22,7 @@ import ucm.si.basico.ecuaciones.Not;
 import ucm.si.basico.ecuaciones.Or;
 import ucm.si.basico.ecuaciones.Proposicion;
 import junit.framework.TestCase;
+import ucm.si.Checker.Arbol;
 import ucm.si.Checker.DefaultModelChecker;
 import ucm.si.Checker.Interprete;
 import ucm.si.Checker.InterpreteWrapper;
@@ -121,8 +136,9 @@ public class ExpresNotTest extends TestCase {
         ModelChecker<Integer> m = new DefaultModelChecker<Integer>(a);
         Primo p = new Primo();
         //InterpreteWrapper<Integer> w = new InterpreteWrapper<Integer>(a);
-        String r = m.chequear(new EU(new Not(p), p)).getResultado();
-        System.out.println("El resultado de EU1 es: " + r);
+        Resultado res = m.chequear(new EU(new Not(p), p));
+        String r = res.getResultado();
+        System.out.println("El resultado de EU1 es: " + r);        
         assertEquals(Resultado.COD_FALSE, r);
     }
     

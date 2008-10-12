@@ -44,27 +44,58 @@ public  class Visitante <S> {
 		this.resParcial = resParcial;
 	}
         
-    	public void visita(Not n){
+    	
+	public void visita(Proposicion<S> p){
+		if (p.esCierta(estado)) {
+                    resParcial.setResultado(Resultado.COD_TRUE);
+                    resParcial.setEjemplo(new Arbol(estado));
+		} else {
+                    resParcial.setResultado(Resultado.COD_FALSE);
+                    resParcial.setContraejemplo(new Arbol(estado));
+                }
+	}
+        
+        public void visita(Not n){
 		n.getOperando(0).accept(this);
 		if (resParcial.equals(Resultado.COD_TRUE)){
 			resParcial.setResultado(Resultado.COD_FALSE);
+                        resParcial.setContraejemplo(resParcial.getEjemplo());
 		} else if (resParcial.equals(Resultado.COD_FALSE)){
 			resParcial.setResultado(Resultado.COD_TRUE);
+                        resParcial.setEjemplo(resParcial.getContraejemplo());
 		}else if (resParcial.equals(Resultado.COD_MAYBEF))
 			resParcial.setResultado(Resultado.COD_MAYBET);
 		else resParcial.setResultado(Resultado.COD_MAYBEF);		
 	}
+        
 	public void visita(Or or){
 		or.getOperando(0).accept(this);
 		Resultado resIzq = new Resultado(resParcial.getResultado());
+                if (resIzq.equals(Resultado.COD_TRUE)){
+                    resIzq.setEjemplo(resParcial.getEjemplo());
+                } else {
+                    resIzq.setContraejemplo(resParcial.getContraejemplo());
+                }
 		or.getOperando(1).accept(this);
 		Resultado resDer = new Resultado(resParcial.getResultado());
+                if (resDer.equals(Resultado.COD_TRUE)){
+                    resDer.setEjemplo(resParcial.getEjemplo());
+                } else {
+                    resDer.setContraejemplo(resParcial.getContraejemplo());
+                }
 		Resultado resAND;
 		try{
 			boolean part1 = Boolean.parseBoolean(resIzq.getResultado());
-			boolean part2 = Boolean.parseBoolean(resDer.getResultado());
-			part1 = part1 || part2;
-			resAND = new Resultado(String.valueOf(part1));
+			boolean part2 = Boolean.parseBoolean(resDer.getResultado());                        
+			boolean and = part1 || part2;                        
+                        resAND = new Resultado(String.valueOf(and));
+                        if (!and){
+                          resAND.setContraejemplo(resIzq.getContraejemplo());
+                        } else if (part1){
+                          resAND.setEjemplo(resIzq.getEjemplo());
+                        } else {
+                          resAND.setEjemplo(resDer.getEjemplo());
+                        }                        
 		}catch(Exception e){
 			if((resIzq.getResultado().equals(Resultado.COD_TRUE)) ||
 					(resDer.getResultado().equals(Resultado.COD_TRUE)) ){
@@ -75,6 +106,7 @@ public  class Visitante <S> {
 		}
 		resParcial=resAND;
 	}
+        
 	public void visita(And and){
 
 		// TODO Auto-generated method stub
@@ -99,7 +131,7 @@ public  class Visitante <S> {
 		resParcial=resAND;
 	
 	}
-	
+        
 	public void visita(AX allnext){
 		ArrayList<S> listaEstados;
 		S epadre = estado;
@@ -122,32 +154,33 @@ public  class Visitante <S> {
 	}
 	
 	public void visita(EX eventx){
-		ArrayList<S> listaEstados;
+		List<S> listaEstados;
 		S epadre = estado;
-		listaEstados = (ArrayList<S>) interprete.transitar(estado);
+		listaEstados = interprete.transitar(estado);
 		Iterator it = listaEstados.iterator();
 		boolean seguir = true;
+                Arbol arbaux = new Arbol(estado);
 		while (it.hasNext() && seguir){
 			estado = (S) it.next();
 			eventx.getOperando(0).accept(this);
 			if(resParcial.equals(Resultado.COD_TRUE)){
 				//hemos encontrado uno que nos vale
 				seguir = false;
-			}
+                                arbaux = new Arbol(estado);
+                                arbaux.aniadirHijo(resParcial.getEjemplo());
+                                resParcial.setEjemplo(arbaux);
+			} else {
+                            arbaux.aniadirHijo(resParcial.getContraejemplo());                            
+                        } 
 		}
 		if(seguir){
 			// entonces, es que no hemos encontrado ninguno
 			resParcial.setResultado(Resultado.COD_FALSE);
+                        resParcial.setContraejemplo(arbaux);
 		}
 		estado = epadre;
 	}
 	
-	public void visita(Proposicion<S> p){
-		if (p.esCierta(estado)) {
-			resParcial.setResultado(Resultado.COD_TRUE);
-		} else resParcial.setResultado(Resultado.COD_FALSE);
-	}
-        
         public void visita(AU au){
             S eanterior = estado;
             LinkedBlockingQueue<S> cola =
