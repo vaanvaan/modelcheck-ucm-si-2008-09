@@ -19,7 +19,7 @@ public class Resultado<S> {
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.1203B296-E7C4-00BB-828B-EEEB38B50A65]
     // </editor-fold> 
-    private String resultado=null;
+    private String resultado = null;
 
     public Resultado(String tipo){
 		this.resultado= tipo;
@@ -28,39 +28,36 @@ public class Resultado<S> {
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.1A8EBBF6-85AB-1659-453B-146B69450E7D]
     // </editor-fold> 
-    private List<S> contraejemplo;
+    private Arbol<S> contraejemplo;
+    private Arbol<S> ejemplo;
 
-	public String getResultado() {
-		return resultado;
-	}
-
-	public void setResultado(String resultado) {
-		this.resultado = resultado;
-	}
-
-    // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
-    // #[regen=yes,id=DCE.0DF466D2-73FF-53F9-0248-7028D2277309]
-    // </editor-fold> 
-    public List<S> getContraejemplo () {
-        return null;
+    public String getResultado() {
+        return resultado;
     }
 
-    // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
-    // #[regen=yes,id=DCE.9244876B-7A5C-52A9-F7D8-32DB685C24B9]
-    // </editor-fold> 
-    public void setContraejemplo (List<S> contraejemplo) {
+    public void setResultado(String resultado) {
+        this.resultado = resultado;
     }
 
+    
+    public Arbol<S> getContraejemplo() {
+        return contraejemplo;
+    }
 
-    // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
-    // #[regen=yes,id=DCE.A0BCDA9B-E166-AFE8-2706-24416EF66A02]
-    // </editor-fold> 
-    public void aniadirEstado (S e) {
+    public void setContraejemplo(Arbol<S> contraejemplo) {
+        this.contraejemplo = contraejemplo;
+    }
+
+    public Arbol<S> getEjemplo() {
+        return ejemplo;
+    }
+
+    public void setEjemplo(Arbol<S> ejemplo) {
+        this.ejemplo = ejemplo;
     }
     
-    public boolean equals(String s)
-    {
-    	return this.resultado.equals(s);    	
+    public boolean equals(String s) {
+        return this.resultado.equals(s);
     }
 
     @Override
@@ -77,7 +74,5 @@ public class Resultado<S> {
         }
         return true;
     }
-    
-
 }
 
