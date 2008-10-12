@@ -298,44 +298,84 @@ public class Visitante<S> {
         S eanterior = estado;
         LinkedBlockingQueue<S> cola =
                 new LinkedBlockingQueue<S>(interprete.transitar(estado));
+        LinkedBlockingQueue<Arbol<S>> colaArbolesEj =
+                new LinkedBlockingQueue<Arbol<S>>();
+        LinkedBlockingQueue<Arbol<S>> colaArbolesContraEj =
+                new LinkedBlockingQueue<Arbol<S>>();
         LinkedBlockingQueue<HashSet<S>> colaVisitados =
                 new LinkedBlockingQueue<HashSet<S>>();
+        Arbol<S> arbauxEjemplo = new Arbol(estado);
+        Arbol<S> arbauxContraEjemplo = new Arbol(estado);
         for (Iterator<S> it = cola.iterator(); it.hasNext();) {
             S s = it.next();
             colaVisitados.add(new HashSet<S>());
+            Arbol<S> arbej = new Arbol<S>(s);
+            colaArbolesEj.add(arbej);
+            arbauxEjemplo.aniadirHijo(arbej);
+            Arbol<S> arbcej = new Arbol<S>(s);
+            colaArbolesContraEj.add(arbcej);
+            arbauxContraEjemplo.aniadirHijo(arbcej);
         }
+        Arbol<S> arbauxEj = new Arbol<S>(null);
+        Arbol<S> arbauxCEj = new Arbol<S>(null);
         HashSet<S> visitados = new HashSet<S>();
         boolean seguir = true;
         boolean encontrado = false;
-        while (seguir && (!cola.isEmpty())) {            
+        while (seguir && (!cola.isEmpty())) {
             estado = cola.poll();
             visitados = colaVisitados.poll();
+            arbauxEj = colaArbolesEj.poll();
+            arbauxCEj = colaArbolesContraEj.poll();
             eu.getOperando(1).accept(this);
             if (resParcial.equals(Resultado.COD_TRUE)) {
                 encontrado = true;
-                seguir = false;                
+                seguir = false;
+                //arbauxEj.aniadirHijo(resParcial.getEjemplo());
             } else {
                 eu.getOperando(0).accept(this);
                 if (resParcial.equals(Resultado.COD_TRUE)) {
+                    // visitados solo debe tener estados que cumplen f0
                     visitados.add(estado);
+                    // este ejemplo esta a otro nivel
+                    //arbauxEj.aniadirHijo(resParcial.getEjemplo());
                     List<S> listaux = interprete.transitar(estado);
                     // quitamos los q ya hemos visitado
                     listaux.removeAll(visitados);
                     // aniadimos los q todavia no hemos visitado
-                    cola.addAll(listaux);
-                    for (Iterator<S> it = listaux.iterator(); it.hasNext();) {
-                        S s = it.next();
-                        colaVisitados.add((HashSet<S>)visitados.clone());
-                    }                    
-                } else {
+                        cola.addAll(listaux);
+                        for (Iterator<S> it = listaux.iterator(); it.hasNext();) {
+                            S s = it.next();                            
+                            colaVisitados.add((HashSet<S>)visitados.clone());
+                            Arbol<S> arbej = new Arbol<S>(s);
+                            arbauxEj.aniadirHijo(arbej);
+                            colaArbolesEj.add(arbej);
+                            Arbol<S> arbcej = new Arbol<S>(s);
+                            colaArbolesContraEj.add(arbcej);
+                            arbauxCEj.aniadirHijo(arbcej);
+                        }
+                }/* else {
                     seguir = false;
-                }
+                }*/
             }
         }
         if (encontrado) {
             resParcial.setResultado(Resultado.COD_TRUE);
+            Arbol<S> arb;
+            ArrayList<Arbol<S>> listarbaux;
+            while (arbauxEj.getPadre() != arbauxEjemplo) {
+                arb = arbauxEj.getPadre();
+                listarbaux = new ArrayList<Arbol<S>>();
+                listarbaux.add(arbauxEj);
+                arb.getHijos().retainAll(listarbaux);
+                arbauxEj = arb;
+            }
+            listarbaux = new ArrayList<Arbol<S>>();
+            listarbaux.add(arbauxEj);
+            arbauxEjemplo.getHijos().retainAll(listarbaux);
+            resParcial.setEjemplo(arbauxEjemplo);
         } else {
-            resParcial.setResultado(Resultado.COD_FALSE);
+            resParcial.setResultado(Resultado.COD_FALSE);            
+            resParcial.setContraejemplo(arbauxContraEjemplo);
         }
         estado = eanterior;
     }
