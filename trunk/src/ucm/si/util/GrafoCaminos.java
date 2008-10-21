@@ -30,7 +30,11 @@ abstract class GrafoCaminos
         return new GrafoDoble(c1,c2);
     };
 
-    abstract public List getPadres(Estado e);
+    //abstract public List getPadres(Estado e);
+    
+    abstract public void setArista (Estado eini, Estado efin);
+    
+    abstract public void setInicio (Estado ini);
     
     abstract public List getHijos (Estado e);
     
@@ -50,7 +54,12 @@ class GrafoUnico extends GrafoCaminos
     }
 
     @Override
-    public List getPadres(Estado e) {
+    public void setArista(Estado eini, Estado efin) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void setInicio(Estado ini) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -63,6 +72,8 @@ class GrafoUnico extends GrafoCaminos
     public void setEstado(List padres, Estado e, List Hijos) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+
 
    
 }
@@ -79,7 +90,12 @@ class GrafoDoble extends GrafoCaminos
     }
 
     @Override
-    public List getPadres(Estado e) {
+    public void setArista(Estado eini, Estado efin) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void setInicio(Estado ini) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -92,6 +108,8 @@ class GrafoDoble extends GrafoCaminos
     public void setEstado(List padres, Estado e, List Hijos) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+   
 
    
 }
