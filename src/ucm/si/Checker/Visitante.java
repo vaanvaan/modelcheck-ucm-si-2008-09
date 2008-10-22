@@ -1,5 +1,6 @@
 package ucm.si.Checker;
 
+import ucm.si.Checker.tabulacion.TabulacionFormulas;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;

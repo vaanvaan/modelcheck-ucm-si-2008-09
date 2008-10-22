@@ -1,12 +1,13 @@
 package ucm.si.Checker;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import ucm.si.basico.ecuaciones.Proposicion; 
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.F6D8E1F3-7B0D-2D99-1F1B-2A15776B6CB5]
 // </editor-fold> 
-public class Estado {
+public class Estado implements Serializable{
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.1EDE41B8-3E51-98EC-7E1B-45C4D632879B]
