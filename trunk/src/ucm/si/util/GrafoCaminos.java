@@ -14,7 +14,7 @@ import ucm.si.Checker.Estado;
  *
  * @author Pilar
  */
-abstract class GrafoCaminos 
+public abstract class GrafoCaminos 
 {
     public static GrafoCaminos CreateGrafo()
     {
