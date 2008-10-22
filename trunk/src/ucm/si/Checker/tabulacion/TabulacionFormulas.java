@@ -1,4 +1,4 @@
-package ucm.si.Checker;
+package ucm.si.Checker.tabulacion;
 
 import java.util.Hashtable;
 import java.util.Set;
