@@ -6,6 +6,7 @@
 package ucm.si.navegador.events;
 
 import java.util.EventObject;
+import ucm.si.Checker.Estado;
 
 /**
  *
@@ -13,8 +14,11 @@ import java.util.EventObject;
  */
 public class Retrocede extends Accion{
 
-    public Retrocede(Object source) {
+    private Estado estado;
+    
+    public Retrocede(Object source, Estado st) {
         super(source);
+        this.estado = st;
     }
 
     
