@@ -37,6 +37,8 @@ public abstract class GrafoCaminos
     
     abstract public void setInicio (Estado ini);
     
+    abstract public Estado getInicio ();
+    
     abstract public List getHijos (Estado e);
     
     abstract public void setEstado (Estado e, List Hijos);
@@ -78,6 +80,11 @@ class GrafoUnico extends GrafoCaminos
     public void setEstado(Estado e, List Hijos) 
     {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Estado getInicio() {
+        return this.inicial;
     }
 
 
@@ -178,6 +185,11 @@ class GrafoDoble extends GrafoCaminos
         // devolvemos l que es la list final.
         return l;
         
+    }
+
+    @Override
+    public Estado getInicio() {
+        return this.inicial;
     }
 
    

@@ -4,6 +4,8 @@
  */
 package ucm.si.navegador;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import ucm.si.Checker.Estado;
 import ucm.si.navegador.events.Avanza;
@@ -58,6 +60,18 @@ public class Navegador extends NavigatorInterface {
         }
         
         super.notificarOyentes(new Retrocede(this, e));
+    }
+
+    @Override
+    public List damePosibles() {
+        Estado e = this.recorrido.peek();
+        if(e == null)
+        {
+            List l = new ArrayList();
+            l.add(this.contraEj.getInicio());
+            return l;
+        }
+        return this.contraEj.getHijos(e);
     }
     
     
