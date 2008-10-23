@@ -3,7 +3,9 @@
  * and open the template in the editor.
  */
 
-package ucm.si.Checker;
+package ucm.si.experimentos;
+
+import ucm.si.Checker.*;
 
 /**
  *
