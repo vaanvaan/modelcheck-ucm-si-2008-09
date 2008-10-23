@@ -38,4 +38,41 @@ public class Posicion extends Estado
     public void setPosY(int posY) {
         this.posY = posY;
     }
+
+    // Apaño para que que se vea en Consola los estados
+    @Override
+    public String toString() {
+        return "Estado ---> PosX : "+this.posX+"  PosY : "+this.posY;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Posicion other = (Posicion) obj;
+        if (this.posX != other.posX) {
+            return false;
+        }
+        if (this.posY != other.posY) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 31 * hash + this.posX;
+        hash = 31 * hash + this.posY;
+        return hash;
+    }
+    
+    
+    
+    
+    
 }
