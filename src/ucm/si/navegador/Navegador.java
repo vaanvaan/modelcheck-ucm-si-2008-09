@@ -73,6 +73,11 @@ public class Navegador extends NavigatorInterface {
         }
         return this.contraEj.getHijos(e);
     }
+
+    @Override
+    public Estado dameInicial() {
+        return this.contraEj.getInicio();
+    }
     
     
     

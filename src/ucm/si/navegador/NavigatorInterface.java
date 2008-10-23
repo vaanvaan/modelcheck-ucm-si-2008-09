@@ -13,6 +13,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Observable;
 import java.util.Vector;
+import ucm.si.Checker.Estado;
 import ucm.si.navegador.Listener.AccionListener;
 import ucm.si.navegador.events.Accion;
 import ucm.si.navegador.events.Avanza;
@@ -74,5 +75,6 @@ public abstract class NavigatorInterface  //extends Observable
     
     public abstract List damePosibles();
     
+    public abstract Estado dameInicial();
 
 }
