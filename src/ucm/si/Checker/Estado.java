@@ -7,7 +7,7 @@ import ucm.si.basico.ecuaciones.Proposicion;
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.F6D8E1F3-7B0D-2D99-1F1B-2A15776B6CB5]
 // </editor-fold> 
-public class Estado implements Serializable{
+public abstract class Estado implements Serializable{
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.1EDE41B8-3E51-98EC-7E1B-45C4D632879B]
@@ -19,6 +19,12 @@ public class Estado implements Serializable{
     // </editor-fold> 
     public Estado () {
     }
+
+    @Override
+    public abstract boolean equals(Object obj);
+
+    @Override
+    public abstract int hashCode();
 
 
 
@@ -34,6 +40,9 @@ public class Estado implements Serializable{
     // </editor-fold> 
     /*public void setListaProposiciones (ArrayList<Proposicion> val) {
     }*/
+    
+    /*@Override
+    public abstract String toString();*/
     
     
 
