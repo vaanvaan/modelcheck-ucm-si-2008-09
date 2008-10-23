@@ -71,5 +71,8 @@ public abstract class NavigatorInterface  //extends Observable
             this.ListaOyentes.get(i).manejaAccion(accion);
         }
     }
+    
+    public abstract List damePosibles();
+    
 
 }
