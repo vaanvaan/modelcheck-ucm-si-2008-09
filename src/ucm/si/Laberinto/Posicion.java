@@ -13,7 +13,7 @@ import ucm.si.Checker.Estado;
  *
  * @author Pilar
  */
-public class Posicion extends Estado 
+public class Posicion 
 {
     protected int posX;
     protected int posY;

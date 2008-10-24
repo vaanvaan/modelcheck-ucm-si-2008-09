@@ -8,34 +8,33 @@ package ucm.si.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import ucm.si.Checker.Estado;
 
 /**
  *
  * @author Pilar
  */
-public class TLG 
+public class TLG<S> 
 {
-    private HashMap<Estado,ArrayList<Estado>> tabla;
+    private HashMap<S,ArrayList<S>> tabla;
     
     public TLG()
     {
-        this.tabla = new HashMap<Estado, ArrayList<Estado>>();
+        this.tabla = new HashMap<S, ArrayList<S>>();
     }
     
     public TLG(int tam)
     {
-        this.tabla = new HashMap<Estado, ArrayList<Estado>>(tam);
+        this.tabla = new HashMap<S, ArrayList<S>>(tam);
     }
     
     
     
-    public List getHijo (Estado e)
+    public List<S> getHijo (S e)
     {
         return this.tabla.get(e);
     }
     
-    public void setArista (Estado eini, Estado efin) 
+    public void setArista (S eini, S efin) 
     {
         if(this.tabla.containsKey(eini))
         {
@@ -43,22 +42,22 @@ public class TLG
         }
         else
         {
-            ArrayList<Estado> l = new ArrayList<Estado>();
+            ArrayList<S> l = new ArrayList<S>();
             l.add(efin);
             this.tabla.put(eini,l);
             if(!this.tabla.containsKey(efin))
             {
-                l = new ArrayList<Estado>();
+                l = new ArrayList<S>();
                 this.tabla.put(efin,l);
             }
         }
     }
 
-    public HashMap<Estado, ArrayList<Estado>> getTabla() {
+    public HashMap<S, ArrayList<S>> getTabla() {
         return tabla;
     }
 
-    public void setTabla(HashMap<Estado, ArrayList<Estado>> tabla) {
+    public void setTabla(HashMap<S, ArrayList<S>> tabla) {
         this.tabla = tabla;
     }
 

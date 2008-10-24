@@ -1,6 +1,7 @@
 package ucm.si.Checker;
 
 import java.util.List;
+import ucm.si.util.GrafoCaminos;
 
 /**
  *  @author nico
@@ -28,8 +29,8 @@ public class Resultado<S> {
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.1A8EBBF6-85AB-1659-453B-146B69450E7D]
     // </editor-fold> 
-    private Arbol<S> contraejemplo;
-    private Arbol<S> ejemplo;
+    private GrafoCaminos<S> contraejemplo;
+    private GrafoCaminos<S> ejemplo;
 
     public String getResultado() {
         return resultado;
@@ -40,19 +41,19 @@ public class Resultado<S> {
     }
 
     
-    public Arbol<S> getContraejemplo() {
+    public GrafoCaminos<S> getContraejemplo() {
         return contraejemplo;
     }
 
-    public void setContraejemplo(Arbol<S> contraejemplo) {
+    public void setContraejemplo(GrafoCaminos<S> contraejemplo) {
         this.contraejemplo = contraejemplo;
     }
 
-    public Arbol<S> getEjemplo() {
+    public GrafoCaminos<S> getEjemplo() {
         return ejemplo;
     }
 
-    public void setEjemplo(Arbol<S> ejemplo) {
+    public void setEjemplo(GrafoCaminos<S> ejemplo) {
         this.ejemplo = ejemplo;
     }
     
