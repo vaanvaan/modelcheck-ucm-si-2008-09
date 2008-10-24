@@ -72,6 +72,7 @@ public class AnimadorBasico extends AnimadorInterface {
 	
 	public AnimadorBasico(Navegador n){
 		navigator = n;
+                this.navigator.addOyente(this);
 		Estado ini = navigator.dameInicial();
 	}
 //	public static void pinta(){
