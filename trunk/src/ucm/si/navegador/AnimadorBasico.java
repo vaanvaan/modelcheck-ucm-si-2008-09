@@ -15,7 +15,16 @@ import edu.uci.ics.jung.visualization.Layout;
 import edu.uci.ics.jung.visualization.PluggableRenderer;
 import edu.uci.ics.jung.visualization.Renderer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;*/
+import ucm.si.Checker.DefaultModelChecker;
 import ucm.si.Checker.Estado;
+import ucm.si.Checker.Interprete;
+import ucm.si.Checker.ModelChecker;
+import ucm.si.Checker.Resultado;
+import ucm.si.Laberinto.Laberinto;
+import ucm.si.Laberinto.LaberintoPropo;
+import ucm.si.Laberinto.Posicion;
+import ucm.si.basico.ecuaciones.Formula;
+import ucm.si.basico.ecuaciones.Not;
 import ucm.si.navegador.events.Avanza;
 import ucm.si.navegador.events.GoToEstado;
 import ucm.si.navegador.events.Retrocede;
@@ -91,7 +100,22 @@ public class AnimadorBasico extends AnimadorInterface {
 		estadoactual = navigator.dameInicial();
 		System.out.print(estadoactual.toString());
 	}
-	public static void main(String[] args) {
+	
+        public static void main(String[] args) 
+        {
+            Interprete<Posicion> lab = new Laberinto();
+            ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>(lab);
+            Posicion pos = new Posicion(1,1);
+            LaberintoPropo prop = new LaberintoPropo(pos);
+            prop.setLab(lab);
+            Formula formula = new Not(prop);
+            Resultado res = m.chequear(lab, formula,pos);
+            Navegador nav = new Navegador(res.getContraejemplo(), res.getEjemplo()); 
+            AnimadorBasico anim = new AnimadorBasico(nav);
+            
+            // falta codigo para lanzarlo
+            
+            
 //		pinta();
 	}
 

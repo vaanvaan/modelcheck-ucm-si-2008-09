@@ -23,6 +23,29 @@ public class Navegador extends NavigatorInterface {
     private GrafoCaminos<Estado> ejemplo;
     private Stack<Estado> recorrido;
 
+    public GrafoCaminos<Estado> getContraEj() {
+        return contraEj;
+    }
+
+    public void setContraEj(GrafoCaminos<Estado> contraEj) {
+        this.contraEj = contraEj;
+    }
+
+    public GrafoCaminos<Estado> getEjemplo() {
+        return ejemplo;
+    }
+
+    public void setEjemplo(GrafoCaminos<Estado> ejemplo) {
+        this.ejemplo = ejemplo;
+    }
+
+    public Navegador(GrafoCaminos<Estado> contraEj, GrafoCaminos<Estado> ejemplo) {
+        this.contraEj = contraEj;
+        this.ejemplo = ejemplo;
+    }
+
+    
+    
     public void GoToEstado(Estado e) {
         synchronized (this) {
             int pos = this.recorrido.search(e);
