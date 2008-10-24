@@ -12,10 +12,10 @@ import java.util.EventObject;
  *
  * @author Pilar
  */
-public class GoToEstado extends Accion {
+public class GoToEstado<S> extends Accion {
     
-    private Estado estado;
-    public GoToEstado(Object source, Estado st ) 
+    private S estado;
+    public GoToEstado(Object source, S st ) 
     {
         super(source);
         this.estado = st;

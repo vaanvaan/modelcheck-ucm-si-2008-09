@@ -22,6 +22,7 @@ import ucm.si.basico.ecuaciones.Not;
 import ucm.si.basico.ecuaciones.Or;
 import ucm.si.basico.ecuaciones.Proposicion;
 // a�adir constructora para usar logs globales, si es necesario.
+import ucm.si.util.*;
 public class Visitante<S> {
 
     private Resultado resParcial = new Resultado(Resultado.COD_TRUE);
@@ -49,10 +50,16 @@ public class Visitante<S> {
     public void visita(Proposicion<S> p) {
         if (p.esCierta(estado)) {
             resParcial.setResultado(Resultado.COD_TRUE);
-            resParcial.setEjemplo(new Arbol(estado));
+            GrafoCaminos gce = GrafoCaminos.CreateGrafo();
+            gce.setS(estado, new ArrayList<S>());
+            gce.setInicio(estado);
+            resParcial.setEjemplo(gce);
         } else {
             resParcial.setResultado(Resultado.COD_FALSE);
-            resParcial.setContraejemplo(new Arbol(estado));
+            GrafoCaminos gcce = GrafoCaminos.CreateGrafo();
+            gcce.setS(estado, new ArrayList<S>());
+            gcce.setInicio(estado);
+            resParcial.setContraejemplo(gcce);
         }
     }
 
@@ -85,29 +92,32 @@ public class Visitante<S> {
             resDer.setEjemplo(resParcial.getEjemplo());
         } else {
             resDer.setContraejemplo(resParcial.getContraejemplo());
-        }
-        Resultado resAND;
+        }        
+        Resultado resOR;
         try {
             boolean part1 = Boolean.parseBoolean(resIzq.getResultado());
             boolean part2 = Boolean.parseBoolean(resDer.getResultado());
-            boolean and = part1 || part2;
-            resAND = new Resultado(String.valueOf(and));
-            if (!and) {
-                resAND.setContraejemplo(resIzq.getContraejemplo());
-            } else if (part1) {
-                resAND.setEjemplo(resIzq.getEjemplo());
+            boolean or2 = part1 || part2;
+            resOR = new Resultado(String.valueOf(or2));
+            if (!or2) {
+                resOR.setContraejemplo(GrafoCaminos.CreateGrafo(
+                        resIzq.getContraejemplo(),resDer.getContraejemplo()));
+            } else if (part1&&!part2) {
+                resOR.setEjemplo(GrafoCaminos.CreateGrafo(
+                        resIzq.getEjemplo(), resDer.getContraejemplo()));
             } else {
-                resAND.setEjemplo(resDer.getEjemplo());
+                resOR.setEjemplo(GrafoCaminos.CreateGrafo(
+                        resIzq.getEjemplo(), resDer.getEjemplo()));
             }
         } catch (Exception e) {
             if ((resIzq.getResultado().equals(Resultado.COD_TRUE)) ||
                     (resDer.getResultado().equals(Resultado.COD_TRUE))) {
-                resAND = new Resultado(Resultado.COD_TRUE);
+                resOR = new Resultado(Resultado.COD_TRUE);
             } else {
-                resAND = new Resultado(Resultado.COD_MAYBET);
+                resOR = new Resultado(Resultado.COD_MAYBET);
             }
         }
-        resParcial = resAND;
+        resParcial = resOR;
     }
 
     public void visita(And and) {
@@ -134,11 +144,14 @@ public class Visitante<S> {
             part1 = part1 && part2;
             resAND = new Resultado(String.valueOf(part1));
             if (part1) {
-                resAND.setEjemplo(resIzq.getEjemplo());
+                resAND.setEjemplo(GrafoCaminos.CreateGrafo(
+                        resIzq.getEjemplo(), resDer.getEjemplo()));
             } else if (part2) {
-                resAND.setContraejemplo(resIzq.getContraejemplo());
+                resAND.setContraejemplo(GrafoCaminos.CreateGrafo(
+                        resIzq.getContraejemplo(), resDer.getEjemplo()));
             } else {
-                resAND.setContraejemplo(resDer.getContraejemplo());
+                resAND.setContraejemplo(GrafoCaminos.CreateGrafo(
+                        resIzq.getContraejemplo(), resDer.getContraejemplo()));
             }
         } catch (Exception e) {
             if ((resIzq.getResultado().equals(Resultado.COD_FALSE)) ||
@@ -153,24 +166,22 @@ public class Visitante<S> {
     }
 
     public void visita(AX allnext) {
-        ArrayList<S> listaEstados;
+        List<S> listaEstados;
         S epadre = estado;
-        listaEstados = (ArrayList<S>) interprete.transitar(estado);
-        Iterator it = listaEstados.iterator();
+        listaEstados = interprete.transitar(estado);
+        Iterator<S> it = listaEstados.iterator();
         boolean seguir = true;
         while (it.hasNext() && seguir) {
-//			Visitante vhijo = new Visitante<S>();
-//			vhijo.estado= it.next();
-            estado = (S) it.next();
-            allnext.getOperando(0).accept(this);
-            // supongo que el get formula nos devolver� la f�rmula interna
-            // del all next
+            estado = it.next();
+            allnext.getOperando(0).accept(this);            
             if (!resParcial.equals(Resultado.COD_TRUE)) {
                 seguir = false;
                 //resParcial se queda con false, asi que no lo tocamos.
-                Arbol<S> arbaux = new Arbol(epadre);
-                arbaux.aniadirHijo(resParcial.getContraejemplo());
-                resParcial.setContraejemplo(arbaux);
+                GrafoCaminos<S> gaux = new GrafoUnico<S>(epadre);
+                gaux.setArista(epadre,estado);
+                GrafoCaminos<S> gaux2 = GrafoCaminos.CreateGrafo(gaux, resParcial.getContraejemplo());
+                gaux2.setInicio(epadre);                
+                resParcial.setContraejemplo(gaux2);
             }
         }
         estado = epadre;
@@ -182,24 +193,25 @@ public class Visitante<S> {
         listaEstados = interprete.transitar(estado);
         Iterator it = listaEstados.iterator();
         boolean seguir = true;
-        Arbol arbaux = new Arbol(estado);
+        GrafoCaminos<S> grafoaux = new GrafoUnico<S>(estado);
         while (it.hasNext() && seguir) {
             estado = (S) it.next();
             eventx.getOperando(0).accept(this);
             if (resParcial.equals(Resultado.COD_TRUE)) {
                 //hemos encontrado uno que nos vale
                 seguir = false;
-                arbaux.getHijos().clear();
-                arbaux.aniadirHijo(resParcial.getEjemplo());
-                resParcial.setEjemplo(arbaux);
+                grafoaux = new GrafoUnico(epadre);
+                grafoaux.setArista(epadre, estado);
+                resParcial.setEjemplo(GrafoCaminos.CreateGrafo(grafoaux, resParcial.getEjemplo()));
             } else {
-                arbaux.aniadirHijo(resParcial.getContraejemplo());
+                grafoaux = GrafoCaminos.CreateGrafo(grafoaux, resParcial.getContraejemplo());
+                grafoaux.setArista(epadre, estado);
             }
         }
         if (seguir) {
             // entonces, es que no hemos encontrado ninguno
             resParcial.setResultado(Resultado.COD_FALSE);
-            resParcial.setContraejemplo(arbaux);
+            resParcial.setContraejemplo(grafoaux);
         }
         estado = epadre;
     }
@@ -208,26 +220,26 @@ public class Visitante<S> {
         S eanterior = estado;
         LinkedBlockingQueue<S> cola =
                 new LinkedBlockingQueue<S>(interprete.transitar(estado));
-        LinkedBlockingQueue<Arbol<S>> colaArbolesEj =
-                new LinkedBlockingQueue<Arbol<S>>();
-        LinkedBlockingQueue<Arbol<S>> colaArbolesContraEj =
-                new LinkedBlockingQueue<Arbol<S>>();
+        LinkedBlockingQueue<NodoGrafo<S>> colaArbolesEj =
+                new LinkedBlockingQueue<NodoGrafo<S>>();
+        LinkedBlockingQueue<NodoGrafo<S>> colaArbolesContraEj =
+                new LinkedBlockingQueue<NodoGrafo<S>>();
         LinkedBlockingQueue<HashSet<S>> colaVisitados =
                 new LinkedBlockingQueue<HashSet<S>>();
-        Arbol<S> arbauxEjemplo = new Arbol(estado);
-        Arbol<S> arbauxContraEjemplo = new Arbol(estado);
+        NodoGrafo<S> arbauxEjemplo = new NodoGrafo(estado);
+        NodoGrafo<S> arbauxContraEjemplo = new NodoGrafo(estado);
         for (Iterator<S> it = cola.iterator(); it.hasNext();) {
             S s = it.next();
             colaVisitados.add(new HashSet<S>());
-            Arbol<S> arbej = new Arbol<S>(s);
+            NodoGrafo<S> arbej = new NodoGrafo<S>(s);
             colaArbolesEj.add(arbej);
-            arbauxEjemplo.aniadirHijo(arbej);
-            Arbol<S> arbcej = new Arbol<S>(s);
+            arbauxEjemplo.aniadirAdyacente(arbej);
+            NodoGrafo<S> arbcej = new NodoGrafo<S>(s);
             colaArbolesContraEj.add(arbcej);
-            arbauxContraEjemplo.aniadirHijo(arbcej);
+            arbauxContraEjemplo.aniadirAdyacente(arbcej);
         }
-        Arbol<S> arbauxEj = new Arbol<S>(null);
-        Arbol<S> arbauxCEj = new Arbol<S>(null);
+        NodoGrafo<S> arbauxEj = new NodoGrafo<S>(null);
+        NodoGrafo<S> arbauxCEj = new NodoGrafo<S>(null);
         HashSet<S> visitados = new HashSet<S>();
         boolean seguir = true;
         while (seguir && (!cola.isEmpty())) {
@@ -260,12 +272,12 @@ public class Visitante<S> {
                         for (Iterator<S> it = listaux.iterator(); it.hasNext();) {
                             S s = it.next();                            
                             colaVisitados.add((HashSet<S>)visitados.clone());
-                            Arbol<S> arbej = new Arbol<S>(s);
-                            arbauxEj.aniadirHijo(arbej);
+                            NodoGrafo<S> arbej = new NodoGrafo<S>(s);
+                            arbauxEj.aniadirAdyacente(arbej);
                             colaArbolesEj.add(arbej);
-                            Arbol<S> arbcej = new Arbol<S>(s);
+                            NodoGrafo<S> arbcej = new NodoGrafo<S>(s);
                             colaArbolesContraEj.add(arbcej);
-                            arbauxCEj.aniadirHijo(arbcej);
+                            arbauxCEj.aniadirAdyacente(arbcej);
                         }
                     }
                 } else {
@@ -278,16 +290,16 @@ public class Visitante<S> {
             resParcial.setEjemplo(arbauxEjemplo);
         } else {
             resParcial.setResultado(Resultado.COD_FALSE);
-            Arbol<S> arb;
-            ArrayList<Arbol<S>> listarbaux;
+            NodoGrafo<S> arb;
+            ArrayList<NodoGrafo<S>> listarbaux;
             while (arbauxCEj.getPadre() != arbauxContraEjemplo) {
                 arb = arbauxCEj.getPadre();
-                listarbaux = new ArrayList<Arbol<S>>();
+                listarbaux = new ArrayList<NodoGrafo<S>>();
                 listarbaux.add(arbauxCEj);
                 arb.getHijos().retainAll(listarbaux);
                 arbauxCEj = arb;
             }
-            listarbaux = new ArrayList<Arbol<S>>();
+            listarbaux = new ArrayList<NodoGrafo<S>>();
             listarbaux.add(arbauxCEj);
             arbauxContraEjemplo.getHijos().retainAll(listarbaux);
             resParcial.setContraejemplo(arbauxContraEjemplo);
@@ -299,26 +311,26 @@ public class Visitante<S> {
         S eanterior = estado;
         LinkedBlockingQueue<S> cola =
                 new LinkedBlockingQueue<S>(interprete.transitar(estado));
-        LinkedBlockingQueue<Arbol<S>> colaArbolesEj =
-                new LinkedBlockingQueue<Arbol<S>>();
-        LinkedBlockingQueue<Arbol<S>> colaArbolesContraEj =
-                new LinkedBlockingQueue<Arbol<S>>();
+        LinkedBlockingQueue<NodoGrafo<S>> colaArbolesEj =
+                new LinkedBlockingQueue<NodoGrafo<S>>();
+        LinkedBlockingQueue<NodoGrafo<S>> colaArbolesContraEj =
+                new LinkedBlockingQueue<NodoGrafo<S>>();
         LinkedBlockingQueue<HashSet<S>> colaVisitados =
                 new LinkedBlockingQueue<HashSet<S>>();
-        Arbol<S> arbauxEjemplo = new Arbol(estado);
-        Arbol<S> arbauxContraEjemplo = new Arbol(estado);
+        NodoGrafo<S> arbauxEjemplo = new NodoGrafo(estado);
+        NodoGrafo<S> arbauxContraEjemplo = new NodoGrafo(estado);
         for (Iterator<S> it = cola.iterator(); it.hasNext();) {
             S s = it.next();
             colaVisitados.add(new HashSet<S>());
-            Arbol<S> arbej = new Arbol<S>(s);
+            NodoGrafo<S> arbej = new NodoGrafo<S>(s);
             colaArbolesEj.add(arbej);
-            arbauxEjemplo.aniadirHijo(arbej);
-            Arbol<S> arbcej = new Arbol<S>(s);
+            arbauxEjemplo.aniadirAdyacente(arbej);
+            NodoGrafo<S> arbcej = new NodoGrafo<S>(s);
             colaArbolesContraEj.add(arbcej);
-            arbauxContraEjemplo.aniadirHijo(arbcej);
+            arbauxContraEjemplo.aniadirAdyacente(arbcej);
         }
-        Arbol<S> arbauxEj = new Arbol<S>(null);
-        Arbol<S> arbauxCEj = new Arbol<S>(null);
+        NodoGrafo<S> arbauxEj = new NodoGrafo<S>(null);
+        NodoGrafo<S> arbauxCEj = new NodoGrafo<S>(null);
         HashSet<S> visitados = new HashSet<S>();
         boolean seguir = true;
         boolean encontrado = false;
@@ -347,12 +359,12 @@ public class Visitante<S> {
                         for (Iterator<S> it = listaux.iterator(); it.hasNext();) {
                             S s = it.next();                            
                             colaVisitados.add((HashSet<S>)visitados.clone());
-                            Arbol<S> arbej = new Arbol<S>(s);
-                            arbauxEj.aniadirHijo(arbej);
+                            NodoGrafo<S> arbej = new NodoGrafo<S>(s);
+                            arbauxEj.aniadirAdyacente(arbej);
                             colaArbolesEj.add(arbej);
-                            Arbol<S> arbcej = new Arbol<S>(s);
+                            NodoGrafo<S> arbcej = new NodoGrafo<S>(s);
                             colaArbolesContraEj.add(arbcej);
-                            arbauxCEj.aniadirHijo(arbcej);
+                            arbauxCEj.aniadirAdyacente(arbcej);
                         }
                 }/* else {
                     seguir = false;
@@ -361,16 +373,16 @@ public class Visitante<S> {
         }
         if (encontrado) {
             resParcial.setResultado(Resultado.COD_TRUE);
-            Arbol<S> arb;
-            ArrayList<Arbol<S>> listarbaux;
+            NodoGrafo<S> arb;
+            ArrayList<NodoGrafo<S>> listarbaux;
             while (arbauxEj.getPadre() != arbauxEjemplo) {
                 arb = arbauxEj.getPadre();
-                listarbaux = new ArrayList<Arbol<S>>();
+                listarbaux = new ArrayList<NodoGrafo<S>>();
                 listarbaux.add(arbauxEj);
                 arb.getHijos().retainAll(listarbaux);
                 arbauxEj = arb;
             }
-            listarbaux = new ArrayList<Arbol<S>>();
+            listarbaux = new ArrayList<NodoGrafo<S>>();
             listarbaux.add(arbauxEj);
             arbauxEjemplo.getHijos().retainAll(listarbaux);
             resParcial.setEjemplo(arbauxEjemplo);
