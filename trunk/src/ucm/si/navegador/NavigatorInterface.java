@@ -13,7 +13,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Observable;
 import java.util.Vector;
-import ucm.si.Checker.Estado;
 import ucm.si.navegador.Listener.AccionListener;
 import ucm.si.navegador.events.Accion;
 import ucm.si.navegador.events.Avanza;
@@ -29,7 +28,7 @@ import ucm.si.navegador.events.Retrocede;
 
 // Notengo seguro el usar los objetos ya implementados en la api java para el patron Observer
 
-public abstract class NavigatorInterface  //extends Observable
+public abstract class NavigatorInterface<S>  //extends Observable
 {
     
     //public static Accion AVANZA = Accion.AVANZA;
@@ -75,6 +74,6 @@ public abstract class NavigatorInterface  //extends Observable
     
     public abstract List damePosibles();
     
-    public abstract Estado dameInicial();
+    public abstract S dameInicial();
 
 }

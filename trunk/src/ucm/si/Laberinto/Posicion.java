@@ -5,7 +5,6 @@
 
 package ucm.si.Laberinto;
 
-import ucm.si.Checker.Estado;
 
 
 

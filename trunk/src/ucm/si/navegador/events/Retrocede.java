@@ -6,17 +6,16 @@
 package ucm.si.navegador.events;
 
 import java.util.EventObject;
-import ucm.si.Checker.Estado;
 
 /**
  *
  * @author Pilar
  */
-public class Retrocede extends Accion{
+public class Retrocede<S> extends Accion{
 
-    private Estado estado;
+    private S estado;
     
-    public Retrocede(Object source, Estado st) {
+    public Retrocede(Object source, S st) {
         super(source);
         this.estado = st;
     }
