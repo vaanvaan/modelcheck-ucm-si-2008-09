@@ -11,24 +11,24 @@ import ucm.si.Checker.*;
  *
  * @author Pilar
  */
-public abstract class EstadoDrawable
+public abstract class EstadoDrawable<S>
 {
-    private Estado contenido; 
+    private S contenido; 
 
     @Override
     public abstract String toString();
     
     public abstract void draw(Contexto c);
 
-    public EstadoDrawable(Estado contenido) {
+    public EstadoDrawable(S contenido) {
         this.contenido = contenido;
     }
 
-    public Estado getContenido() {
+    public S getContenido() {
         return contenido;
     }
 
-    public void setContenido(Estado contenido) {
+    public void setContenido(S contenido) {
         this.contenido = contenido;
     }
 
