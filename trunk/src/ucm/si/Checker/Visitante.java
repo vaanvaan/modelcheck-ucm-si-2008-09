@@ -250,7 +250,7 @@ public class Visitante<S> {
                     if (cumplef1) {
                         ej.setArista(eanterior, estado);
                         ej = GrafoCaminos.CreateGrafo(ej, resParcial.getEjemplo());
-                        au.accept(this);
+                        au2(au,new HashSet<S>(visitados));
                         boolean cumpleau = resParcial.equals(Resultado.COD_TRUE);
                         if (cumpleau) {
                             ej = GrafoCaminos.CreateGrafo(ej, resParcial.getEjemplo());
@@ -313,7 +313,7 @@ public class Visitante<S> {
                     boolean cumplef1 = resParcial.equals(Resultado.COD_TRUE);
                     if (cumplef1) {
                         GrafoCaminos<S> ejauxf1 = resParcial.getEjemplo();                        
-                        eu.accept(this);
+                        eu2(eu,new HashSet<S>(visitados));
                         boolean cumpleeu = resParcial.equals(Resultado.COD_TRUE);
                         if (cumpleeu) {
                             encontrado = true;
