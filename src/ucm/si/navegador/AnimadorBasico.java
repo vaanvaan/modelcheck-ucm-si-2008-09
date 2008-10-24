@@ -38,8 +38,8 @@ public class AnimadorBasico extends AnimadorInterface {
 		return navigator;
 	}
 
-	public void setNvigator(Navegador nvigator) {
-		this.navigator = nvigator;
+	public void setNavigator(Navegador nvigator) {
+		AnimadorBasico.navigator = nvigator;
 	}
 	
 	public int pintaopciones(ArrayList ops){
