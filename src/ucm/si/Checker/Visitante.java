@@ -217,189 +217,133 @@ public class Visitante<S> {
     }
 
     public void visita(AU au) {
-        S eanterior = estado;
-        LinkedBlockingQueue<S> cola =
-                new LinkedBlockingQueue<S>(interprete.transitar(estado));
-        LinkedBlockingQueue<NodoGrafo<S>> colaArbolesEj =
-                new LinkedBlockingQueue<NodoGrafo<S>>();
-        LinkedBlockingQueue<NodoGrafo<S>> colaArbolesContraEj =
-                new LinkedBlockingQueue<NodoGrafo<S>>();
-        LinkedBlockingQueue<HashSet<S>> colaVisitados =
-                new LinkedBlockingQueue<HashSet<S>>();
-        NodoGrafo<S> arbauxEjemplo = new NodoGrafo(estado);
-        NodoGrafo<S> arbauxContraEjemplo = new NodoGrafo(estado);
-        for (Iterator<S> it = cola.iterator(); it.hasNext();) {
-            S s = it.next();
-            colaVisitados.add(new HashSet<S>());
-            NodoGrafo<S> arbej = new NodoGrafo<S>(s);
-            colaArbolesEj.add(arbej);
-            arbauxEjemplo.aniadirAdyacente(arbej);
-            NodoGrafo<S> arbcej = new NodoGrafo<S>(s);
-            colaArbolesContraEj.add(arbcej);
-            arbauxContraEjemplo.aniadirAdyacente(arbcej);
-        }
-        NodoGrafo<S> arbauxEj = new NodoGrafo<S>(null);
-        NodoGrafo<S> arbauxCEj = new NodoGrafo<S>(null);
         HashSet<S> visitados = new HashSet<S>();
-        boolean seguir = true;
-        while (seguir && (!cola.isEmpty())) {
-            estado = cola.poll();
-            visitados = colaVisitados.poll();
-            arbauxEj = colaArbolesEj.poll();
-            arbauxCEj = colaArbolesContraEj.poll();
+        au2(au,visitados);
+    }
+    
+    public void au2(AU au,Set<S> visitados){
+        S eanterior = estado;
+        GrafoCaminos<S> ej = new GrafoUnico<S>(estado);
+        GrafoCaminos<S> cej = new GrafoUnico<S>(estado);
+        GrafoCaminos<S> cejauxf2;
+        List<S> hijos = interprete.transitar(estado);
+        boolean encontrado = false;
+        Iterator<S> it = hijos.iterator();
+        while (!encontrado&&it.hasNext()){
+            estado = it.next();
+            boolean visitado = visitados.contains(estado);
+            visitados.add(estado);
             au.getOperando(1).accept(this);
-            if (resParcial.equals(Resultado.COD_TRUE)) {
-                //arbauxEj.aniadirHijo(resParcial.getEjemplo());
-            } else {
-                au.getOperando(0).accept(this);
-                if (resParcial.equals(Resultado.COD_TRUE)) {
-                    // visitados solo debe tener estados que cumplen f0
-                    visitados.add(estado);
-                    // este ejemplo esta a otro nivel
-                    //arbauxEj.aniadirHijo(resParcial.getEjemplo());
-                    List<S> listaux = interprete.transitar(estado);
-                    if (listaux.isEmpty() ||
-                            this.algunEstadoComun(visitados, listaux)) {
-                        // por este camino o no hay mas hijos
-                        // o hay un hijo q ya hemos visitado:
-                        //nunca se cumple f2 en ese camino ciclico
-                        // => falso
-                        seguir = false;
-                    // este contraejemplo esta a otro nivel
-                    //arbauxCEj.aniadirHijo(resParcial.getContraejemplo());                            
-                    } else {
-                        cola.addAll(listaux);
-                        for (Iterator<S> it = listaux.iterator(); it.hasNext();) {
-                            S s = it.next();                            
-                            colaVisitados.add((HashSet<S>)visitados.clone());
-                            NodoGrafo<S> arbej = new NodoGrafo<S>(s);
-                            arbauxEj.aniadirAdyacente(arbej);
-                            colaArbolesEj.add(arbej);
-                            NodoGrafo<S> arbcej = new NodoGrafo<S>(s);
-                            colaArbolesContraEj.add(arbcej);
-                            arbauxCEj.aniadirAdyacente(arbcej);
-                        }
-                    }
-                } else {
-                    seguir = false;
+            boolean cumplef2 = resParcial.equals(Resultado.COD_TRUE);
+            if (cumplef2){
+                ej.setArista(eanterior, estado);
+                if (!visitado){
+                    ej = GrafoCaminos.CreateGrafo(ej, resParcial.getEjemplo());
                 }
-            }
+            } else if (visitado){
+                    encontrado=true;
+                    cej.setArista(eanterior, estado);                    
+                } else {
+                    cejauxf2 = resParcial.getContraejemplo();
+                    au.getOperando(0).accept(this);
+                    boolean cumplef1 = resParcial.equals(Resultado.COD_TRUE);
+                    if (cumplef1) {
+                        ej.setArista(eanterior, estado);
+                        ej = GrafoCaminos.CreateGrafo(ej, resParcial.getEjemplo());
+                        au.accept(this);
+                        boolean cumpleau = resParcial.equals(Resultado.COD_TRUE);
+                        if (cumpleau) {
+                            ej = GrafoCaminos.CreateGrafo(ej, resParcial.getEjemplo());
+                            ej = GrafoCaminos.CreateGrafo(ej, cejauxf2);
+                            ej.setInicio(eanterior);
+                        } else {
+                            encontrado = true;
+                            cej.setArista(eanterior, estado);
+                            cej = GrafoCaminos.CreateGrafo(cej, resParcial.getContraejemplo());
+                            cej = GrafoCaminos.CreateGrafo(cej, cejauxf2);
+                            cej.setInicio(eanterior);
+                        }
+                    } else {
+                        encontrado = true;
+                        cej.setArista(eanterior, estado);
+                        cej = GrafoCaminos.CreateGrafo(cej, resParcial.getContraejemplo());
+                        cej = GrafoCaminos.CreateGrafo(cej, cejauxf2);
+                        cej.setInicio(eanterior);
+                    }
+                }
         }
-        if (seguir) {
+        if (!encontrado) {
             resParcial.setResultado(Resultado.COD_TRUE);
-            resParcial.setEjemplo(arbauxEjemplo);
+            resParcial.setEjemplo(ej);
         } else {
             resParcial.setResultado(Resultado.COD_FALSE);
-            NodoGrafo<S> arb;
-            ArrayList<NodoGrafo<S>> listarbaux;
-            while (arbauxCEj.getPadre() != arbauxContraEjemplo) {
-                arb = arbauxCEj.getPadre();
-                listarbaux = new ArrayList<NodoGrafo<S>>();
-                listarbaux.add(arbauxCEj);
-                arb.getHijos().retainAll(listarbaux);
-                arbauxCEj = arb;
-            }
-            listarbaux = new ArrayList<NodoGrafo<S>>();
-            listarbaux.add(arbauxCEj);
-            arbauxContraEjemplo.getHijos().retainAll(listarbaux);
-            resParcial.setContraejemplo(arbauxContraEjemplo);
+            resParcial.setContraejemplo(cej);
         }
         estado = eanterior;
     }
 
-    public void visita(EU eu) {
-        S eanterior = estado;
-        LinkedBlockingQueue<S> cola =
-                new LinkedBlockingQueue<S>(interprete.transitar(estado));
-        LinkedBlockingQueue<NodoGrafo<S>> colaArbolesEj =
-                new LinkedBlockingQueue<NodoGrafo<S>>();
-        LinkedBlockingQueue<NodoGrafo<S>> colaArbolesContraEj =
-                new LinkedBlockingQueue<NodoGrafo<S>>();
-        LinkedBlockingQueue<HashSet<S>> colaVisitados =
-                new LinkedBlockingQueue<HashSet<S>>();
-        NodoGrafo<S> arbauxEjemplo = new NodoGrafo(estado);
-        NodoGrafo<S> arbauxContraEjemplo = new NodoGrafo(estado);
-        for (Iterator<S> it = cola.iterator(); it.hasNext();) {
-            S s = it.next();
-            colaVisitados.add(new HashSet<S>());
-            NodoGrafo<S> arbej = new NodoGrafo<S>(s);
-            colaArbolesEj.add(arbej);
-            arbauxEjemplo.aniadirAdyacente(arbej);
-            NodoGrafo<S> arbcej = new NodoGrafo<S>(s);
-            colaArbolesContraEj.add(arbcej);
-            arbauxContraEjemplo.aniadirAdyacente(arbcej);
-        }
-        NodoGrafo<S> arbauxEj = new NodoGrafo<S>(null);
-        NodoGrafo<S> arbauxCEj = new NodoGrafo<S>(null);
+    public void visita(EU eu) {        
         HashSet<S> visitados = new HashSet<S>();
-        boolean seguir = true;
+        eu2(eu,visitados);
+    }
+    
+    public void eu2(EU eu,Set<S> visitados){
+        S eanterior = estado;
+        GrafoCaminos<S> ej = new GrafoUnico<S>(estado);
+        GrafoCaminos<S> cej = new GrafoUnico<S>(estado);
+        GrafoCaminos<S> cejauxf2;
+        List<S> hijos = interprete.transitar(estado);
         boolean encontrado = false;
-        while (seguir && (!cola.isEmpty())) {
-            estado = cola.poll();
-            visitados = colaVisitados.poll();
-            arbauxEj = colaArbolesEj.poll();
-            arbauxCEj = colaArbolesContraEj.poll();
+        Iterator<S> it = hijos.iterator();
+        while (!encontrado&&it.hasNext()){
+            estado = it.next();
+            boolean visitado = visitados.contains(estado);
+            visitados.add(estado);
             eu.getOperando(1).accept(this);
-            if (resParcial.equals(Resultado.COD_TRUE)) {
+            boolean cumplef2 = resParcial.equals(Resultado.COD_TRUE);
+            if (cumplef2){
                 encontrado = true;
-                seguir = false;
-                //arbauxEj.aniadirHijo(resParcial.getEjemplo());
-            } else {
-                eu.getOperando(0).accept(this);
-                if (resParcial.equals(Resultado.COD_TRUE)) {
-                    // visitados solo debe tener estados que cumplen f0
-                    visitados.add(estado);
-                    // este ejemplo esta a otro nivel
-                    //arbauxEj.aniadirHijo(resParcial.getEjemplo());
-                    List<S> listaux = interprete.transitar(estado);
-                    // quitamos los q ya hemos visitado
-                    listaux.removeAll(visitados);
-                    // aniadimos los q todavia no hemos visitado
-                        cola.addAll(listaux);
-                        for (Iterator<S> it = listaux.iterator(); it.hasNext();) {
-                            S s = it.next();                            
-                            colaVisitados.add((HashSet<S>)visitados.clone());
-                            NodoGrafo<S> arbej = new NodoGrafo<S>(s);
-                            arbauxEj.aniadirAdyacente(arbej);
-                            colaArbolesEj.add(arbej);
-                            NodoGrafo<S> arbcej = new NodoGrafo<S>(s);
-                            colaArbolesContraEj.add(arbcej);
-                            arbauxCEj.aniadirAdyacente(arbcej);
+                ej.setArista(eanterior, estado);
+                ej = GrafoCaminos.CreateGrafo(ej, resParcial.getEjemplo());
+            } else if (visitado){
+                    cej.setArista(eanterior, estado);                    
+                } else {
+                    cejauxf2 = resParcial.getContraejemplo();
+                    eu.getOperando(0).accept(this);
+                    boolean cumplef1 = resParcial.equals(Resultado.COD_TRUE);
+                    if (cumplef1) {
+                        GrafoCaminos<S> ejauxf1 = resParcial.getEjemplo();                        
+                        eu.accept(this);
+                        boolean cumpleeu = resParcial.equals(Resultado.COD_TRUE);
+                        if (cumpleeu) {
+                            encontrado = true;
+                            ej.setArista(eanterior, estado);
+                            ej = GrafoCaminos.CreateGrafo(ej, resParcial.getEjemplo());
+                            ej = GrafoCaminos.CreateGrafo(ej, ejauxf1);
+                            ej = GrafoCaminos.CreateGrafo(ej, cejauxf2);
+                            ej.setInicio(eanterior);
+                        } else {                            
+                            cej.setArista(eanterior, estado);
+                            cej = GrafoCaminos.CreateGrafo(cej, resParcial.getContraejemplo());
+                            cej = GrafoCaminos.CreateGrafo(cej, ejauxf1);
+                            cej = GrafoCaminos.CreateGrafo(cej, cejauxf2);
+                            cej.setInicio(eanterior);
                         }
-                }/* else {
-                    seguir = false;
-                }*/
-            }
+                    } else {
+                        cej.setArista(eanterior, estado);
+                        cej = GrafoCaminos.CreateGrafo(cej, resParcial.getContraejemplo());
+                        cej = GrafoCaminos.CreateGrafo(cej, cejauxf2);
+                        cej.setInicio(eanterior);
+                    }
+                }
         }
         if (encontrado) {
             resParcial.setResultado(Resultado.COD_TRUE);
-            NodoGrafo<S> arb;
-            ArrayList<NodoGrafo<S>> listarbaux;
-            while (arbauxEj.getPadre() != arbauxEjemplo) {
-                arb = arbauxEj.getPadre();
-                listarbaux = new ArrayList<NodoGrafo<S>>();
-                listarbaux.add(arbauxEj);
-                arb.getHijos().retainAll(listarbaux);
-                arbauxEj = arb;
-            }
-            listarbaux = new ArrayList<NodoGrafo<S>>();
-            listarbaux.add(arbauxEj);
-            arbauxEjemplo.getHijos().retainAll(listarbaux);
-            resParcial.setEjemplo(arbauxEjemplo);
+            resParcial.setEjemplo(ej);
         } else {
-            resParcial.setResultado(Resultado.COD_FALSE);            
-            resParcial.setContraejemplo(arbauxContraEjemplo);
+            resParcial.setResultado(Resultado.COD_FALSE);
+            resParcial.setContraejemplo(cej);
         }
         estado = eanterior;
-    }
-
-    private boolean algunEstadoComun(Set<S> visitados, List<S> lista) {
-        LinkedBlockingQueue<S> l = new LinkedBlockingQueue<S>(lista);
-        boolean encontrado = false;
-        while (!encontrado && !l.isEmpty()) {
-            S s = l.poll();
-            encontrado = visitados.contains(s);
-        }
-        return encontrado;
     }
 }
