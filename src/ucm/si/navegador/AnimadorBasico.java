@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 
-import edu.uci.ics.jung.graph.Graph;
+/*import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.Vertex;
 import edu.uci.ics.jung.graph.impl.DirectedSparseGraph;
 import edu.uci.ics.jung.graph.impl.DirectedSparseVertex;
@@ -14,7 +14,7 @@ import edu.uci.ics.jung.visualization.FRLayout;
 import edu.uci.ics.jung.visualization.Layout;
 import edu.uci.ics.jung.visualization.PluggableRenderer;
 import edu.uci.ics.jung.visualization.Renderer;
-import edu.uci.ics.jung.visualization.VisualizationViewer;
+import edu.uci.ics.jung.visualization.VisualizationViewer;*/
 import ucm.si.Checker.Estado;
 import ucm.si.navegador.events.Avanza;
 import ucm.si.navegador.events.GoToEstado;

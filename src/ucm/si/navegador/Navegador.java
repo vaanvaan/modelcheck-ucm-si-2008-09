@@ -19,8 +19,8 @@ import ucm.si.util.GrafoCaminos;
  */
 public class Navegador extends NavigatorInterface {
 
-    private GrafoCaminos contraEj;
-    private GrafoCaminos ejemplo;
+    private GrafoCaminos<Estado> contraEj;
+    private GrafoCaminos<Estado> ejemplo;
     private Stack<Estado> recorrido;
 
     public void GoToEstado(Estado e) {
