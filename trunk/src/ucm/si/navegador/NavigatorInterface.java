@@ -32,9 +32,9 @@ public abstract class NavigatorInterface<S>  //extends Observable
 {
     
     //public static Accion AVANZA = Accion.AVANZA;
-    private transient Vector<AccionListener> ListaOyentes = new Vector<AccionListener>(2, 5); 
+    private transient Vector<AccionListener<S>> ListaOyentes = new Vector<AccionListener<S>>(2, 5); 
     
-    public void addOyente(AnimadorInterface ia)
+    public void addOyente(AnimadorInterface<S> ia)
     {
         this.ListaOyentes.add(ia);
     }
@@ -45,34 +45,34 @@ public abstract class NavigatorInterface<S>  //extends Observable
     
     
     // Todos codigos para Notificar Cambios en los oyentes
-       public void notificarOyentes(Avanza accion)
+       public void notificarOyentes(Avanza<S> accion)
     {
-        int tope = this.ListaOyentes.capacity();
+        int tope = this.ListaOyentes.size();
         for(int i = 0 ; i< tope; i++)
         {
             this.ListaOyentes.get(i).manejaAccion(accion);
         }
     }
     
-    public void notificarOyentes(GoToEstado accion)
+    public void notificarOyentes(GoToEstado<S> accion)
     {
-        int tope = this.ListaOyentes.capacity();
+        int tope = this.ListaOyentes.size();
         for(int i = 0 ; i< tope; i++)
         {
             this.ListaOyentes.get(i).manejaAccion(accion);
         }
     }
     
-    public void notificarOyentes(Retrocede accion)
+    public void notificarOyentes(Retrocede<S> accion)
     {
-        int tope = this.ListaOyentes.capacity();
+        int tope = this.ListaOyentes.size();
         for(int i = 0 ; i< tope; i++)
         {
             this.ListaOyentes.get(i).manejaAccion(accion);
         }
     }
     
-    public abstract List damePosibles();
+    public abstract List<S> damePosibles();
     
     public abstract S dameInicial();
 

@@ -39,11 +39,17 @@ public class Laberinto implements Interprete<Posicion> {
         }
         laberinto[2][1] = false;
         laberinto[1][2] = false;
-        laberinto[5][2] = false;
-        laberinto[1][6] = false;
-
+        laberinto[3][3] = false;
+        laberinto[3][1] = false;
+        laberinto[1][3] = false;
+        laberinto[3][2] = false;
+        laberinto[0][4] = false;
         dim = 7;
 
+    }
+
+    public int getDim() {
+        return dim;
     }
 
     public boolean posible(String s, Posicion p) {
@@ -72,7 +78,7 @@ public class Laberinto implements Interprete<Posicion> {
             } else {
                 return false;
             }
-        } else if (s.equals("RIGTH")) {
+        } else if (s.equals("RIGHT")) {
             if (p.posX != (this.dim - 1)) {
                 if (!this.laberinto[p.posX + 1][p.posY]) {
                     return false;
@@ -98,7 +104,7 @@ public class Laberinto implements Interprete<Posicion> {
         p.posX = p.posX - 1;
     }
 
-    public void rigth(Posicion p) {
+    public void right(Posicion p) {
         p.posX = p.posX + 1;
     }
 
@@ -122,7 +128,7 @@ public class Laberinto implements Interprete<Posicion> {
         }
         if (posible("RIGTH", lab)) {
             Posicion l = copyOf(lab);
-            rigth(l);
+            right(l);
             lista.add(l);
         }
         if (posible("LEFT", lab)) {

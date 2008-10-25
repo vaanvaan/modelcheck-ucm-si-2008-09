@@ -19,8 +19,7 @@ public class LaberintoPropo extends Proposicion<Posicion>{
 	}
 	@Override
 	public boolean esCierta(Posicion s) {
-		lab.checkPos(s);
-		return false;
+		return lab.checkPos(s);
 	}
 
 }

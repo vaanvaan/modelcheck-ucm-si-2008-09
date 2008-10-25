@@ -11,13 +11,18 @@ import java.util.EventObject;
  *
  * @author Pilar
  */
-public class Retrocede<S> extends Accion{
+public class Retrocede<S> extends Accion<S>{
 
     private S estado;
     
-    public Retrocede(Object source, S st) {
+    public Retrocede(S source, S st) {
         super(source);
         this.estado = st;
+    }
+    
+    
+    public S getEstado() {
+        return estado;
     }
 
     

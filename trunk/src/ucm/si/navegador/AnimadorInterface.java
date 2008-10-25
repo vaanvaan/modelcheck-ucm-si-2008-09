@@ -16,7 +16,7 @@ import ucm.si.navegador.Listener.AccionListener;
  *
  * @author Pilar
  */
-public abstract class AnimadorInterface<S> implements AccionListener
+public abstract class AnimadorInterface<S> implements AccionListener<S>
 {
 
     //  metodos abstractor propios del animador los metodos para manejar los eventos los hereda 

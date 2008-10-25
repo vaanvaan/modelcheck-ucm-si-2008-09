@@ -11,9 +11,9 @@ import java.util.EventObject;
  *
  * @author Pilar
  */
-public class Accion extends EventObject{
+public class Accion<S> extends EventObject{
 
-    public Accion(Object source)
+    public Accion(S source)
     {
         super(source);
     }
