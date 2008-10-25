@@ -14,11 +14,11 @@ import ucm.si.navegador.events.Retrocede;
  *
  * @author Pilar
  */
-public interface  AccionListener extends EventListener
+public interface  AccionListener<S> extends EventListener
 {
     
-    public void manejaAccion(Avanza accion);
-    public void manejaAccion(GoToEstado accion);
-    public void manejaAccion(Retrocede accion);
+    public void manejaAccion(Avanza<S> accion);
+    public void manejaAccion(GoToEstado<S> accion);
+    public void manejaAccion(Retrocede<S> accion);
     
 }

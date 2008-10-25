@@ -51,7 +51,7 @@ public class GrafoUnico<S> extends GrafoCaminos<S>
     @Override
     public void setS(S e, List<S> Hijos) 
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.camino.getTabla().put(e, Hijos);
     }
 
     @Override

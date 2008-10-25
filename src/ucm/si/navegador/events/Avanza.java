@@ -14,15 +14,20 @@ import java.util.List;
  *
  * @author Pilar
  */
-public class Avanza<S> extends Accion{
+public class Avanza<S> extends Accion<S>{
   
     private S estado;
-    public Avanza(Object source, S st ) 
+    public Avanza(S source, S st ) 
     {
         super(source);
         this.estado = st;
 		
     }
+
+    public S getEstado() {
+        return estado;
+    }
+    
     
 }
 

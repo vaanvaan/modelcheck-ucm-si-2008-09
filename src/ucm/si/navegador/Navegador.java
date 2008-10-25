@@ -7,7 +7,6 @@ package ucm.si.navegador;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import ucm.si.Checker.Estado;
 import ucm.si.navegador.events.Avanza;
 import ucm.si.navegador.events.GoToEstado;
 import ucm.si.navegador.events.Retrocede;
@@ -17,36 +16,37 @@ import ucm.si.util.GrafoCaminos;
  *
  * @author Pilar
  */
-public class Navegador extends NavigatorInterface {
+public class Navegador<S> extends NavigatorInterface<S> {
 
-    private GrafoCaminos<Estado> contraEj;
-    private GrafoCaminos<Estado> ejemplo;
-    private Stack<Estado> recorrido;
+    private GrafoCaminos<S> contraEj;
+    private GrafoCaminos<S> ejemplo;
+    private Stack<S> recorrido;
 
-    public GrafoCaminos<Estado> getContraEj() {
+    public GrafoCaminos<S> getContraEj() {
         return contraEj;
     }
 
-    public void setContraEj(GrafoCaminos<Estado> contraEj) {
+    public void setContraEj(GrafoCaminos<S> contraEj) {
         this.contraEj = contraEj;
     }
 
-    public GrafoCaminos<Estado> getEjemplo() {
+    public GrafoCaminos<S> getEjemplo() {
         return ejemplo;
     }
 
-    public void setEjemplo(GrafoCaminos<Estado> ejemplo) {
+    public void setEjemplo(GrafoCaminos<S> ejemplo) {
         this.ejemplo = ejemplo;
     }
 
-    public Navegador(GrafoCaminos<Estado> contraEj, GrafoCaminos<Estado> ejemplo) {
+    public Navegador(GrafoCaminos<S> contraEj, GrafoCaminos<S> ejemplo) {
         this.contraEj = contraEj;
         this.ejemplo = ejemplo;
+        this.recorrido = new Stack<S>();
     }
 
     
     
-    public void GoToEstado(Estado e) {
+    public void GoToEstado(S e) {
         synchronized (this) {
             int pos = this.recorrido.search(e);
             if (pos >= 0) {
@@ -54,16 +54,15 @@ public class Navegador extends NavigatorInterface {
             } else // significa que el estado no sta en la pila y se queire partir de uno a cero
             {
                 this.recorrido = null;
-                this.recorrido = new Stack<Estado>();
+                this.recorrido = new Stack<S>();
                 this.recorrido.push(e);
             }
         }
 
         super.notificarOyentes(new GoToEstado(this, e));
-
-
     }
-    public  void Avanza(Estado e)
+    
+    public  void Avanza(S e)
     {
         synchronized(this)   
         {
@@ -76,7 +75,7 @@ public class Navegador extends NavigatorInterface {
     
     public void Retrocede()
     {
-        Estado e = null;
+        S e = null;
         synchronized(this)
         {
             e = this.recorrido.pop();
@@ -86,8 +85,8 @@ public class Navegador extends NavigatorInterface {
     }
 
     @Override
-    public List damePosibles() {
-        Estado e = this.recorrido.peek();
+    public List<S> damePosibles() {
+        S e = this.recorrido.peek();
         if(e == null)
         {
             List l = new ArrayList();
@@ -98,7 +97,7 @@ public class Navegador extends NavigatorInterface {
     }
 
     @Override
-    public Estado dameInicial() {
+    public S dameInicial() {
         return this.contraEj.getInicio();
     }
     

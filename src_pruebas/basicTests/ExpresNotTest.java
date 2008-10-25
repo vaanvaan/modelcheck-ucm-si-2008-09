@@ -22,7 +22,6 @@ import ucm.si.basico.ecuaciones.Not;
 import ucm.si.basico.ecuaciones.Or;
 import ucm.si.basico.ecuaciones.Proposicion;
 import junit.framework.TestCase;
-import ucm.si.Checker.NodoGrafo;
 import ucm.si.Checker.DefaultModelChecker;
 import ucm.si.Checker.Interprete;
 import ucm.si.Checker.InterpreteWrapper;
