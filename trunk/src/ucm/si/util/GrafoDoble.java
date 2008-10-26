@@ -96,7 +96,7 @@ class GrafoDoble<S> extends GrafoCaminos<S> {
             ldirec = b;
             lbase = a;
         }
-        // busiconamos los dos List
+        // juntamos los dos List
         for (int i = 0; i < ldirec.size(); i++) {
             Object o = ldirec.get(i);
             if (!lbase.contains(o)) {
