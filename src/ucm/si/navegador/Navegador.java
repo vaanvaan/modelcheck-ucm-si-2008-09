@@ -45,7 +45,7 @@ public class Navegador<S> extends NavigatorInterface<S> {
     }
 
     
-    
+    @Override
     public void GoToEstado(S e) {
         synchronized (this) {
             int pos = this.recorrido.search(e);
@@ -62,6 +62,7 @@ public class Navegador<S> extends NavigatorInterface<S> {
         super.notificarOyentes(new GoToEstado(this, e));
     }
     
+    @Override
     public  void Avanza(S e)
     {
         synchronized(this)   
@@ -73,6 +74,7 @@ public class Navegador<S> extends NavigatorInterface<S> {
         
     }
     
+    @Override
     public void Retrocede()
     {
         S e = null;
@@ -100,6 +102,11 @@ public class Navegador<S> extends NavigatorInterface<S> {
     @Override
     public S dameInicial() {
         return this.contraEj.getInicio();
+    }
+
+    @Override
+    public List<S> dameRecorrido() {
+        return this.recorrido;
     }
     
     
