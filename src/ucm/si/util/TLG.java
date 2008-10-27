@@ -60,6 +60,10 @@ public class TLG<S>
     public void setTabla(HashMap<S, ArrayList<S>> tabla) {
         this.tabla = tabla;
     }
+    
+    // apaños para el chache
+    /*public void removeArista()
+    {}*/
 
     @Override
     public boolean equals(Object obj) {

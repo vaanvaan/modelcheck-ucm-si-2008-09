@@ -58,6 +58,15 @@ public class GrafoUnico<S> extends GrafoCaminos<S>
     public S getInicio() {
         return this.inicial;
     }
+  
+    
+    // funciones par aimplementar la chache.
+  /*  public List<S> recuperaHijo(S s)
+    {
+        List<S> l = this.getHijos(s);
+        this.camino.
+        return this.
+    }*/
 
 
 
