@@ -34,6 +34,12 @@ public abstract class NavigatorInterface<S>  //extends Observable
     //public static Accion AVANZA = Accion.AVANZA;
     private transient Vector<AccionListener<S>> ListaOyentes = new Vector<AccionListener<S>>(2, 5); 
     
+    
+    public void removeOyente(AnimadorInterface<S> ia)
+    {
+        this.ListaOyentes.remove(ia);
+    }
+    
     public void addOyente(AnimadorInterface<S> ia)
     {
         this.ListaOyentes.add(ia);
@@ -75,5 +81,13 @@ public abstract class NavigatorInterface<S>  //extends Observable
     public abstract List<S> damePosibles();
     
     public abstract S dameInicial();
+    
+    public abstract List<S> dameRecorrido();
+    
+    public abstract void GoToEstado(S e);
+    
+    public abstract void Avanza(S e);
+    
+    public abstract void Retrocede();
 
 }

@@ -37,17 +37,11 @@ import ucm.si.navegador.events.Retrocede;
 
 public class AnimadorBasico<S> extends AnimadorInterface<S> {
 	
-	private Navegador<S> navigator;
+	
 	private S estadoactual;
         private Laberinto lab;
 	
-	public Navegador<S> getNavigator() {
-		return navigator;
-	}
-
-	public void setNavigator(Navegador nvigator) {
-		this.navigator = nvigator;
-	}
+	
         
         public void setLaberinto(Laberinto lab){
                 this.lab = lab;
@@ -99,9 +93,11 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
                 pintaconsola();
 	}
 	
-	public AnimadorBasico(Navegador<S> n){
-		navigator = n;
-                this.navigator.addOyente(this);
+	public AnimadorBasico(Navegador<S> n)
+        {
+                super(n);
+		super.navigator = n;
+                super.navigator.addOyente(this);
 		this.estadoactual = navigator.dameInicial();
 	}
 //	public static void pinta(){
