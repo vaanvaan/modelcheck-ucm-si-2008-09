@@ -42,6 +42,7 @@ public class Navegador<S> extends NavigatorInterface<S> {
         this.contraEj = contraEj;
         this.ejemplo = ejemplo;
         this.recorrido = new Stack<S>();
+        this.recorrido.push(this.contraEj.getInicio());
     }
 
     

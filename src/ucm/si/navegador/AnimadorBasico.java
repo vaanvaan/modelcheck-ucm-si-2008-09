@@ -1,10 +1,15 @@
 package ucm.si.navegador;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /*import edu.uci.ics.jung.graph.Graph;
@@ -70,7 +75,10 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
 		//int op = pintaopciones(listapos);
 		//navigator.Avanza(listapos.get(op));            
                 estadoactual = accion.getEstado();
+                System.out.println("-- RECORRIDO ---");
+                this.printRecorrido();
                 pintaconsola();
+                this.espera();
 	}
 
 	@Override
@@ -81,7 +89,10 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
 		//int op = pintaopciones(listapos);
 		//navigator.GoToEstado(listapos.get(op));
                 estadoactual = accion.getEstado();
+                System.out.println("-- NUEVO RECORRIDO ---");
+                this.printRecorrido();
                 pintaconsola();
+                this.espera();
 	}
 
 	@Override
@@ -90,7 +101,10 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
                 estadoactual = accion.getEstado();
 		System.out.println("Retroceso completado");
 		System.out.println("El estado actual es:" + estadoactual.toString());
+                System.out.println("-- RECORRIDO ---");
+                this.printRecorrido();
                 pintaconsola();
+                this.espera();
 	}
 	
 	public AnimadorBasico(Navegador<S> n)
@@ -124,7 +138,99 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
                     System.out.println();
                 }
 	}
+        
+        public void printRecorrido()
+        {
+            List<S> l =this.navigator.damePosibles();
+            
+            for(int i = 0; i< l.size(); i++)
+            {
+                S s=l.get(i);
+                System.out.println("Paso "+i+" : "+s.toString());
+                
+            }
+            
+        }
+        
+        
+        public void printOpciones()
+        {
+            List<S> l =this.navigator.damePosibles();
+            
+            for(int i = 0; i< l.size(); i++)
+            {
+                S s=l.get(i);
+                System.out.println("Opcion "+i+" : "+s.toString());
+                
+            }
+        }
+        
+        public int getOpciones()
+        {
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            String number;
+            System.out.print("Introduce Opcion  : ");
+            try {
+                number = br.readLine();
+            } catch (IOException ex) {
+                Logger.getLogger(AnimadorBasico.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Error al introducir opcion, intente de nuevo");
+                return this.getOpciones();
+            }
+            
+            try
+            {
+               int op =Integer.parseInt(number);
+               return op;
+            }
+            catch (NumberFormatException e)
+            {
+                return getOpciones();
+            }
+        }
+        
+        public boolean opcionCorrecta(int op)
+        {
+            List<S> l =this.navigator.damePosibles();
+            if(op < l.size())
+                return true;
+            return false;
+        }
+        
+        public void aplicaOpcion(int op)
+        {
+            List<S> l =this.navigator.damePosibles();
+            S s =l.get(op);
+            this.navigator.Avanza(s);
+        }
+        
+        public void inicia ()
+        {
+            System.out.println(" ANIMADOR BASICVO POR CONSOLA");
+            System.out.println(" ===========================================");
+            System.out.println();
+            this.espera();
+        }
 	
+        public void espera()
+        {
+            boolean b = true;
+            while(b)
+            {
+                this.printOpciones();
+            
+                int op =this.getOpciones();
+                if(this.opcionCorrecta(op))
+                {
+                    b = false;
+                    this.aplicaOpcion(op);
+                }
+                
+            } 
+            
+        }
+        
+        
         public static void main(String[] args) 
         {
             Laberinto lab = new Laberinto();
@@ -138,8 +244,11 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
             Resultado<Posicion> res = m.chequear(lab, new Not(haycamino),pos);
             Navegador<Posicion> nav = new Navegador<Posicion>(res.getContraejemplo(), res.getEjemplo()); 
             AnimadorBasico<Posicion> anim = new AnimadorBasico<Posicion>(nav);
+            
             anim.setLaberinto(lab);
-            nav.GoToEstado(nav.dameInicial());
+            
+            anim.inicia();
+            /*nav.GoToEstado(nav.dameInicial());
             int op = anim.pintaopciones(nav.damePosibles());
             while (op<99){                
                 switch (op){
@@ -153,7 +262,7 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
                        break;
                 }           
                 op = anim.pintaopciones(nav.damePosibles());
-            }
+            }*/
 	}
 
 }
