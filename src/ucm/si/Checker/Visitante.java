@@ -54,6 +54,7 @@ public class Visitante<S> {
             gce.setS(estado, new ArrayList<S>());
             gce.setInicio(estado);
             resParcial.setEjemplo(gce);
+            this.tabFormulas.aniadirEtiqueta(estado, p);
         } else {
             resParcial.setResultado(Resultado.COD_FALSE);
             GrafoCaminos gcce = GrafoCaminos.CreateGrafo();
@@ -68,11 +69,15 @@ public class Visitante<S> {
         if (resParcial.equals(Resultado.COD_TRUE)) {
             resParcial.setResultado(Resultado.COD_FALSE);
             resParcial.setContraejemplo(resParcial.getEjemplo());
+            
         } else if (resParcial.equals(Resultado.COD_FALSE)) {
             resParcial.setResultado(Resultado.COD_TRUE);
             resParcial.setEjemplo(resParcial.getContraejemplo());
+            this.tabFormulas.aniadirEtiqueta(estado, n);
+            
         } else if (resParcial.equals(Resultado.COD_MAYBEF)) {
             resParcial.setResultado(Resultado.COD_MAYBET);
+            this.tabFormulas.aniadirEtiqueta(estado, n);
         } else {
             resParcial.setResultado(Resultado.COD_MAYBEF);
         }
@@ -83,6 +88,7 @@ public class Visitante<S> {
         Resultado resIzq = new Resultado(resParcial.getResultado());
         if (resIzq.equals(Resultado.COD_TRUE)) {
             resIzq.setEjemplo(resParcial.getEjemplo());
+            this.tabFormulas.aniadirEtiqueta(estado, or);
         } else {
             resIzq.setContraejemplo(resParcial.getContraejemplo());
         }
@@ -90,6 +96,7 @@ public class Visitante<S> {
         Resultado resDer = new Resultado(resParcial.getResultado());
         if (resDer.equals(Resultado.COD_TRUE)) {
             resDer.setEjemplo(resParcial.getEjemplo());
+            this.tabFormulas.aniadirEtiqueta(estado, or);
         } else {
             resDer.setContraejemplo(resParcial.getContraejemplo());
         }        
