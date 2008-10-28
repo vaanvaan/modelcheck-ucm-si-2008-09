@@ -15,7 +15,7 @@ import ucm.si.util.GrafoCaminos;
  *
  * @author Pilar
  */
-public class TabulacionMemSistemaconEjemployContraEjemplo<S> implements TabulacionFormulas<S>
+public class TabulacionMemSistemaconEjemployContraEjemplo<S> implements TabulacionExp<S>
 {
     private TabulacionMemSistema<S> tabla;
     private HashMap<Indice<S>, EjmContrEjem> tablaEjem;
