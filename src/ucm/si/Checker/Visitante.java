@@ -12,6 +12,7 @@ import java.util.Stack;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.swing.JOptionPane;
+import ucm.si.Checker.tabulacion.TabulacionMemSistema;
 import ucm.si.basico.ecuaciones.AU;
 import ucm.si.basico.ecuaciones.AX;
 import ucm.si.basico.ecuaciones.And;
@@ -31,11 +32,13 @@ public class Visitante<S> {
     private S estado;
     private Interprete<S> interprete = null;
     private TabulacionFormulas<S> tabFormulas;
+    
 
     public Visitante(S estado, Interprete<S> interprete) {
         super();
         this.estado = estado;
         this.interprete = interprete;
+        this.tabFormulas = new TabulacionMemSistema<S>();
     //this.tabFormulas = new TabulacionFormulas<S>();
     }
 
