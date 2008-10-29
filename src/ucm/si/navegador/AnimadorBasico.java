@@ -145,6 +145,7 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
             List<S> l =this.navigator.dameRecorrido();
             
             for(int i = 0; i< l.size(); i++)
+            //for (int i = l.size(); i < 0; i--)
             {
                 S s=l.get(i);
                 System.out.println("Paso "+i+" : "+s.toString());
@@ -164,6 +165,10 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
                 System.out.println("Opcion "+i+" : "+s.toString());
                 i++;
             }
+            int pos = this.navigator.dameRecorrido().size() - 1; 
+            if(pos > 0)
+                System.out.println("Opcion "+i+" : "+"RETROCEDER a estado : "
+                        +this.navigator.dameRecorrido().get(pos-1) );
         }
         
         public int getOpciones()
@@ -186,32 +191,45 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
             }
             catch (NumberFormatException e)
             {
-                return getOpciones();
+                //
+                //return getOpciones();
+                System.out.println("FIN DE APLICACION");
+                return (-10);
             }
         }
         
         public boolean opcionCorrecta(int op)
         {
             Set<S> l =this.navigator.damePosibles();
-            if(op < l.size())
+            if(op <= l.size())
                 return true;
             return false;
         }
         
         public void aplicaOpcion(int op)
         {
-            Iterator<S> it =this.navigator.damePosibles().iterator();
-            int i = 0;
-            while (op>i++) it.next();
-            S s =it.next();
-            this.navigator.Avanza(s);
+            if(op == this.navigator.damePosibles().size())
+                this.navigator.Retrocede();
+            if( (op < this.navigator.damePosibles().size() ) || 
+                    op >= 0 )
+            {
+                Iterator<S> it =this.navigator.damePosibles().iterator();
+            
+                int i = 0;
+                while (op>i++) it.next();
+                    S s =it.next();
+                this.navigator.Avanza(s);
+            }
         }
         
         public void inicia ()
         {
-            System.out.println(" ANIMADOR BASICO POR CONSOLA");
-            System.out.println(" ===========================================");
+            System.out.println("             ANIMADOR BASICO POR CONSOLA");
+            System.out.println(" ===================================================");
+            System.out.println(" Introduce un Numero NEGATIVO o LETRAS para SALIR");
+            System.out.println(" ===================================================");
             System.out.println();
+            this.printRecorrido();
             this.espera();
         }
 	
@@ -220,13 +238,20 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
             boolean b = true;
             while(b)
             {
+                /*if(this.navigator.damePosibles().isEmpty())
+                    break;*/
+                
                 this.printOpciones();
             
+                
+                
                 int op =this.getOpciones();
                 if(this.opcionCorrecta(op))
                 {
                     b = false;
                     this.aplicaOpcion(op);
+                    if(op < 0)
+                        break;
                 }
                 
             } 

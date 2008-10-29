@@ -45,6 +45,9 @@ public class DefaultModelChecker<S> implements ModelChecker<S>{
     
     
     public Resultado chequear(Interprete<S> interprete, Formula formula, S estado) {
+        S s = estado;
+        if( estado == null)
+           s = this.interprete.iniciales().get(0); 
         Visitante<S> v = new Visitante(estado,interprete);
         formula.accept(v);
         return v.getResParcial();
