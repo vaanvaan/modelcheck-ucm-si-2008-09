@@ -5,8 +5,6 @@
 
 package ucm.si.Checker.LogicPosibilidad;
 
-import com.sun.xml.internal.bind.v2.model.core.EnumLeafInfo;
-
 /**
  *
  * @author Pilar
