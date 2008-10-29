@@ -24,7 +24,9 @@ class GrafoDoble<S> extends GrafoCaminos<S> {
     private TLG<S> caminoFinal;
 
     protected GrafoDoble(GrafoUnico<S> c1) {        
-        this.camino1 = new GrafoUnico<S>(c1);
+        //this.camino1 = new GrafoUnico<S>(c1);
+        //  Cambio realizado de prueba... reversible totalmente
+        this.camino1 = c1;
         this.camino2 = new GrafoUnico<S>();
         this.caminoFinal = new TLG<S>();
         this.inicial = c1.getInicio();
@@ -71,11 +73,18 @@ class GrafoDoble<S> extends GrafoCaminos<S> {
         Set<S> c2 = this.camino2.getHijos(e);
         // juntamos los 2 caminos contenidos mas luego tambien el del camino final
         // aun no se hace merge completo por problemas "tecnicos"
+        
         Set<S> cfinal = new HashSet<S>();       
         if (c1!=null&&c1.size()>0) cfinal.addAll(c1);
         if (c2!=null&&c2.size()>0) cfinal.addAll(c2);
+        
         Set<S> lfin = caminoFinal.getHijo(e);
         if (lfin!=null&&lfin.size()>0) cfinal.addAll(lfin);
+        
+        // Añadido para guardar la aristas recien calculadas en el caminoFinal para no tener que recalcularlas de nuevo.
+        this.caminoFinal.setAristas(e, lfin);
+        
+        
         return cfinal;
         //return merge ( merge(c1,c2), this.caminoFinal.getHijo(e)  );
     }

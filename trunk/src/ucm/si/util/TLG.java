@@ -54,6 +54,18 @@ public class TLG<S> {
             this.tabla.put(efin, l);
         }
     }
+    
+    // Nuevo codigo para añadir varias arista que sutituyen a las anteriores.
+     public void setAristas(S eni, Set<S> c)
+     {
+         this.tabla.put(eni, c);
+     }
+     
+     //Añadido para AÑADIR sin sustituir las aristas anteriores.
+     public  void addAristass(S eini, Set<S> c)
+     {
+         this.tabla.get(eini).addAll(c);
+     }       
 
     public HashMap<S, Set<S>> getTabla() {
         return tabla;
