@@ -5,7 +5,9 @@
 package ucm.si.navegador;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 import ucm.si.navegador.events.Avanza;
 import ucm.si.navegador.events.GoToEstado;
@@ -89,11 +91,11 @@ public class Navegador<S> extends NavigatorInterface<S> {
     }
 
     @Override
-    public List<S> damePosibles() {
+    public Set<S> damePosibles() {
         S e = this.recorrido.peek();
         if(e == null)
         {
-            List l = new ArrayList();
+            Set<S> l = new HashSet<S>();
             l.add(this.contraEj.getInicio());
             return l;
         }

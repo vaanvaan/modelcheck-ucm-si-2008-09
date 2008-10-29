@@ -5,7 +5,12 @@
 package ucm.si.util;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,12 +21,12 @@ class GrafoDoble<S> extends GrafoCaminos<S> {
     private S inicial = null;
     private GrafoCaminos<S> camino1;
     private GrafoCaminos<S> camino2;
-    private TLG caminoFinal;
+    private TLG<S> caminoFinal;
 
-    protected GrafoDoble(GrafoCaminos<S> c1) {
-        this.camino1 = c1;
-        this.camino2 = new GrafoUnico();
-        this.caminoFinal = new TLG();
+    protected GrafoDoble(GrafoUnico<S> c1) {        
+        this.camino1 = new GrafoUnico<S>(c1);
+        this.camino2 = new GrafoUnico<S>();
+        this.caminoFinal = new TLG<S>();
         this.inicial = c1.getInicio();
 
     // Almacena el grao mas uno vacio adicional haciendolo pasar por uno solo.
@@ -30,19 +35,29 @@ class GrafoDoble<S> extends GrafoCaminos<S> {
     protected GrafoDoble(GrafoCaminos<S> c1, GrafoCaminos<S> c2) {
         this.camino1 = c1;
         this.camino2 = c2;
-        this.caminoFinal = new TLG();
+        this.caminoFinal = new TLG<S>();
         this.inicial = c1.getInicio();
 
     //Almacena los dos grafos como si fueran uno.
+    }   
+    
+    protected GrafoDoble(GrafoDoble<S> g){
+        this.camino1 = g.camino1;
+        this.camino2 = g.camino2;
+        this.caminoFinal = new TLG<S>();
+        this.inicial = g.inicial;
     }
 
+    protected GrafoDoble(GrafoCaminos<S> c1) {
+        this.camino1 = c1;
+        this.camino2 = new GrafoUnico<S>();
+        this.caminoFinal = new TLG<S>();
+        this.inicial = c1.getInicio();
+    }
+    
     @Override
     public void setArista(S eini, S efin) {
-        if (caminoFinal.getTabla().containsKey(eini)){
-            caminoFinal.getTabla().put(eini, efin);
-        } else{ 
-            camino1.setArista(eini, efin);
-        }
+        caminoFinal.setArista(eini, efin);        
     }
 
     @Override
@@ -51,24 +66,24 @@ class GrafoDoble<S> extends GrafoCaminos<S> {
     }
 
     @Override
-    public List<S> getHijos(S e) {
-        if (caminoFinal.getTabla().containsKey(e)) {
-            return caminoFinal.getHijo(e);
-        } else {            
-            List<S> c1 = this.camino1.getHijos(e);
-            List<S> c2 = this.camino2.getHijos(e);
-            // juntamos los 2 caminos contenidos mas luego tambien el del camino final
-            // aun no se hace merge completo por problemas "tecnicos"
-            List<S> cfinal = new ArrayList<S>();
-            if (c1!=null&&c1.size()>0) cfinal.addAll(c1);
-            if (c2!=null&&c2.size()>0) cfinal.addAll(c2);
-            return cfinal;
+    public Set<S> getHijos(S e) {
+        Set<S> c1 = this.camino1.getHijos(e);
+        Set<S> c2 = this.camino2.getHijos(e);
+        // juntamos los 2 caminos contenidos mas luego tambien el del camino final
+        // aun no se hace merge completo por problemas "tecnicos"
+        Set<S> cfinal = new HashSet<S>();       
+        if (c1!=null&&c1.size()>0) cfinal.addAll(c1);
+        if (c2!=null&&c2.size()>0) cfinal.addAll(c2);
+        Set<S> lfin = caminoFinal.getHijo(e);
+        if (lfin!=null&&lfin.size()>0) cfinal.addAll(lfin);
+        return cfinal;
         //return merge ( merge(c1,c2), this.caminoFinal.getHijo(e)  );
-        }
     }
+    
+    
 
     @Override
-    public void setS(S e, List<S> Hijos) {
+    public void setS(S e, Set<S> Hijos) {
         caminoFinal.getTabla().put(e, Hijos);
     }
 
@@ -107,6 +122,14 @@ class GrafoDoble<S> extends GrafoCaminos<S> {
         // devolvemos l que es la list final.
         return l;
 
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        GrafoDoble<S> g = new GrafoDoble<S>(this.camino1,this.camino2);
+        g.caminoFinal = new TLG<S>(this.caminoFinal);
+        g.inicial = this.inicial;
+        return g;
     }
 
     @Override

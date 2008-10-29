@@ -6,7 +6,9 @@
 package ucm.si.util;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -17,21 +19,26 @@ import java.util.List;
 
 public class GrafoUnico<S> extends GrafoCaminos<S>
 {
-    private TLG camino;
+    private TLG<S> camino;
     private S inicial;
     
     public GrafoUnico()
     {
-        this.camino = new TLG(); 
+        this.camino = new TLG<S>(); 
         // Genera un grafo unico
     }
     
     public GrafoUnico(S eini){
-        this.camino = new TLG();
-        this.setS(eini, new ArrayList<S>());
+        this.camino = new TLG<S>();
+        this.setS(eini, new HashSet<S>());
         this.setInicio(eini);        
     }
 
+    public GrafoUnico(GrafoUnico<S> g){
+        this.camino = new TLG(g.camino);
+        this.inicial = g.inicial;
+    }
+        
     @Override
     public void setArista(S eini, S efin) 
     {
@@ -44,12 +51,12 @@ public class GrafoUnico<S> extends GrafoCaminos<S>
     }
 
     @Override
-    public List<S> getHijos(S e) {
+    public Set<S> getHijos(S e) {
         return this.camino.getHijo(e);
     }
 
     @Override
-    public void setS(S e, List<S> Hijos) 
+    public void setS(S e, Set<S> Hijos) 
     {
         this.camino.getTabla().put(e, Hijos);
     }
@@ -58,7 +65,8 @@ public class GrafoUnico<S> extends GrafoCaminos<S>
     public S getInicio() {
         return this.inicial;
     }
-  
+
+      
     
     // funciones par aimplementar la chache.
   /*  public List<S> recuperaHijo(S s)

@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -141,7 +142,7 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
         
         public void printRecorrido()
         {
-            List<S> l =this.navigator.damePosibles();
+            List<S> l =this.navigator.dameRecorrido();
             
             for(int i = 0; i< l.size(); i++)
             {
@@ -155,13 +156,13 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
         
         public void printOpciones()
         {
-            List<S> l =this.navigator.damePosibles();
-            
-            for(int i = 0; i< l.size(); i++)
+            Iterator<S> it = this.navigator.damePosibles().iterator();
+            int i = 0;
+            while (it.hasNext())
             {
-                S s=l.get(i);
+                S s=it.next();
                 System.out.println("Opcion "+i+" : "+s.toString());
-                
+                i++;
             }
         }
         
@@ -191,7 +192,7 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
         
         public boolean opcionCorrecta(int op)
         {
-            List<S> l =this.navigator.damePosibles();
+            Set<S> l =this.navigator.damePosibles();
             if(op < l.size())
                 return true;
             return false;
@@ -199,14 +200,16 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
         
         public void aplicaOpcion(int op)
         {
-            List<S> l =this.navigator.damePosibles();
-            S s =l.get(op);
+            Iterator<S> it =this.navigator.damePosibles().iterator();
+            int i = 0;
+            while (op>i++) it.next();
+            S s =it.next();
             this.navigator.Avanza(s);
         }
         
         public void inicia ()
         {
-            System.out.println(" ANIMADOR BASICVO POR CONSOLA");
+            System.out.println(" ANIMADOR BASICO POR CONSOLA");
             System.out.println(" ===========================================");
             System.out.println();
             this.espera();

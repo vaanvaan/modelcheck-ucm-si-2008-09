@@ -54,14 +54,14 @@ public class Visitante<S> {
         if (p.esCierta(estado)) {
             resParcial.setResultado(Resultado.COD_TRUE);
             GrafoCaminos<S> gce = GrafoCaminos.CreateGrafo();
-            gce.setS(estado, new ArrayList<S>());
+            gce.setS(estado, new HashSet<S>());
             gce.setInicio(estado);
             resParcial.setEjemplo(gce);
             this.tabFormulas.aniadirEtiqueta(estado, p);
         } else {
             resParcial.setResultado(Resultado.COD_FALSE);
             GrafoCaminos<S> gcce = GrafoCaminos.CreateGrafo();
-            gcce.setS(estado, new ArrayList<S>());
+            gcce.setS(estado, new HashSet<S>());
             gcce.setInicio(estado);
             resParcial.setContraejemplo(gcce);
         }
