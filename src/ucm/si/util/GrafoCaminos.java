@@ -7,13 +7,14 @@ package ucm.si.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 /**
  *
  * @author Pilar
  */
-public abstract class GrafoCaminos<S> 
+public abstract class GrafoCaminos<S>
 {
     public static GrafoCaminos CreateGrafo()
     {
@@ -38,11 +39,16 @@ public abstract class GrafoCaminos<S>
     
     abstract public S getInicio ();
     
-    abstract public List<S> getHijos (S e);
+    abstract public Set<S> getHijos (S e);
     
-    abstract public void setS (S e, List<S> Hijos);
-    
+    abstract public void setS (S e, Set<S> Hijos);
 
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    
 }
 
 

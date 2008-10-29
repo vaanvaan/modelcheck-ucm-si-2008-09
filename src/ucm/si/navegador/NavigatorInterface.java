@@ -12,6 +12,7 @@ import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Observable;
+import java.util.Set;
 import java.util.Vector;
 import ucm.si.navegador.Listener.AccionListener;
 import ucm.si.navegador.events.Accion;
@@ -78,7 +79,7 @@ public abstract class NavigatorInterface<S>  //extends Observable
         }
     }
     
-    public abstract List<S> damePosibles();
+    public abstract Set<S> damePosibles();
     
     public abstract S dameInicial();
     
