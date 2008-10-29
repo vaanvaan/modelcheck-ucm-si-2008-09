@@ -126,7 +126,7 @@ public class Laberinto implements Interprete<Posicion> {
             down(l);
             lista.add(l);
         }
-        if (posible("RIGTH", lab)) {
+        if (posible("RIGHT", lab)) {
             Posicion l = copyOf(lab);
             right(l);
             lista.add(l);

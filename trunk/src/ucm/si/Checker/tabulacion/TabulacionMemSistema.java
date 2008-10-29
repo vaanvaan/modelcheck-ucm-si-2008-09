@@ -18,7 +18,7 @@ import ucm.si.basico.ecuaciones.Formula;
 public class TabulacionMemSistema<S> implements TabulacionFormulas<S>
 {
 
-    private HashMap<S,Set<Formula>> mapa;
+    private HashMap<S,Set<Formula>> mapa = new HashMap<S, Set<Formula>>();
     
     public Set<Formula> getEtiquetas(S estado) 
     {
@@ -31,7 +31,13 @@ public class TabulacionMemSistema<S> implements TabulacionFormulas<S>
     }
 
     public void aniadirEtiqueta(S estado, Formula formula) {
-        this.mapa.get(this).add(formula);
+        if (tieneEstado(estado))
+        this.mapa.get(estado).add(formula);        
+        else{
+            HashSet<Formula> set = new HashSet<Formula>();
+            set.add(formula);
+            this.mapa.put(estado, set);
+        }
     }
 
     public boolean tieneEtiqueta(S estado, Formula formula) 
