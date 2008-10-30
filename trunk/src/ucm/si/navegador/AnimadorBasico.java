@@ -109,7 +109,7 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
         {
                 super(n);
 		super.navigator = n;
-                super.navigator.addOyente(this);
+                //super.navigator.addOyente(this);
 		this.estadoactual = navigator.dameInicial();
 	}
 //	public static void pinta(){
