@@ -79,7 +79,6 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
                 System.out.println("-- RECORRIDO ---");
                 this.printRecorrido();
                 pintaconsola();
-                this.espera();
 	}
 
 	@Override
@@ -93,7 +92,6 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
                 System.out.println("-- NUEVO RECORRIDO ---");
                 this.printRecorrido();
                 pintaconsola();
-                this.espera();
 	}
 
 	@Override
@@ -105,7 +103,6 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
                 System.out.println("-- RECORRIDO ---");
                 this.printRecorrido();
                 pintaconsola();
-                this.espera();
 	}
 	
 	public AnimadorBasico(Navegador<S> n)
@@ -201,16 +198,17 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
         public boolean opcionCorrecta(int op)
         {
             Set<S> l =this.navigator.damePosibles();
-            if(op <= l.size())
+            if((op <= l.size())&&(op>=0))
                 return true;
             return false;
         }
         
         public void aplicaOpcion(int op)
         {
-            if(op == this.navigator.damePosibles().size())
+            if((op == this.navigator.damePosibles().size())
+                    &&(this.navigator.dameRecorrido().size()>1))
                 this.navigator.Retrocede();
-            if( (op < this.navigator.damePosibles().size() ) || 
+            else if( (op < this.navigator.damePosibles().size() ) && 
                     op >= 0 )
             {
                 Iterator<S> it =this.navigator.damePosibles().iterator();
@@ -230,6 +228,7 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
             System.out.println(" ===================================================");
             System.out.println();
             this.printRecorrido();
+            this.pintaconsola();
             this.espera();
         }
 	
@@ -248,11 +247,8 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
                 int op =this.getOpciones();
                 if(this.opcionCorrecta(op))
                 {
-                    b = false;
-                    this.aplicaOpcion(op);
-                    if(op < 0)
-                        break;
-                }
+                    this.aplicaOpcion(op);                    
+                } else b = false;
                 
             } 
             
