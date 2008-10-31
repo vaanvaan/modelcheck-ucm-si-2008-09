@@ -31,9 +31,10 @@ public class Laberinto implements Interprete<Posicion> {
     private int dim;
 
     public Laberinto() {
-        laberinto = new boolean[7][7];
-        for (int j = 0; j < 7; j++) {
-            for (int i = 0; i < 7; i++) {
+        dim = 15;
+        laberinto = new boolean[dim][dim];
+        for (int j = 0; j < dim; j++) {
+            for (int i = 0; i < dim; i++) {
                 laberinto[i][j] = true;
             }
         }
@@ -44,7 +45,8 @@ public class Laberinto implements Interprete<Posicion> {
         laberinto[1][3] = false;
         laberinto[3][2] = false;
         laberinto[0][4] = false;
-        dim = 7;
+        //laberinto[3][0] = false;
+        
 
     }
 

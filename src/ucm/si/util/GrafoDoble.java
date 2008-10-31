@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,7 +75,7 @@ class GrafoDoble<S> extends GrafoCaminos<S> {
         // juntamos los 2 caminos contenidos mas luego tambien el del camino final
         // aun no se hace merge completo por problemas "tecnicos"
         
-        Set<S> cfinal = new HashSet<S>();       
+        Set<S> cfinal = new TreeSet<S>();       
         if (c1!=null&&c1.size()>0) cfinal.addAll(c1);
         if (c2!=null&&c2.size()>0) cfinal.addAll(c2);
         

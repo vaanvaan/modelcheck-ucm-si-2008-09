@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  *
@@ -30,7 +31,7 @@ public class GrafoUnico<S> extends GrafoCaminos<S>
     
     public GrafoUnico(S eini){
         this.camino = new TLG<S>();
-        this.setS(eini, new HashSet<S>());
+        this.setS(eini, new TreeSet<S>());
         this.setInicio(eini);        
     }
 

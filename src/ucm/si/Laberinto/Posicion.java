@@ -12,7 +12,7 @@ package ucm.si.Laberinto;
  *
  * @author Pilar
  */
-public class Posicion 
+public class Posicion implements Comparable<Posicion>
 {
     protected int posX;
     protected int posY;
@@ -69,6 +69,17 @@ public class Posicion
         hash = 31 * hash + this.posY;
         return hash;
     }
+
+    public int compareTo(Posicion o) {
+        if (this.posX < o.posX) return -1;
+        else if (this.posX > o.posX) return 1;
+        else if (this.posY<o.posY) return -1;
+        else if (this.posY>o.posY) return 1;
+        else return 0;
+    }
+
+   
+    
     
     
     

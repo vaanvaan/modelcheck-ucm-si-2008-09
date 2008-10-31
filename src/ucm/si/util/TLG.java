@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  *
@@ -17,22 +19,22 @@ import java.util.Set;
  */
 public class TLG<S> {
 
-    private HashMap<S, Set<S>> tabla;
+    private TreeMap<S, Set<S>> tabla;    
 
     public TLG() {
-        this.tabla = new HashMap<S, Set<S>>();
+        this.tabla = new TreeMap<S, Set<S>>();        
     }
 
     public TLG(int tam) {
-        this.tabla = new HashMap<S, Set<S>>(tam);
+        this.tabla = new TreeMap<S, Set<S>>();
     }
 
     public TLG(TLG<S> t) {
-        this.tabla = new HashMap<S, Set<S>>();
+        this.tabla = new TreeMap<S, Set<S>>();
         Set<S> claves = t.tabla.keySet();        
         for (Iterator<S> it = claves.iterator(); it.hasNext();) {
             S s = it.next();  
-            this.tabla.put(s, new HashSet<S>(t.tabla.get(s)));
+            this.tabla.put(s, new TreeSet<S>(t.tabla.get(s)));
         }        
     }
 
@@ -41,16 +43,16 @@ public class TLG<S> {
     }
 
     public void setArista(S eini, S efin) {
-        HashSet<S> l;
+        TreeSet<S> l;
         if (this.tabla.containsKey(eini)) {
             this.tabla.get(eini).add(efin);
         } else {
-            l = new HashSet<S>();
+            l = new TreeSet<S>();
             l.add(efin);
             this.tabla.put(eini, l);
         }
         if (!this.tabla.containsKey(efin)) {
-            l = new HashSet<S>();
+            l = new TreeSet<S>();
             this.tabla.put(efin, l);
         }
     }
@@ -67,11 +69,11 @@ public class TLG<S> {
          this.tabla.get(eini).addAll(c);
      }       
 
-    public HashMap<S, Set<S>> getTabla() {
+    public TreeMap<S, Set<S>> getTabla() {
         return tabla;
     }
 
-    public void setTabla(HashMap<S, Set<S>> tabla) {
+    public void setTabla(TreeMap<S, Set<S>> tabla) {
         this.tabla = tabla;
     }
     // apaños para el chache
