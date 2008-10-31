@@ -20,31 +20,21 @@ import ucm.si.util.GrafoCaminos;
  */
 public class Navegador<S> extends NavigatorInterface<S> {
 
-    private GrafoCaminos<S> contraEj;
-    private GrafoCaminos<S> ejemplo;
+    private GrafoCaminos<S> grafo;
     private Stack<S> recorrido;
 
-    public GrafoCaminos<S> getContraEj() {
-        return contraEj;
+    public GrafoCaminos<S> getGrafo() {
+        return grafo;
     }
 
-    public void setContraEj(GrafoCaminos<S> contraEj) {
-        this.contraEj = contraEj;
+    public void setGrafo(GrafoCaminos<S> grafo) {
+        this.grafo = grafo;
     }
 
-    public GrafoCaminos<S> getEjemplo() {
-        return ejemplo;
-    }
-
-    public void setEjemplo(GrafoCaminos<S> ejemplo) {
-        this.ejemplo = ejemplo;
-    }
-
-    public Navegador(GrafoCaminos<S> contraEj, GrafoCaminos<S> ejemplo) {
-        this.contraEj = contraEj;
-        this.ejemplo = ejemplo;
+    public Navegador(GrafoCaminos<S> grafo) {
+        this.grafo = grafo;
         this.recorrido = new Stack<S>();
-        this.recorrido.push(this.contraEj.getInicio());
+        this.recorrido.push(this.grafo.getInicio());
     }
 
     
@@ -96,15 +86,15 @@ public class Navegador<S> extends NavigatorInterface<S> {
         if(e == null)
         {
             Set<S> l = new HashSet<S>();
-            l.add(this.contraEj.getInicio());
+            l.add(this.grafo.getInicio());
             return l;
         }
-        return this.contraEj.getHijos(e);
+        return this.grafo.getHijos(e);
     }
 
     @Override
     public S dameInicial() {
-        return this.contraEj.getInicio();
+        return this.grafo.getInicio();
     }
 
     @Override
