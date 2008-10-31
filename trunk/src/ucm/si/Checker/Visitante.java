@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.swing.JOptionPane;
@@ -54,14 +55,14 @@ public class Visitante<S> {
         if (p.esCierta(estado)) {
             resParcial.setResultado(Resultado.COD_TRUE);
             GrafoCaminos<S> gce = GrafoCaminos.CreateGrafo();
-            gce.setS(estado, new HashSet<S>());
+            gce.setS(estado, new TreeSet<S>());
             gce.setInicio(estado);
             resParcial.setEjemplo(gce);
             this.tabFormulas.aniadirEtiqueta(estado, p);
         } else {
             resParcial.setResultado(Resultado.COD_FALSE);
             GrafoCaminos<S> gcce = GrafoCaminos.CreateGrafo();
-            gcce.setS(estado, new HashSet<S>());
+            gcce.setS(estado, new TreeSet<S>());
             gcce.setInicio(estado);
             resParcial.setContraejemplo(gcce);
         }
@@ -228,8 +229,8 @@ public class Visitante<S> {
 
     public void visita(AU au) {
         S eraiz = estado;
-        LinkedBlockingQueue<HashSet<S>> colaVisitados =
-                new LinkedBlockingQueue<HashSet<S>>();
+        LinkedBlockingQueue<TreeSet<S>> colaVisitados =
+                new LinkedBlockingQueue<TreeSet<S>>();
         LinkedBlockingQueue<S> colaEanterior =
                 new LinkedBlockingQueue<S>();
         GrafoCaminos<S> ej = new GrafoUnico<S>(estado);
@@ -238,14 +239,14 @@ public class Visitante<S> {
         LinkedBlockingQueue<S> colaEstados = 
                 new LinkedBlockingQueue<S>(interprete.transitar(estado));
         for (int i = colaEstados.size(); i > 0; i--){
-            colaVisitados.offer(new HashSet<S>());
+            colaVisitados.offer(new TreeSet<S>());
             colaEanterior.offer(eraiz);
             colacej.offer(new GrafoUnico<S>(eraiz));
         }
         boolean encontrado = false;
         S eanterior;
         GrafoCaminos<S> cej = null, cejauxf2;
-        HashSet<S> visitados;
+        TreeSet<S> visitados;
         boolean visitado, cumplef2, cumplef1;
         while (!encontrado && !colaEstados.isEmpty()){
             estado = colaEstados.poll();
@@ -280,7 +281,7 @@ public class Visitante<S> {
                             S s = it.next();
                             colaEstados.offer(s);
                             colaEanterior.offer(estado);
-                            colaVisitados.offer(new HashSet<S>(visitados));
+                            colaVisitados.offer(new TreeSet<S>(visitados));
                             colacej.offer(GrafoCaminos.CreateGrafo(cej));
                         }
                     } else {
@@ -304,8 +305,8 @@ public class Visitante<S> {
 
     public void visita(EU eu) {
         S eraiz = estado;
-        LinkedBlockingQueue<HashSet<S>> colaVisitados =
-                new LinkedBlockingQueue<HashSet<S>>();
+        LinkedBlockingQueue<TreeSet<S>> colaVisitados =
+                new LinkedBlockingQueue<TreeSet<S>>();
         LinkedBlockingQueue<S> colaEanterior =
                 new LinkedBlockingQueue<S>();
         GrafoCaminos<S> cej = new GrafoUnico<S>(estado);
@@ -314,14 +315,14 @@ public class Visitante<S> {
         LinkedBlockingQueue<S> colaEstados = 
                 new LinkedBlockingQueue<S>(interprete.transitar(estado));
         for (int i = colaEstados.size(); i > 0; i--){
-            colaVisitados.offer(new HashSet<S>());
+            colaVisitados.offer(new TreeSet<S>());
             colaEanterior.offer(eraiz);
             colaej.offer(new GrafoUnico<S>(eraiz));
         }
         boolean encontrado = false;
         S eanterior;
         GrafoCaminos<S> ej = null, cejauxf2;
-        HashSet<S> visitados;
+        TreeSet<S> visitados;
         boolean visitado, cumplef2, cumplef1;
         while (!encontrado && !colaEstados.isEmpty()){
             estado = colaEstados.poll();
@@ -356,7 +357,7 @@ public class Visitante<S> {
                             S s = it.next();
                             colaEstados.offer(s);
                             colaEanterior.offer(estado);
-                            colaVisitados.offer(new HashSet<S>(visitados));
+                            colaVisitados.offer(new TreeSet<S>(visitados));
                             colaej.offer(GrafoCaminos.CreateGrafo(ej));
                         }
                     } else {

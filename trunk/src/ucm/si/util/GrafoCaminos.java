@@ -27,7 +27,7 @@ public abstract class GrafoCaminos<S>
     };
     
     public static GrafoCaminos CreateGrafo(GrafoCaminos c1, GrafoCaminos c2)
-    {
+    {   
         return new GrafoDoble(c1,c2);
     };
 

@@ -17,6 +17,7 @@ import ucm.si.Laberinto.Final;
 import ucm.si.Laberinto.Laberinto;
 import ucm.si.Laberinto.LaberintoPropo;
 import ucm.si.Laberinto.Posicion;
+import ucm.si.basico.ecuaciones.AU;
 import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.EU;
 import ucm.si.basico.ecuaciones.Formula;
@@ -230,14 +231,16 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
         Posicion pos = new Posicion(1, 1);
         LaberintoPropo prop = new LaberintoPropo(pos);
         prop.setLab(lab);
-        Final fin = new Final(6, 6);
+        Final fin = new Final(15, 15);
         Formula nofin = new And(new Not(fin), prop);
         Formula haycamino = new EU(nofin, fin);
         Resultado<Posicion> res = m.chequear(lab, new Not(haycamino), pos);
         Navegador<Posicion> nav;
         if (res.equals(Resultado.COD_TRUE)) {
+            System.out.println("La formula es cierta.");
             nav = new Navegador<Posicion>(res.getEjemplo());
         } else {
+            System.out.println("La formula es falsa.");
             nav = new Navegador<Posicion>(res.getContraejemplo());
         }
         AnimadorBasico<Posicion> anim = new AnimadorBasico<Posicion>(nav);

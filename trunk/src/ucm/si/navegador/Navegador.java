@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeSet;
 import ucm.si.navegador.events.Avanza;
 import ucm.si.navegador.events.GoToEstado;
 import ucm.si.navegador.events.Retrocede;
@@ -85,7 +86,7 @@ public class Navegador<S> extends NavigatorInterface<S> {
         S e = this.recorrido.peek();
         if(e == null)
         {
-            Set<S> l = new HashSet<S>();
+            Set<S> l = new TreeSet<S>();
             l.add(this.grafo.getInicio());
             return l;
         }
