@@ -16,6 +16,9 @@ import java.util.Set;
  */
 public abstract class GrafoCaminos<S>
 {
+       
+    
+    
     public static GrafoCaminos CreateGrafo()
     {
         return new GrafoUnico();
@@ -23,12 +26,14 @@ public abstract class GrafoCaminos<S>
     
     public static GrafoCaminos CreateGrafo(GrafoCaminos c1)
     {
-        return new GrafoDoble(c1);
+        return new GrafoUnico(c1);
     };
     
     public static GrafoCaminos CreateGrafo(GrafoCaminos c1, GrafoCaminos c2)
     {   
-        return new GrafoDoble(c1,c2);
+        GrafoUnico g = new GrafoUnico(c1);
+        g.union(c2);
+        return g;
     };
 
     //abstract public List getPadres(S e);
@@ -42,7 +47,11 @@ public abstract class GrafoCaminos<S>
     abstract public Set<S> getHijos (S e);
     
     abstract public void setS (S e, Set<S> Hijos);
-
+    
+    abstract public void union(GrafoCaminos<S> g);
+    
+    abstract public int size();
+    
     @Override
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();

@@ -30,8 +30,8 @@ public class Laberinto implements Interprete<Posicion> {
     private boolean[][] laberinto;
     private int dim;
 
-    public Laberinto() {
-        dim = 15;
+    public Laberinto(int dim) {
+        this.dim = dim;
         laberinto = new boolean[dim][dim];
         for (int j = 0; j < dim; j++) {
             for (int i = 0; i < dim; i++) {
@@ -155,7 +155,7 @@ public class Laberinto implements Interprete<Posicion> {
     }
     
     public static void main(){
-        Interprete<Posicion> lab = new Laberinto();
+        Interprete<Posicion> lab = new Laberinto(10);
         ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>(lab);        
         Formula formula = new AU(new Not(new Proposicion() {
 

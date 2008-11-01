@@ -225,13 +225,13 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
 
     }
 
-    public static void main(String[] args) {
-        Laberinto lab = new Laberinto();
+    public static void main(String[] args) {        
+        Laberinto lab = new Laberinto(15);
         ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>(lab);
         Posicion pos = new Posicion(1, 1);
         LaberintoPropo prop = new LaberintoPropo(pos);
         prop.setLab(lab);
-        Final fin = new Final(15, 15);
+        Final fin = new Final(lab.getDim()-1, lab.getDim()-1);
         Formula nofin = new And(new Not(fin), prop);
         Formula haycamino = new EU(nofin, fin);
         Resultado<Posicion> res = m.chequear(lab, new Not(haycamino), pos);

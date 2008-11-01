@@ -24,7 +24,7 @@ class GrafoDoble<S> extends GrafoCaminos<S> {
     private GrafoCaminos<S> camino2;
     private TLG<S> caminoFinal;
 
-    protected GrafoDoble(GrafoUnico<S> c1) {        
+    protected GrafoDoble(GrafoUnico<S> c1) {
         //this.camino1 = new GrafoUnico<S>(c1);
         //  Cambio realizado de prueba... reversible totalmente
         this.camino1 = c1;
@@ -51,7 +51,7 @@ class GrafoDoble<S> extends GrafoCaminos<S> {
         this.inicial = g.inicial;
     }
 
-    protected GrafoDoble(GrafoCaminos<S> c1) {
+    protected GrafoDoble(GrafoCaminos<S> c1) {       
         this.camino1 = c1;
         this.camino2 = new GrafoUnico<S>();
         this.caminoFinal = new TLG<S>();
@@ -146,4 +146,16 @@ class GrafoDoble<S> extends GrafoCaminos<S> {
     public S getInicio() {
         return this.inicial;
     }
+
+    @Override
+    public void union(GrafoCaminos<S> g) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public int size() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+   
 }
