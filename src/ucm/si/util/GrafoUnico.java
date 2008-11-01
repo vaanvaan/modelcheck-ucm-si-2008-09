@@ -7,6 +7,8 @@ package ucm.si.util;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -20,6 +22,7 @@ import java.util.TreeSet;
 
 public class GrafoUnico<S> extends GrafoCaminos<S>
 {
+    private LinkedList<GrafoCaminos<S>> ant = new LinkedList<GrafoCaminos<S>>();
     private TLG<S> camino;
     private S inicial;
     
@@ -35,11 +38,12 @@ public class GrafoUnico<S> extends GrafoCaminos<S>
         this.setInicio(eini);        
     }
 
-    public GrafoUnico(GrafoUnico<S> g){
-        this.camino = new TLG(g.camino);
-        this.inicial = g.inicial;
+    public GrafoUnico(GrafoCaminos<S> g){
+        this.ant.add(g);
+        this.camino = new TLG();
+        this.inicial = g.getInicio();
     }
-        
+    
     @Override
     public void setArista(S eini, S efin) 
     {
@@ -53,7 +57,16 @@ public class GrafoUnico<S> extends GrafoCaminos<S>
 
     @Override
     public Set<S> getHijos(S e) {
-        return this.camino.getHijo(e);
+        Set<S> s;        
+        if (this.camino.getHijo(e)!=null)
+            s = this.camino.getHijo(e);
+        else s = new TreeSet<S>();
+        for (int i=0; i < ant.size();i++){
+            Set<S> h = ant.get(i).getHijos(e);
+            if ((h!=null)&&(h.size()>0))
+                    s.addAll(h);
+        }        
+        return s;
     }
 
     @Override
@@ -66,6 +79,21 @@ public class GrafoUnico<S> extends GrafoCaminos<S>
     public S getInicio() {
         return this.inicial;
     }
+
+    @Override
+    public void union(GrafoCaminos<S> g) {
+        ant.add(g);
+        
+    }
+
+    @Override
+    public int size() {
+        int suma = 0;
+        for (int i =0; i < ant.size();i++)
+            suma = suma + ant.get(i).size();
+        return this.camino.getTabla().size()+suma;
+    }
+
 
       
     

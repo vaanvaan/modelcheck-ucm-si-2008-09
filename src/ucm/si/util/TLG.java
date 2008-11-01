@@ -19,10 +19,11 @@ import java.util.TreeSet;
  */
 public class TLG<S> {
 
-    private TreeMap<S, Set<S>> tabla;    
+    private TLG<S> ant = null;
+    private TreeMap<S, Set<S>> tabla;
 
     public TLG() {
-        this.tabla = new TreeMap<S, Set<S>>();        
+        this.tabla = new TreeMap<S, Set<S>>();
     }
 
     public TLG(int tam) {
@@ -31,15 +32,23 @@ public class TLG<S> {
 
     public TLG(TLG<S> t) {
         this.tabla = new TreeMap<S, Set<S>>();
-        Set<S> claves = t.tabla.keySet();        
-        for (Iterator<S> it = claves.iterator(); it.hasNext();) {
-            S s = it.next();  
-            this.tabla.put(s, new TreeSet<S>(t.tabla.get(s)));
-        }        
+        this.ant = t;
     }
 
     public Set<S> getHijo(S e) {
-        return this.tabla.get(e);
+        Set<S> set;
+        if ((this.tabla.get(e) != null) && (this.tabla.get(e).size() > 0)) {
+            set = this.tabla.get(e);
+        } else {
+            set = new TreeSet<S>();
+        }
+        if (ant != null) {
+            Set<S> setant = ant.getHijo(e);
+            if ((setant != null) && (setant.size() > 0)) {
+                set.addAll(setant);
+            }
+        }
+        return set;
     }
 
     public void setArista(S eini, S efin) {
@@ -56,18 +65,18 @@ public class TLG<S> {
             this.tabla.put(efin, l);
         }
     }
-    
     // Nuevo codigo para añadir varias arista que sutituyen a las anteriores.
-     public void setAristas(S eni, Set<S> c)
-     {
-         this.tabla.put(eni, c);
-     }
-     
-     //Añadido para AÑADIR sin sustituir las aristas anteriores.
-     public  void addAristass(S eini, Set<S> c)
-     {
-         this.tabla.get(eini).addAll(c);
-     }       
+    public void setAristas(S eni, Set<S> c) {
+        this.tabla.put(eni, c);
+    }
+    //Añadido para AÑADIR sin sustituir las aristas anteriores.
+    public void addAristas(S eini, Set<S> c) {
+        if (this.tabla.containsKey(eini)) {
+            this.tabla.get(eini).addAll(c);
+        } else {
+            this.tabla.put(eini, c);
+        }
+    }
 
     public TreeMap<S, Set<S>> getTabla() {
         return tabla;
