@@ -209,7 +209,7 @@ public class FrameAnimador<S> extends JFrame {
 			Iterator<JButton> it = botones.iterator();
 			while(it.hasNext()){
 				JButton boton = it.next();
-				if(boton.getIcon().equals(caballeroIcon)){
+				if(boton.getIcon().toString().equals(caballeroIcon.toString())){
 					String str = boton.getName();
 					StringTokenizer tokenizer = new StringTokenizer(str,",");
 					String str2 = tokenizer.nextToken();
