@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.StringTokenizer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -28,6 +30,7 @@ public class FrameAnimador<S> extends JFrame {
 	private JPanel lienzo;
 	private S estadoactual;
 	private Laberinto lab;
+	private ArrayList<JButton> botones;
 
 	public S getEstadoactual() {
 		return estadoactual;
@@ -115,7 +118,7 @@ public class FrameAnimador<S> extends JFrame {
 		ImageIcon aguaIcon = new ImageIcon("etc/agua.jpg");
 		ImageIcon hierbaIcon = new ImageIcon("etc/hierba.jpg");
 		ImageIcon caballeroIcon = new ImageIcon("etc/caballero.jpg");
-
+		botones = new ArrayList<JButton>((lab.getDim()^2)); //al menos va a tener dim x dim
 		Posicion p = (Posicion) estadoactual;
 
 		JPanel estado = new JPanel();
@@ -134,17 +137,20 @@ public class FrameAnimador<S> extends JFrame {
 					JButton jb = new JButton();
 					jb.setName("b" + i + "," + j);
 					jb.setIcon(caballeroIcon);
+					botones.add(jb);
 					estado.add(jb);
 				} else {
 					if (lab.checkPos(new Posicion(i, j))) {
 						JButton jb = new JButton();
 						jb.setName("b" + i + "," + j);
 						jb.setIcon(hierbaIcon);
+						botones.add(jb);
 						estado.add(jb);
 					} else {
 						JButton jb = new JButton();
 						jb.setName("b" + i + "," + j);
 						jb.setIcon(aguaIcon);
+						botones.add(jb);
 						estado.add(jb);
 					}
 				}
@@ -190,6 +196,39 @@ public class FrameAnimador<S> extends JFrame {
 			}
 		}
 		lienzo.repaint();
+	}
+
+	public void rePinta2() {
+		ImageIcon aguaIcon = new ImageIcon("etc/agua.jpg");
+		ImageIcon hierbaIcon = new ImageIcon("etc/hierba.jpg");
+		ImageIcon caballeroIcon = new ImageIcon("etc/caballero.jpg");
+		if (botones!=null){
+			Posicion p = (Posicion) estadoactual;
+			// generamos el nombre del boton
+			String nomBoton = "b"+p.getPosX()+","+p.getPosY();
+			Iterator<JButton> it = botones.iterator();
+			while(it.hasNext()){
+				JButton boton = it.next();
+				if(boton.getIcon().equals(caballeroIcon)){
+					String str = boton.getName();
+					StringTokenizer tokenizer = new StringTokenizer(str,",");
+					String str2 = tokenizer.nextToken();
+					String str3 = tokenizer.nextToken();
+					str2 = str2.substring(1, str2.length());
+					Posicion pos = new Posicion(Integer.parseInt(str2),Integer.parseInt(str3));
+					lab.checkPos(pos);
+					if (lab.checkPos(pos)) {
+						boton.setIcon(hierbaIcon);
+					} else {
+						boton.setIcon(aguaIcon);
+					}
+				}
+				if(boton.getName().equals(nomBoton)){
+					boton.setIcon(caballeroIcon);
+				}
+				
+			}
+		}
 	}
 
 }
