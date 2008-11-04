@@ -69,7 +69,7 @@ public class AnimadorFrame<S> extends AnimadorInterface<S> {
 		estadoactual = accion.getEstado();
 		this.printRecorrido();
 		frame.setEstadoactual((Posicion) estadoactual);
-		frame.rePinta();
+		frame.rePinta2();
 	}
 
 	@Override
