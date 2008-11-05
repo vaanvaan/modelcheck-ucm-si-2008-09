@@ -38,7 +38,7 @@ public class AnimadorFrame<S> extends AnimadorInterface<S> {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		lab = new Laberinto(5);
-		ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>(lab);
+		ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>();
         Posicion pos = new Posicion(1, 1);
         LaberintoPropo prop = new LaberintoPropo(pos);
         prop.setLab(lab);
