@@ -38,17 +38,17 @@ public class DefaultModelChecker<S> implements ModelChecker<S>{
 
     
 
-    public DefaultModelChecker(Interprete<S> interprete) {
-        this.interprete = new InterpreteWrapper<S>(interprete);
+    public DefaultModelChecker() {        
     }
 
     
     
     public Resultado chequear(Interprete<S> interprete, Formula formula, S estado) {
         S s = estado;
+        this.interprete = new InterpreteWrapper<S>(interprete);
         if( estado == null)
            s = this.interprete.iniciales().get(0); 
-        Visitante<S> v = new Visitante(estado,interprete);
+        Visitante<S> v = new Visitante(estado,this.interprete);
         formula.accept(v);
         return v.getResParcial();
     }

@@ -94,7 +94,7 @@ class GrafoDoble<S> extends GrafoCaminos<S> {
 
     @Override
     public void setS(S e, Set<S> Hijos) {
-        caminoFinal.getTabla().put(e, Hijos);
+        caminoFinal.setAristas(e, Hijos);
     }
 
     private List merge(List a, List b) {

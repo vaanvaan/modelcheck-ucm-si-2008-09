@@ -5,7 +5,6 @@
 
 package ucm.si.Checker;
 
-import java.util.TreeSet;
 
 /**
  *
@@ -13,20 +12,20 @@ import java.util.TreeSet;
  */
 class NodoVisitados<S> {
     NodoVisitados<S> ant;
-    TreeSet<S> set;
+    S set;
     
     public NodoVisitados() {
         this.ant = null;
-        this.set = new TreeSet<S>();
+        this.set = null;
     }
     
     public NodoVisitados(NodoVisitados<S> ant) {
         this.ant = ant;
-        this.set = new TreeSet<S>();
+        this.set = null;
     }
     
     public boolean contains(S s){
-        if (set.contains(s)){
+        if ((set!=null)&&(set.equals(s))){
             return true;
         } else if (ant==null){
             return false;
@@ -34,7 +33,7 @@ class NodoVisitados<S> {
     }
     
     public void add(S s){
-        set.add(s);
+        this.set = s;
     }
 
 }

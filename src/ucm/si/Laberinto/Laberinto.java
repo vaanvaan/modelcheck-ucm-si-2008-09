@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Random;
 import ucm.si.Checker.DefaultModelChecker;
 import ucm.si.Checker.Interprete;
 import ucm.si.Checker.InterpreteWrapper;
@@ -32,19 +33,34 @@ public class Laberinto implements Interprete<Posicion> {
 
     public Laberinto(int dim) {
         this.dim = dim;
+        Random r=  new Random(122334234);
         laberinto = new boolean[dim][dim];
         for (int j = 0; j < dim; j++) {
             for (int i = 0; i < dim; i++) {
-                laberinto[i][j] = true;
+                laberinto[i][j] = r.nextBoolean();
             }
         }
-        laberinto[2][1] = false;
+        boolean seguir = true;
+        Posicion p = new Posicion(1, 1);
+        while (seguir){
+            boolean dir = r.nextBoolean();
+            if (dir){
+                if (p.posX<this.dim-1){
+                    p.posX++;                    
+                }else p.posY++;
+            }else if (p.posY<this.dim-1){
+                    p.posY++;                    
+                }else p.posX++;
+            laberinto[p.posX][p.posY] = true;
+            seguir = p.posX!=dim-1 || p.posY!=dim-1;
+        }
+        /*laberinto[2][1] = false;
         laberinto[1][2] = false;
         laberinto[3][3] = false;
         laberinto[3][1] = false;
         laberinto[1][3] = false;
         laberinto[3][2] = false;
-        laberinto[0][4] = false;
+        laberinto[0][4] = false;*/
         //laberinto[3][0] = false;
         
 
@@ -156,7 +172,7 @@ public class Laberinto implements Interprete<Posicion> {
     
     public static void main(){
         Interprete<Posicion> lab = new Laberinto(10);
-        ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>(lab);        
+        ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>();        
         Formula formula = new AU(new Not(new Proposicion() {
 
             @Override
