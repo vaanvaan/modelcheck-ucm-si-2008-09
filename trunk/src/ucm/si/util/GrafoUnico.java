@@ -20,15 +20,18 @@ import java.util.TreeSet;
 // Es posible que los subgrafos se guarden en paralelismo con la parte de formula a analizar
 //  eso hay que estudiarlo con tranquilidad, por que sino en la navegacion pueden aparacer problemas.
 
-public class GrafoUnico<S> extends GrafoCaminos<S>
+public class GrafoUnico<S> extends GrafoCaminos<S> implements Comparable<GrafoUnico<S>>
 {
     private LinkedList<GrafoCaminos<S>> ant = new LinkedList<GrafoCaminos<S>>();
     private TLG<S> camino;
     private S inicial;
+    private static int id = 0;
+    private int numid;
     
     public GrafoUnico()
     {
         this.camino = new TLG<S>(); 
+        numid = id++;
         // Genera un grafo unico
     }
     
@@ -72,7 +75,7 @@ public class GrafoUnico<S> extends GrafoCaminos<S>
     @Override
     public void setS(S e, Set<S> Hijos) 
     {
-        this.camino.getTabla().put(e, Hijos);
+        this.camino.setAristas(e, Hijos);
     }
 
     @Override
@@ -89,23 +92,19 @@ public class GrafoUnico<S> extends GrafoCaminos<S>
     @Override
     public int size() {
         int suma = 0;
+        GrafoCaminos<S>[] ant2 = (GrafoCaminos<S>[]) ant.toArray();
         for (int i =0; i < ant.size();i++)
-            suma = suma + ant.get(i).size();
-        return this.camino.getTabla().size()+suma;
+            suma = suma + ant2[i].size();
+        return this.camino.size()+suma;
     }
 
-
-      
-    
-    // funciones par aimplementar la chache.
-  /*  public List<S> recuperaHijo(S s)
-    {
-        List<S> l = this.getHijos(s);
-        this.camino.
-        return this.
-    }*/
-
-
+    public int compareTo(GrafoUnico<S> o) {
+        if (this.numid>o.numid)
+            return 1;
+        else if (this.numid<o.numid)
+            return -1;
+        else return 0;
+    }
 
    
 }

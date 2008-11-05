@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
@@ -37,8 +38,8 @@ public class TLG<S> {
 
     public Set<S> getHijo(S e) {
         Set<S> set;
-        if ((this.tabla.get(e) != null) && (this.tabla.get(e).size() > 0)) {
-            set = this.tabla.get(e);
+        if (this.tabla.containsKey(e)) {
+            set = this.tabla.get(e);            
         } else {
             set = new TreeSet<S>();
         }
@@ -48,26 +49,25 @@ public class TLG<S> {
                 set.addAll(setant);
             }
         }
+        this.tabla.put(e, set);
         return set;
     }
 
     public void setArista(S eini, S efin) {
-        TreeSet<S> l;
+        Set<S> l;
         if (this.tabla.containsKey(eini)) {
-            this.tabla.get(eini).add(efin);
+            l = this.tabla.get(eini);
+            //if (!l.contains(efin))
+                l.add(efin);
         } else {
             l = new TreeSet<S>();
             l.add(efin);
             this.tabla.put(eini, l);
-        }
-        if (!this.tabla.containsKey(efin)) {
-            l = new TreeSet<S>();
-            this.tabla.put(efin, l);
-        }
+        }        
     }
     // Nuevo codigo para añadir varias arista que sutituyen a las anteriores.
-    public void setAristas(S eni, Set<S> c) {
-        this.tabla.put(eni, c);
+    public void setAristas(S eini, Set<S> c) {
+        this.tabla.put(eini, c);
     }
     //Añadido para AÑADIR sin sustituir las aristas anteriores.
     public void addAristas(S eini, Set<S> c) {
@@ -78,16 +78,6 @@ public class TLG<S> {
         }
     }
 
-    public TreeMap<S, Set<S>> getTabla() {
-        return tabla;
-    }
-
-    public void setTabla(TreeMap<S, Set<S>> tabla) {
-        this.tabla = tabla;
-    }
-    // apaños para el chache
-    /*public void removeArista()
-    {}*/
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -96,7 +86,10 @@ public class TLG<S> {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final TLG other = (TLG) obj;
+        final TLG<S> other = (TLG<S>) obj;
+        if (this.ant != other.ant && (this.ant == null || !this.ant.equals(other.ant))) {
+            return false;
+        }
         if (this.tabla != other.tabla && (this.tabla == null || !this.tabla.equals(other.tabla))) {
             return false;
         }
@@ -106,7 +99,14 @@ public class TLG<S> {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 97 * hash + (this.tabla != null ? this.tabla.hashCode() : 0);
+        hash = 31 * hash + (this.ant != null ? this.ant.hashCode() : 0);
+        hash = 31 * hash + (this.tabla != null ? this.tabla.hashCode() : 0);
         return hash;
     }
+
+    public int size() {
+        return this.tabla.size();
+    }
+
+
 }

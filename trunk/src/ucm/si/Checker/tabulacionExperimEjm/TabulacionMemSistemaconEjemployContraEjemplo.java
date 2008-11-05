@@ -6,6 +6,7 @@
 package ucm.si.Checker.tabulacionExperimEjm;
 
 import java.util.Set;
+import ucm.si.Checker.Resultado;
 import ucm.si.Checker.tabulacion.*;
 import java.util.HashMap;
 import ucm.si.basico.ecuaciones.Formula;
@@ -39,22 +40,13 @@ public class TabulacionMemSistemaconEjemployContraEjemplo<S> implements Tabulaci
         return tabla.tieneEstado(estado);
     }
 
-    public void setEtiquetas(S estado, Set<Formula> etiquetas) {
-        tabla.setEtiquetas(estado, etiquetas);
-    }
+    
 
     public Set<Formula> getEtiquetas(S estado) {
         return tabla.getEtiquetas(estado);
     }
 
-    public void aniadirEtiqueta(S estado, Formula formula) {
-        tabla.aniadirEtiqueta(estado, formula);
-    }
-
-    public void aniadirEstado(S estado, Set<Formula> etiquetas) {
-        tabla.aniadirEstado(estado, etiquetas);
-    }
-    
+       
     
     // Metodos estandar para añadir ejemplos y contraEjemplos a la tabla de tabulacion
     public void aniadirEjem(S s, Formula f, GrafoCaminos ej, GrafoCaminos contra)
@@ -130,6 +122,14 @@ public class TabulacionMemSistemaconEjemployContraEjemplo<S> implements Tabulaci
         hash = 89 * hash + (this.tabla != null ? this.tabla.hashCode() : 0);
         hash = 89 * hash + (this.tablaEjem != null ? this.tablaEjem.hashCode() : 0);
         return hash;
+    }
+
+    public void aniadirEtiqueta(S estado, Formula formula, Resultado r) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Resultado getResultado(S estado, Formula formula) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     

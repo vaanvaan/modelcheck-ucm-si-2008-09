@@ -226,8 +226,8 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
     }
 
     public static void main(String[] args) {        
-        Laberinto lab = new Laberinto(15);
-        ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>(lab);
+        Laberinto lab = new Laberinto(100);
+        ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>();
         Posicion pos = new Posicion(1, 1);
         LaberintoPropo prop = new LaberintoPropo(pos);
         prop.setLab(lab);
@@ -247,21 +247,6 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
 
         anim.setLaberinto(lab);
 
-        anim.inicia();
-    /*nav.GoToEstado(nav.dameInicial());
-    int op = anim.pintaopciones(nav.damePosibles());
-    while (op<99){                
-    switch (op){
-    case 90:
-    nav.Retrocede();
-    break;
-    case 99:
-    break;
-    default:
-    nav.Avanza(nav.damePosibles().get(op));
-    break;
-    }           
-    op = anim.pintaopciones(nav.damePosibles());
-    }*/
+        anim.inicia();    
     }
 }
