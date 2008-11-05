@@ -18,7 +18,6 @@ import javax.swing.SwingConstants;
 
 import ucm.si.Laberinto.Laberinto;
 import ucm.si.Laberinto.Posicion;
-import ucm.si.navegador.events.Avanza;
 
 public class FrameAnimador<S> extends JFrame {
 

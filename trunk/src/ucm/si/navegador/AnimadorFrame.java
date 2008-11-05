@@ -1,18 +1,10 @@
 package ucm.si.navegador;
 
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTable;
 
 import ucm.si.Checker.DefaultModelChecker;
 import ucm.si.Checker.ModelChecker;
@@ -46,7 +38,7 @@ public class AnimadorFrame<S> extends AnimadorInterface<S> {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		lab = new Laberinto(5);
-		ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>();
+		ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>(lab);
         Posicion pos = new Posicion(1, 1);
         LaberintoPropo prop = new LaberintoPropo(pos);
         prop.setLab(lab);
