@@ -63,12 +63,12 @@ public class FrameAnimador<S> extends JFrame {
 		};
 		ActionListener actionListenerGo_to = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
-
+				control.aplicaGoTo();
 			}
 		};
 		ActionListener actionListenerRetroceder = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
-
+				control.aplicaRetrocede();
 			}
 		};
 		lab = control.getLab();

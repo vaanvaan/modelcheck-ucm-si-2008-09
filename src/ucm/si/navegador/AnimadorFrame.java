@@ -3,12 +3,14 @@ package ucm.si.navegador;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
@@ -84,6 +86,8 @@ public class AnimadorFrame<S> extends AnimadorInterface<S> {
 		// TODO Auto-generated method stub
 		estadoactual = accion.getEstado();
 		this.printRecorrido();
+		frame.setEstadoactual((Posicion) estadoactual);
+		frame.rePinta2();
 	}
 	
 	public void printRecorrido() {
@@ -116,6 +120,28 @@ public class AnimadorFrame<S> extends AnimadorInterface<S> {
         this.navigator.Avanza(s);
 	}
 
+	public void aplicaRetrocede(){
+		this.navigator.Retrocede();
+	}
 	
+	public void aplicaGoTo(){
+		Iterator<S> it = this.navigator.damePosibles().iterator();
+		ArrayList<String> posibilidades = new ArrayList<String>();
+		
+		while(it.hasNext()){
+			S aux = it.next();
+			posibilidades.add(aux.toString());
+		}
+		String sel= (String) JOptionPane.showInputDialog(null,"Posibles estados:","Seleccione estado siguiente",JOptionPane.QUESTION_MESSAGE,null, posibilidades.toArray(),"Elija una opción.");
+		it = this.navigator.damePosibles().iterator();
+		boolean ok =false;
+		while(it.hasNext()&&!ok){
+			S aux = it.next();
+			if(aux.toString().equals(sel)){
+				this.navigator.Avanza(aux);
+				ok=true;
+			}
+		}
+	}
 
 }
