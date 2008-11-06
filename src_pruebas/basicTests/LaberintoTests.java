@@ -14,8 +14,8 @@ import junit.framework.TestCase;
 public class LaberintoTests extends TestCase {
 	
 	public void testLaberinto_COD_1(){
-		Interprete<Posicion> lab = new Laberinto();
-		ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>(lab);
+		Interprete<Posicion> lab = new Laberinto(50);
+		ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>();
 		Posicion pos = new Posicion(1,1);
 		LaberintoPropo prop = new LaberintoPropo(pos);
 		prop.setLab(lab);

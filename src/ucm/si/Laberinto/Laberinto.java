@@ -37,7 +37,7 @@ public class Laberinto implements Interprete<Posicion> {
         laberinto = new boolean[dim][dim];
         for (int j = 0; j < dim; j++) {
             for (int i = 0; i < dim; i++) {
-                laberinto[i][j] = r.nextBoolean();
+                laberinto[i][j] = true;//r.nextBoolean();
             }
         }
         boolean seguir = true;
@@ -62,6 +62,7 @@ public class Laberinto implements Interprete<Posicion> {
         laberinto[3][2] = false;
         laberinto[0][4] = false;*/
         //laberinto[3][0] = false;
+        laberinto[dim-1][dim-1] = false;
         
 
     }
@@ -149,7 +150,7 @@ public class Laberinto implements Interprete<Posicion> {
             right(l);
             lista.add(l);
         }
-        if (posible("LEFT", lab)) {
+        /*if (posible("LEFT", lab)) {
             Posicion l = copyOf(lab);
             left(l);
             lista.add(l);
@@ -158,7 +159,7 @@ public class Laberinto implements Interprete<Posicion> {
             Posicion l = copyOf(lab);
             up(l);
             lista.add(l);
-        }
+        }*/
 
 
         return lista;

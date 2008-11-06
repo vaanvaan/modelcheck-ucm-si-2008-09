@@ -53,6 +53,24 @@ public class DefaultModelChecker<S> implements ModelChecker<S>{
         return v.getResParcial();
     }
 
+    public Resultado chequear(Interprete<S> interprete, Formula formula) {
+        this.interprete = new InterpreteWrapper<S>(interprete);
+        Resultado<S> parcial = new Resultado<S>(Resultado.COD_MAYBET);
+        List<S> iniciales = this.interprete.iniciales();
+        Visitante<S> v;
+        boolean seguir = true;
+        Iterator<S> it = iniciales.iterator();
+        while (seguir&&it.hasNext()) {
+            S e = it.next();
+            v = new Visitante<S>(e,this.interprete);
+            formula.accept(v);
+            parcial = v.getResParcial();
+            if (!parcial.equals(Resultado.COD_TRUE))
+                seguir = false;
+        }
+        return parcial;
+    }
+
     
 
 }
