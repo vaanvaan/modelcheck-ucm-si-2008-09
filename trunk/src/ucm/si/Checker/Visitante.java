@@ -12,24 +12,21 @@ import java.util.Stack;
 import java.util.TreeSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import javax.swing.JOptionPane;
 import ucm.si.Checker.tabulacion.TabulacionMemSistema;
 import ucm.si.basico.ecuaciones.AU;
 import ucm.si.basico.ecuaciones.AX;
 import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.EU;
 import ucm.si.basico.ecuaciones.EX;
-import ucm.si.basico.ecuaciones.Formula;
 import ucm.si.basico.ecuaciones.Not;
 import ucm.si.basico.ecuaciones.Or;
 import ucm.si.basico.ecuaciones.Proposicion;
 // a�adir constructora para usar logs globales, si es necesario.
 import ucm.si.util.*;
+
 public class Visitante<S> {
 
     private Resultado resParcial = new Resultado(Resultado.COD_TRUE);
-    private Stack<Formula> pilaFormulas = new Stack<Formula>();
-    private boolean inicio = false;
     private S estado;
     private Interprete<S> interprete = null;
     private TabulacionFormulas<S> tabFormulas;
@@ -249,24 +246,25 @@ public class Visitante<S> {
 
     public void visita(AU au) {
         S eraiz = estado;
-        LinkedBlockingQueue<TreeSet<S>> colaVisitados =
-                new LinkedBlockingQueue<TreeSet<S>>();
-        LinkedBlockingQueue<S> colaEanterior =
-                new LinkedBlockingQueue<S>();
+        LinkedBlockingQueue2<NodoVisitados<S>> colaVisitados =
+                new LinkedBlockingQueue2<NodoVisitados<S>>();
+        LinkedBlockingQueue2<S> colaEanterior =
+                new LinkedBlockingQueue2<S>();
         GrafoCaminos<S> ej = new GrafoUnico<S>(estado);
-        LinkedBlockingQueue<GrafoCaminos<S>> colacej =
-                new LinkedBlockingQueue<GrafoCaminos<S>>();
-        LinkedBlockingQueue<S> colaEstados =
-                new LinkedBlockingQueue<S>(interprete.transitar(estado));
+        LinkedBlockingQueue2<GrafoCaminos<S>> colacej =
+                new LinkedBlockingQueue2<GrafoCaminos<S>>();
+        LinkedBlockingQueue2<S> colaEstados =
+                new LinkedBlockingQueue2<S>(interprete.transitar(estado));
         for (int i = colaEstados.size(); i > 0; i--) {
-            colaVisitados.offer(new TreeSet<S>());
+            colaVisitados.offer(new NodoVisitados<S>());
             colaEanterior.offer(eraiz);
             colacej.offer(new GrafoUnico<S>(eraiz));
         }
         boolean encontrado = false;
         S eanterior;
         GrafoCaminos<S> cej = null, cejauxf2;
-        TreeSet<S> visitados;
+        NodoVisitados<S> visitados;
+        TreeSet<S> visitadosGlobal = new TreeSet<S>();
         boolean visitado, cumplef2, cumplef1;
         while (!encontrado && !colaEstados.isEmpty()) {
             estado = colaEstados.poll();
@@ -275,7 +273,15 @@ public class Visitante<S> {
             visitados = colaVisitados.poll();
             visitado = visitados.contains(estado);
             visitados.add(estado);
-            au.getOperando(1).accept(this);
+            visitadosGlobal.add(estado);
+            if (!tabFormulas.tieneEtiqueta(estado, au.getOperando(1))) {
+                au.getOperando(1).accept(this);
+            } else {
+                Resultado r = tabFormulas.getResultado(estado, au.getOperando(1));
+                resParcial.setResultado(r.getResultado());
+                resParcial.setContraejemplo(r.getContraejemplo());
+                resParcial.setEjemplo(r.getEjemplo());
+            }
             cumplef2 = resParcial.equals(Resultado.COD_TRUE);
             if (cumplef2) {
                 ej.setArista(eanterior, estado);
@@ -291,7 +297,14 @@ public class Visitante<S> {
                 cej.setArista(eanterior, estado);
                 ej.union(cejauxf2);
                 cej.union(cejauxf2);
-                au.getOperando(0).accept(this);
+                if (!tabFormulas.tieneEtiqueta(estado, au.getOperando(0))) {
+                    au.getOperando(0).accept(this);
+                } else {
+                    Resultado r = tabFormulas.getResultado(estado, au.getOperando(0));
+                    resParcial.setResultado(r.getResultado());
+                    resParcial.setContraejemplo(r.getContraejemplo());
+                    resParcial.setEjemplo(r.getEjemplo());
+                }
                 cumplef1 = resParcial.equals(Resultado.COD_TRUE);
                 if (cumplef1) {
                     ej.union(resParcial.getEjemplo());
@@ -299,14 +312,17 @@ public class Visitante<S> {
                     List<S> listaHijos = interprete.transitar(estado);
                     for (Iterator<S> it = listaHijos.iterator(); it.hasNext();) {
                         S s = it.next();
-                        colaEstados.offer(s);
-                        colaEanterior.offer(estado);
-                        colaVisitados.offer(new TreeSet<S>(visitados));
-                        colacej.offer(GrafoCaminos.CreateGrafo(cej));
+                        if (!visitadosGlobal.contains(s)) {
+                            colaEstados.offer(s);
+                            colaEanterior.offer(estado);
+                            colaVisitados.offer(new NodoVisitados<S>(visitados));
+                            colacej.offer(GrafoCaminos.CreateGrafo(cej));
+                        } else {
+                            ej.setArista(estado, s);
+                        }
                     }
-                } else {
+                } else {//if (resParcial.equals(Resultado.COD_FALSE)) {
                     encontrado = true;
-                    cej.setArista(eanterior, estado);
                     cej.union(resParcial.getContraejemplo());
                 }
             }
@@ -332,7 +348,7 @@ public class Visitante<S> {
                 new LinkedBlockingQueue2<GrafoCaminos<S>>();
         LinkedBlockingQueue2<S> colaEstados =
                 new LinkedBlockingQueue2<S>(interprete.transitar(estado));
-        for (int i = colaEstados.size(); i > 0; i--) {            
+        for (int i = colaEstados.size(); i > 0; i--) {
             colaEanterior.offer(eraiz);
             colaej.offer(new GrafoUnico<S>(eraiz));
         }
@@ -378,7 +394,7 @@ public class Visitante<S> {
                         resParcial.setResultado(r.getResultado());
                         resParcial.setContraejemplo(r.getContraejemplo());
                         resParcial.setEjemplo(r.getEjemplo());
-                    }                    
+                    }
                     cumplef1 = resParcial.equals(Resultado.COD_TRUE);
                     if (cumplef1) {
                         ej.union(resParcial.getEjemplo());
@@ -390,6 +406,8 @@ public class Visitante<S> {
                                 colaEstados.offer(s);
                                 colaEanterior.offer(estado);
                                 colaej.offer(GrafoCaminos.CreateGrafo(ej));
+                            } else {
+                                cej.setArista(estado, s);
                             }
                         }
                     } else if (resParcial.equals(Resultado.COD_FALSE)) {

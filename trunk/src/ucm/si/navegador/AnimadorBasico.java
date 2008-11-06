@@ -109,7 +109,7 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
     public void pintaconsola() {
         Posicion p = (Posicion) estadoactual;
         System.out.println(estadoactual.toString());
-        for (int i = 0; i < lab.getDim(); i++) {
+        /*for (int i = 0; i < lab.getDim(); i++) {
             for (int j = 0; j < lab.getDim(); j++) {
                 if ((p.getPosX() == j) && (p.getPosY() == i)) {
                     System.out.print(" X");
@@ -118,7 +118,7 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
                 }
             }
             System.out.println();
-        }
+        }*/
     }
 
     public void printRecorrido() {
@@ -226,15 +226,15 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
     }
 
     public static void main(String[] args) {        
-        Laberinto lab = new Laberinto(100);
+        Laberinto lab = new Laberinto(30);
         ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>();
         Posicion pos = new Posicion(1, 1);
         LaberintoPropo prop = new LaberintoPropo(pos);
         prop.setLab(lab);
         Final fin = new Final(lab.getDim()-1, lab.getDim()-1);
         Formula nofin = new And(new Not(fin), prop);
-        Formula haycamino = new EU(nofin, fin);
-        Resultado<Posicion> res = m.chequear(lab, new Not(haycamino), pos);
+        Formula haycamino = new AU(nofin, fin);
+        Resultado<Posicion> res = m.chequear(lab, haycamino, pos);
         Navegador<Posicion> nav;
         if (res.equals(Resultado.COD_TRUE)) {
             System.out.println("La formula es cierta.");

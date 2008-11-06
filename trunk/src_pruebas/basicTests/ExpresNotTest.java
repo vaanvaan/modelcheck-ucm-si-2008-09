@@ -67,7 +67,7 @@ public class ExpresNotTest extends TestCase {
     public void test2Not() throws Exception {
         Visitante<Posicion> visitante = new Visitante<Posicion>(
                 new Posicion(0, 0),
-                new Laberinto());
+                new Laberinto(50));
         Formula ctlexp = new Not(new Not(pfalsa));
         ctlexp.accept(visitante);
         System.out.println(visitante.getResParcial().getResultado());
@@ -77,7 +77,7 @@ public class ExpresNotTest extends TestCase {
     public void testAnd() throws Exception {
         Visitante<Posicion> visitante = new Visitante<Posicion>(
                 new Posicion(0, 0),
-                new Laberinto());
+                new Laberinto(50));
         Formula ctlexp = new And(new Not(pfalsa), pcierta);
         ctlexp.accept(visitante);
         System.out.println(visitante.getResParcial().getResultado());
@@ -87,7 +87,7 @@ public class ExpresNotTest extends TestCase {
     public void testOr() throws Exception {
         Visitante<Posicion> visitante = new Visitante<Posicion>(
                 new Posicion(0, 0),
-                new Laberinto());
+                new Laberinto(50));
         Formula ctlexp = new Or(pmaybefalsa, new Not(pfalsa));
         ctlexp.accept(visitante);
         System.out.println(visitante.getResParcial().getResultado());
@@ -96,7 +96,7 @@ public class ExpresNotTest extends TestCase {
 
     public void testAU0() throws Exception {
         AdHoc a = new AdHoc("0 1", "0 1 4;1 1 4 6;4 4;6 2");
-        ModelChecker<Integer> m = new DefaultModelChecker<Integer>(a);
+        ModelChecker<Integer> m = new DefaultModelChecker<Integer>();
         /* estados iniciales: el 0 y el 1
          * transiciones: 0 1 4 significa que del estado 0 transita al
          *                                              1 y al 4                 
@@ -105,37 +105,37 @@ public class ExpresNotTest extends TestCase {
          * */
 
         Primo p = new Primo();
-        String r = m.chequear(new AU(new Not(p), p)).getResultado();
+        String r = m.chequear(a, new AU(new Not(p), p)).getResultado();
         System.out.println("El resultado de AU0 es: " + r);
         assertEquals(Resultado.COD_FALSE, r);
     }
 
     public void testAU1() throws Exception {
         AdHoc a = new AdHoc("0 1", "0 1 4;1 3 4;4 5;3 4");
-        ModelChecker<Integer> m = new DefaultModelChecker<Integer>(a);
+        ModelChecker<Integer> m = new DefaultModelChecker<Integer>();
         Primo p = new Primo();
         //InterpreteWrapper<Integer> w = new InterpreteWrapper<Integer>(a);
-        String r = m.chequear(new AU(new Not(p), p)).getResultado();
+        String r = m.chequear(a,new AU(new Not(p), p)).getResultado();
         System.out.println("El resultado de AU1 es: " + r);
         assertEquals(Resultado.COD_TRUE, r);
     }
 
     public void testEU0() throws Exception {
         AdHoc a = new AdHoc("0", "0 1 4;1 1 4 6;4 1 4;6 2");
-        ModelChecker<Integer> m = new DefaultModelChecker<Integer>(a);
+        ModelChecker<Integer> m = new DefaultModelChecker<Integer>();
         Primo p = new Primo();
         //InterpreteWrapper<Integer> w = new InterpreteWrapper<Integer>(a);
-        String r = m.chequear(new EU(new Not(p), p)).getResultado();
+        String r = m.chequear(a,new EU(new Not(p), p)).getResultado();
         System.out.println("El resultado de EU0 es: " + r);
         assertEquals(Resultado.COD_TRUE, r);
     }
 
     public void testEU1() throws Exception {
         AdHoc a = new AdHoc("0", "0 1 4;1 1 4;4 1 4 8;6 4 2");
-        ModelChecker<Integer> m = new DefaultModelChecker<Integer>(a);
+        ModelChecker<Integer> m = new DefaultModelChecker<Integer>();
         Primo p = new Primo();
         //InterpreteWrapper<Integer> w = new InterpreteWrapper<Integer>(a);
-        Resultado res = m.chequear(new EU(new Not(p), p));
+        Resultado res = m.chequear(a,new EU(new Not(p), p));
         String r = res.getResultado();
         System.out.println("El resultado de EU1 es: " + r);        
         assertEquals(Resultado.COD_FALSE, r);
@@ -143,7 +143,7 @@ public class ExpresNotTest extends TestCase {
     
     public void testComplicada1() throws Exception {
         AdHoc a = new AdHoc("100", "100 10 5;5 10 6;10 10;6 35 12;12 5;35 105;105 35 11");
-        ModelChecker<Integer> m = new DefaultModelChecker<Integer>(a);
+        ModelChecker<Integer> m = new DefaultModelChecker<Integer>();
         Multiplo p = new Multiplo(2);
         Multiplo q = new Multiplo(3);
         Multiplo r = new Multiplo(5);
@@ -151,7 +151,7 @@ public class ExpresNotTest extends TestCase {
         Multiplo s = new Multiplo(11);
         Formula f = new EU(new AU(new And(p,q),r), new AX(new Or(w,s)));
         //InterpreteWrapper<Integer> wr = new InterpreteWrapper<Integer>(a);
-        String res = m.chequear(f).getResultado();
+        String res = m.chequear(a,f).getResultado();
         System.out.println("El resultado de f es: " + res);
         assertEquals(Resultado.COD_TRUE, res);
     }
