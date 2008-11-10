@@ -1,4 +1,4 @@
-package ucm.si.navegador;
+package ucm.si.animadorGUI.laberinto;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,6 +17,8 @@ import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.EU;
 import ucm.si.basico.ecuaciones.Formula;
 import ucm.si.basico.ecuaciones.Not;
+import ucm.si.navegador.AnimadorInterface;
+import ucm.si.navegador.Navegador;
 import ucm.si.navegador.events.Avanza;
 import ucm.si.navegador.events.GoToEstado;
 import ucm.si.navegador.events.Retrocede;
@@ -37,7 +39,7 @@ public class AnimadorFrame<S> extends AnimadorInterface<S> {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		lab = new Laberinto(5);
+		lab = new Laberinto(20);
 		ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>();
         Posicion pos = new Posicion(1, 1);
         LaberintoPropo prop = new LaberintoPropo(pos);
