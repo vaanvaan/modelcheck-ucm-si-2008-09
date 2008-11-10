@@ -15,6 +15,7 @@ import ucm.si.Checker.Interprete;
 import ucm.si.Checker.InterpreteWrapper;
 import ucm.si.Checker.ModelChecker;
 import ucm.si.Checker.Resultado;
+import ucm.si.Checker.util.StateLabeledList;
 import ucm.si.basico.ecuaciones.AU;
 import ucm.si.basico.ecuaciones.Formula;
 import ucm.si.basico.ecuaciones.Not;
@@ -163,6 +164,41 @@ public class Laberinto implements Interprete<Posicion> {
 
 
         return lista;
+
+    }
+    
+    public StateLabeledList<Posicion> transitarConEtiqueta(Posicion state) { 
+        List<Posicion> lista = new ArrayList<Posicion>();
+        List<String> listaEtiq = new ArrayList<String>();
+        Posicion lab =  state;
+        if (posible("DOWN", lab)) {
+            Posicion l = copyOf(lab);
+            down(l);
+            lista.add(l);
+            listaEtiq.add("Avanza Sur");
+        }
+        if (posible("RIGHT", lab)) {
+            Posicion l = copyOf(lab);
+            right(l);
+            lista.add(l);
+            listaEtiq.add("Avanza Este");
+        }
+        /*if (posible("LEFT", lab)) {
+            Posicion l = copyOf(lab);
+            left(l);
+            lista.add(l);
+            listaEtiq.add("Avanza Oeste");
+        }
+        if (posible("UP", lab)) {
+            Posicion l = copyOf(lab);
+            up(l);
+            lista.add(l);
+            listaEtiq.add("Avanza Norte");
+        }*/
+
+        StateLabeledList<Posicion> stl = new StateLabeledList<Posicion>(lista, listaEtiq);
+        
+        return stl;
 
     }
     

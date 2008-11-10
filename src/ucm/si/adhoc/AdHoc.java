@@ -13,6 +13,7 @@ import ucm.si.Checker.DefaultModelChecker;
 import ucm.si.Checker.Interprete;
 import ucm.si.Checker.ModelChecker;
 import ucm.si.Checker.Resultado;
+import ucm.si.Checker.util.StateLabeledList;
 import ucm.si.basico.ecuaciones.AU;
 import ucm.si.basico.ecuaciones.EU;
 import ucm.si.basico.ecuaciones.Formula;
@@ -68,6 +69,10 @@ public class AdHoc implements Interprete<Integer>{
             String s = aux[i];
             iniciales.add(new Integer(Integer.parseInt(s)));
         }
+    }
+
+    public StateLabeledList<Integer> transitarConEtiqueta(Integer state) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }
