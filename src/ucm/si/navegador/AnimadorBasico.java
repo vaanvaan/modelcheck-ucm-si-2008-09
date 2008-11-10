@@ -109,7 +109,7 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
     public void pintaconsola() {
         Posicion p = (Posicion) estadoactual;
         System.out.println(estadoactual.toString());
-        /*for (int i = 0; i < lab.getDim(); i++) {
+        for (int i = 0; i < lab.getDim(); i++) {
             for (int j = 0; j < lab.getDim(); j++) {
                 if ((p.getPosX() == j) && (p.getPosY() == i)) {
                     System.out.print(" X");
@@ -118,7 +118,7 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
                 }
             }
             System.out.println();
-        }*/
+        }
     }
 
     public void printRecorrido() {

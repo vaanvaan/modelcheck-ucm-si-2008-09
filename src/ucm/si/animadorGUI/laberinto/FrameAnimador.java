@@ -1,4 +1,4 @@
-package ucm.si.navegador;
+package ucm.si.animadorGUI.laberinto;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -18,6 +18,7 @@ import javax.swing.SwingConstants;
 
 import ucm.si.Laberinto.Laberinto;
 import ucm.si.Laberinto.Posicion;
+import ucm.si.navegador.Navegador;
 
 public class FrameAnimador<S> extends JFrame {
 
@@ -114,9 +115,9 @@ public class FrameAnimador<S> extends JFrame {
 		/*
 		 * Pintamos el laberinto.
 		 */
-		ImageIcon aguaIcon = new ImageIcon("etc/agua.jpg");
-		ImageIcon hierbaIcon = new ImageIcon("etc/hierba.jpg");
-		ImageIcon caballeroIcon = new ImageIcon("etc/caballero.jpg");
+		ImageIcon aguaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/agua.jpg");
+		ImageIcon hierbaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/hierba.jpg");
+		ImageIcon caballeroIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/caballero.jpg");
 		botones = new ArrayList<JButton>((lab.getDim()^2)); //al menos va a tener dim x dim
 		Posicion p = (Posicion) estadoactual;
 
@@ -159,9 +160,9 @@ public class FrameAnimador<S> extends JFrame {
 	}
 
 	public void rePinta() {
-		ImageIcon aguaIcon = new ImageIcon("etc/agua.jpg");
-		ImageIcon hierbaIcon = new ImageIcon("etc/hierba.jpg");
-		ImageIcon caballeroIcon = new ImageIcon("etc/caballero.jpg");
+		ImageIcon aguaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/agua.jpg");
+		ImageIcon hierbaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/hierba.jpg");
+		ImageIcon caballeroIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/caballero.jpg");
 
 		Posicion p = (Posicion) estadoactual;
 
@@ -198,9 +199,9 @@ public class FrameAnimador<S> extends JFrame {
 	}
 
 	public void rePinta2() {
-		ImageIcon aguaIcon = new ImageIcon("etc/agua.jpg");
-		ImageIcon hierbaIcon = new ImageIcon("etc/hierba.jpg");
-		ImageIcon caballeroIcon = new ImageIcon("etc/caballero.jpg");
+		ImageIcon aguaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/agua.jpg");
+		ImageIcon hierbaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/hierba.jpg");
+		ImageIcon caballeroIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/caballero.jpg");
 		if (botones!=null){
 			Posicion p = (Posicion) estadoactual;
 			// generamos el nombre del boton
