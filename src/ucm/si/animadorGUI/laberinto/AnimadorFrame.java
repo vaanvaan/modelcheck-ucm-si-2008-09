@@ -78,7 +78,8 @@ public class AnimadorFrame<S> extends AnimadorInterface<S> {
 	@Override
 	public void manejaAccion(Retrocede<S> accion) {
 		// TODO Auto-generated method stub
-		estadoactual = accion.getEstado();
+		if(accion.getEstado() != null)
+                    estadoactual = accion.getEstado();
 		this.printRecorrido();
 		frame.setEstadoactual((Posicion) estadoactual);
 		frame.rePinta2();
@@ -110,8 +111,11 @@ public class AnimadorFrame<S> extends AnimadorInterface<S> {
 	
 	public void aplicaAvanza(){
 		Iterator<S> it = this.navigator.damePosibles().iterator();
-		S s = it.next();
-        this.navigator.Avanza(s);
+		if(it.hasNext())
+                {
+                    S s = it.next();
+                    this.navigator.Avanza(s);
+                }
 	}
 
 	public void aplicaRetrocede(){
@@ -126,7 +130,7 @@ public class AnimadorFrame<S> extends AnimadorInterface<S> {
 			S aux = it.next();
 			posibilidades.add(aux.toString());
 		}
-		String sel= (String) JOptionPane.showInputDialog(null,"Posibles estados:","Seleccione estado siguiente",JOptionPane.QUESTION_MESSAGE,null, posibilidades.toArray(),"Elija una opción.");
+		String sel= (String) JOptionPane.showInputDialog(null,"Posibles estados:","Seleccione estado siguiente",JOptionPane.QUESTION_MESSAGE,null, posibilidades.toArray(),"Elija una opcion.");
 		it = this.navigator.damePosibles().iterator();
 		boolean ok =false;
 		while(it.hasNext()&&!ok){

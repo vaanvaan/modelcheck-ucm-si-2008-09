@@ -74,8 +74,11 @@ public class Navegador<S> extends NavigatorInterface<S> {
         S e = null;
         synchronized(this)
         {
-            this.recorrido.pop();
-            e = this.recorrido.peek();
+            S peek = this.recorrido.pop();
+            if(!this.recorrido.empty())
+                e = this.recorrido.peek();
+            else
+                this.recorrido.push(peek);
         }
         
         super.notificarOyentes(new Retrocede(this, e));
