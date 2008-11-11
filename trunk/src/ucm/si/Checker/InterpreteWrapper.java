@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ucm.si.Checker.util.Roseta;
 import ucm.si.Checker.util.StateAndLabel;
 import ucm.si.Checker.util.StateLabeledList;
 import ucm.si.Laberinto.Posicion;
@@ -173,9 +174,9 @@ public class InterpreteWrapper<S> implements Interprete<S> {
     }
     
     
-    public HashMap<S,List<StateAndLabel<S>>> getRoseta()
+    public Roseta<S> getRoseta()
     {
-        HashMap<S,List<StateAndLabel<S>>> roseta = new HashMap<S, List<StateAndLabel<S>>>();
+        Roseta<S> roseta = (Roseta<S>) new HashMap<S, List<StateAndLabel<S>>>();
         
         Set<S> set = this.hijos.keySet();
         Iterator<S> it = set.iterator();
