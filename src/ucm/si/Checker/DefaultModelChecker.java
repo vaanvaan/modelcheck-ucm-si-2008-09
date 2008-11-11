@@ -7,6 +7,7 @@ package ucm.si.Checker;
 
 import java.util.Iterator;
 import java.util.List;
+import ucm.si.Checker.util.Roseta;
 import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.Formula;
 
@@ -69,6 +70,11 @@ public class DefaultModelChecker<S> implements ModelChecker<S>{
                 seguir = false;
         }
         return parcial;
+    }
+    
+    public Roseta<S> getRoseta ()
+    {
+        return this.interprete.getRoseta();
     }
 
     
