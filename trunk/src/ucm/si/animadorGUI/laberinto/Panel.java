@@ -14,6 +14,6 @@ import javax.swing.JPanel;
 public abstract class Panel<S> extends JPanel
 {
     public abstract void pintaEstado(S s);
-    public abstract void rePinta();
+    public abstract void rePinta(S s);
 
 }
