@@ -16,6 +16,7 @@ import ucm.si.Checker.InterpreteWrapper;
 import ucm.si.Checker.ModelChecker;
 import ucm.si.Checker.Resultado;
 import ucm.si.Checker.util.StateLabeledList;
+import ucm.si.animadorGUI.laberinto.PanelLaberinto;
 import ucm.si.basico.ecuaciones.AU;
 import ucm.si.basico.ecuaciones.Formula;
 import ucm.si.basico.ecuaciones.Not;
@@ -31,6 +32,7 @@ public class Laberinto implements Interprete<Posicion> {
     // se realiza en la posicion 0,0
     private boolean[][] laberinto;
     private int dim;
+    private PanelLaberinto<Posicion> panel;
 
     public Laberinto(int dim) {
         this.dim = dim;
@@ -64,7 +66,7 @@ public class Laberinto implements Interprete<Posicion> {
         laberinto[0][4] = false;*/
         //laberinto[3][0] = false;
 //        laberinto[dim-1][dim-1] = false;
-        
+        panel = new PanelLaberinto<Posicion>(this);
 
     }
 
@@ -205,6 +207,11 @@ public class Laberinto implements Interprete<Posicion> {
     public boolean checkPos(Posicion p){
     	boolean res = laberinto[p.posX][p.posY];
     	return res;
+    }
+    
+    public PanelLaberinto<Posicion> getRepresentacion(){
+		return panel;
+    	
     }
     
     public static void main(){

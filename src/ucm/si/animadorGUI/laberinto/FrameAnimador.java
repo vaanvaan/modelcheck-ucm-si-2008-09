@@ -25,9 +25,16 @@ public class FrameAnimador<S> extends JFrame {
 	/**
 	 * 
 	 */
+	/*
+	 * Métodos que metan mano al lienzo --separarlos de los botones.
+	 * Clase Abstracta que herede de Jpanel con esos métodos.
+	 * otra clase que herede de a la abstracta
+	 * 
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	private Navegador<S> nav;
-	private JPanel lienzo;
+	private Panel<S> lienzo;
 	private S estadoactual;
 	private Laberinto lab;
 	private ArrayList<JButton> botones;
@@ -44,7 +51,7 @@ public class FrameAnimador<S> extends JFrame {
 		return lienzo;
 	}
 
-	public void setLienzo(JPanel lienzo) {
+	public void setLienzo(Panel lienzo) {
 		this.lienzo = lienzo;
 	}
 
@@ -79,7 +86,8 @@ public class FrameAnimador<S> extends JFrame {
 		JButton boton1 = new JButton("Avanzar");
 		JButton boton2 = new JButton("Go To");
 		JButton boton3 = new JButton("Retroceder");
-		lienzo = pintaEstado();
+		lienzo = (Panel<S>) lab.getRepresentacion();
+		lienzo.pintaEstado(estadoactual);
 		lienzo.setSize(200, 200);
 		boton1.setHorizontalTextPosition(SwingConstants.CENTER);
 		boton2.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -98,7 +106,7 @@ public class FrameAnimador<S> extends JFrame {
 		c.add(lienzo, BorderLayout.CENTER);
 		this.getContentPane().add(new JScrollPane(pane), BorderLayout.SOUTH);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(400, 400);
+		this.setSize(lab.getDim()*50, lab.getDim()*40);
 		this.setVisible(true);
 
 	}
@@ -111,124 +119,95 @@ public class FrameAnimador<S> extends JFrame {
 		this.nav = nav;
 	}
 
-	public JPanel pintaEstado() {
-		/*
-		 * Pintamos el laberinto.
-		 */
-		ImageIcon aguaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/agua.jpg");
-		ImageIcon hierbaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/hierba.jpg");
-		ImageIcon caballeroIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/caballero.jpg");
-		botones = new ArrayList<JButton>((lab.getDim()^2)); //al menos va a tener dim x dim
-		Posicion p = (Posicion) estadoactual;
+//	public JPanel pintaEstado() {
+//		/*
+//		 * Pintamos el laberinto.
+//		 */
+//		ImageIcon aguaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/agua.jpg");
+//		ImageIcon hierbaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/hierba.jpg");
+//		ImageIcon caballeroIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/caballero.jpg");
+//		botones = new ArrayList<JButton>((lab.getDim()^2)); //al menos va a tener dim x dim
+//		Posicion p = (Posicion) estadoactual;
+//
+//		JPanel estado = new JPanel();
+//		GridLayout cuadrados = new GridLayout(lab.getDim(), lab.getDim());
+//		// JButton boton = new JButton();
+//		cuadrados.setColumns(lab.getDim());
+//		cuadrados.setHgap(lab.getDim());
+//		// Image imagenFuente =
+//		// Toolkit.getDefaultToolkit().getImage("agua.jpg");
+//
+//		estado.setLayout(cuadrados);
+//
+//		for (int i = 0; i < lab.getDim(); i++) {
+//			for (int j = 0; j < lab.getDim(); j++) {
+//				if (p.getPosX() == i && p.getPosY() == j) {
+//					JButton jb = new JButton();
+//					jb.setName("b" + i + "," + j);
+//					jb.setIcon(caballeroIcon);
+//					botones.add(jb);
+//					estado.add(jb);
+//				} else {
+//					if (lab.checkPos(new Posicion(i, j))) {
+//						JButton jb = new JButton();
+//						jb.setName("b" + i + "," + j);
+//						jb.setIcon(hierbaIcon);
+//						botones.add(jb);
+//						estado.add(jb);
+//					} else {
+//						JButton jb = new JButton();
+//						jb.setName("b" + i + "," + j);
+//						jb.setIcon(aguaIcon);
+//						botones.add(jb);
+//						estado.add(jb);
+//					}
+//				}
+//			}
+//		}
+//		return estado;
+//	}
 
-		JPanel estado = new JPanel();
-		GridLayout cuadrados = new GridLayout(lab.getDim(), lab.getDim());
-		// JButton boton = new JButton();
-		cuadrados.setColumns(lab.getDim());
-		cuadrados.setHgap(lab.getDim());
-		// Image imagenFuente =
-		// Toolkit.getDefaultToolkit().getImage("agua.jpg");
-
-		estado.setLayout(cuadrados);
-
-		for (int i = 0; i < lab.getDim(); i++) {
-			for (int j = 0; j < lab.getDim(); j++) {
-				if (p.getPosX() == i && p.getPosY() == j) {
-					JButton jb = new JButton();
-					jb.setName("b" + i + "," + j);
-					jb.setIcon(caballeroIcon);
-					botones.add(jb);
-					estado.add(jb);
-				} else {
-					if (lab.checkPos(new Posicion(i, j))) {
-						JButton jb = new JButton();
-						jb.setName("b" + i + "," + j);
-						jb.setIcon(hierbaIcon);
-						botones.add(jb);
-						estado.add(jb);
-					} else {
-						JButton jb = new JButton();
-						jb.setName("b" + i + "," + j);
-						jb.setIcon(aguaIcon);
-						botones.add(jb);
-						estado.add(jb);
-					}
-				}
-			}
-		}
-		return estado;
-	}
+//	public void rePinta() {
+//		ImageIcon aguaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/agua.jpg");
+//		ImageIcon hierbaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/hierba.jpg");
+//		ImageIcon caballeroIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/caballero.jpg");
+//
+//		Posicion p = (Posicion) estadoactual;
+//
+//		lienzo = new JPanel();
+//		GridLayout cuadrados = new GridLayout(lab.getDim(), lab.getDim());
+//		cuadrados.setColumns(lab.getDim());
+//		cuadrados.setHgap(lab.getDim());
+//
+//		lienzo.setLayout(cuadrados);
+//
+//		for (int i = 0; i < lab.getDim(); i++) {
+//			for (int j = 0; j < lab.getDim(); j++) {
+//				if (p.getPosX() == i && p.getPosY() == j) {
+//					JButton jb = new JButton();
+//					jb.setName("b" + i + "," + j);
+//					jb.setIcon(caballeroIcon);
+//					lienzo.add(jb);
+//				} else {
+//					if (lab.checkPos(new Posicion(i, j))) {
+//						JButton jb = new JButton();
+//						jb.setName("b" + i + "," + j);
+//						jb.setIcon(hierbaIcon);
+//						lienzo.add(jb);
+//					} else {
+//						JButton jb = new JButton();
+//						jb.setName("b" + i + "," + j);
+//						jb.setIcon(aguaIcon);
+//						lienzo.add(jb);
+//					}
+//				}
+//			}
+//		}
+//		lienzo.repaint();
+//	}
 
 	public void rePinta() {
-		ImageIcon aguaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/agua.jpg");
-		ImageIcon hierbaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/hierba.jpg");
-		ImageIcon caballeroIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/caballero.jpg");
-
-		Posicion p = (Posicion) estadoactual;
-
-		lienzo = new JPanel();
-		GridLayout cuadrados = new GridLayout(lab.getDim(), lab.getDim());
-		cuadrados.setColumns(lab.getDim());
-		cuadrados.setHgap(lab.getDim());
-
-		lienzo.setLayout(cuadrados);
-
-		for (int i = 0; i < lab.getDim(); i++) {
-			for (int j = 0; j < lab.getDim(); j++) {
-				if (p.getPosX() == i && p.getPosY() == j) {
-					JButton jb = new JButton();
-					jb.setName("b" + i + "," + j);
-					jb.setIcon(caballeroIcon);
-					lienzo.add(jb);
-				} else {
-					if (lab.checkPos(new Posicion(i, j))) {
-						JButton jb = new JButton();
-						jb.setName("b" + i + "," + j);
-						jb.setIcon(hierbaIcon);
-						lienzo.add(jb);
-					} else {
-						JButton jb = new JButton();
-						jb.setName("b" + i + "," + j);
-						jb.setIcon(aguaIcon);
-						lienzo.add(jb);
-					}
-				}
-			}
-		}
-		lienzo.repaint();
-	}
-
-	public void rePinta2() {
-		ImageIcon aguaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/agua.jpg");
-		ImageIcon hierbaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/hierba.jpg");
-		ImageIcon caballeroIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/caballero.jpg");
-		if (botones!=null){
-			Posicion p = (Posicion) estadoactual;
-			// generamos el nombre del boton
-			String nomBoton = "b"+p.getPosX()+","+p.getPosY();
-			Iterator<JButton> it = botones.iterator();
-			while(it.hasNext()){
-				JButton boton = it.next();
-				if(boton.getIcon().toString().equals(caballeroIcon.toString())){
-					String str = boton.getName();
-					StringTokenizer tokenizer = new StringTokenizer(str,",");
-					String str2 = tokenizer.nextToken();
-					String str3 = tokenizer.nextToken();
-					str2 = str2.substring(1, str2.length());
-					Posicion pos = new Posicion(Integer.parseInt(str2),Integer.parseInt(str3));
-					lab.checkPos(pos);
-					if (lab.checkPos(pos)) {
-						boton.setIcon(hierbaIcon);
-					} else {
-						boton.setIcon(aguaIcon);
-					}
-				}
-				if(boton.getName().equals(nomBoton)){
-					boton.setIcon(caballeroIcon);
-				}
-				
-			}
-		}
+		lienzo.rePinta(estadoactual);
 	}
 
 }
