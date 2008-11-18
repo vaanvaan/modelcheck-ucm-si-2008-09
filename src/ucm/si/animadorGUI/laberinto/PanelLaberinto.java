@@ -11,8 +11,7 @@ import javax.swing.JPanel;
 
 import ucm.si.Laberinto.Laberinto;
 import ucm.si.Laberinto.Posicion;
-
-public class PanelLaberinto<S> extends Panel<S>{
+public class PanelLaberinto extends Panel<Posicion>{
 	
 
 	private Laberinto lab;
@@ -22,13 +21,11 @@ public class PanelLaberinto<S> extends Panel<S>{
 		lab = l;
 	}
 	@Override
-	public void pintaEstado(S s) {
+	public void pintaEstado(Posicion p) {
 		ImageIcon aguaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/agua.jpg");
 		ImageIcon hierbaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/hierba.jpg");
 		ImageIcon caballeroIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/caballero.jpg");
 		botones = new ArrayList<JButton>((lab.getDim()^2)); //al menos va a tener dim x dim
-		Posicion p = (Posicion) s;
-
 		JPanel estado = this;
 		GridLayout cuadrados = new GridLayout(lab.getDim(), lab.getDim());
 		// JButton boton = new JButton();
@@ -36,7 +33,7 @@ public class PanelLaberinto<S> extends Panel<S>{
 		cuadrados.setHgap(lab.getDim());
 		// Image imagenFuente =
 		// Toolkit.getDefaultToolkit().getImage("agua.jpg");
-
+		
 		estado.setLayout(cuadrados);
 
 		for (int i = 0; i < lab.getDim(); i++) {
@@ -68,13 +65,12 @@ public class PanelLaberinto<S> extends Panel<S>{
 	}
 
 	@Override
-	public void rePinta(S s) {
+	public void rePinta(Posicion p) {
 
 		ImageIcon aguaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/agua.jpg");
 		ImageIcon hierbaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/hierba.jpg");
 		ImageIcon caballeroIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/caballero.jpg");
 		if (botones!=null){
-			Posicion p = (Posicion) s;
 			// generamos el nombre del boton
 			String nomBoton = "b"+p.getPosX()+","+p.getPosY();
 			Iterator<JButton> it = botones.iterator();
