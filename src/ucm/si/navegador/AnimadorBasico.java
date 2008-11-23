@@ -52,7 +52,7 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
         return op;
     }
 
-    @Override
+    
     public void manejaAccion(Avanza<S> accion) {
         //System.out.println("--avanza---->" + accion.getEstado());                
         //List<S> listapos = navigator.damePosibles();
@@ -64,7 +64,7 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
         pintaconsola();
     }
 
-    @Override
+    
     public void manejaAccion(GoToEstado<S> accion) {
         // TODO Auto-generated method stub
         System.out.println("--goto---->" + accion.getEstado());
@@ -77,7 +77,7 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
         pintaconsola();
     }
 
-    @Override
+    
     public void manejaAccion(Retrocede<S> accion) {
         //navigator.Retrocede();
         estadoactual = accion.getEstado();

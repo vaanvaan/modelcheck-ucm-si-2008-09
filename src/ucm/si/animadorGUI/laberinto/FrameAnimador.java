@@ -26,8 +26,8 @@ public class FrameAnimador<S> extends JFrame {
 	 * 
 	 */
 	/*
-	 * Métodos que metan mano al lienzo --separarlos de los botones.
-	 * Clase Abstracta que herede de Jpanel con esos métodos.
+	 * Mï¿½todos que metan mano al lienzo --separarlos de los botones.
+	 * Clase Abstracta que herede de Jpanel con esos mï¿½todos.
 	 * otra clase que herede de a la abstracta
 	 * 
 	 * 
@@ -36,7 +36,7 @@ public class FrameAnimador<S> extends JFrame {
 	private Navegador<S> nav;
 	private Panel<S> lienzo;
 	private S estadoactual;
-	private Laberinto lab;
+	//private Laberinto lab;
 	private ArrayList<JButton> botones;
 
 	public S getEstadoactual() {
@@ -55,7 +55,7 @@ public class FrameAnimador<S> extends JFrame {
 		this.lienzo = lienzo;
 	}
 
-	public FrameAnimador(final AnimadorFrame control) {
+	public FrameAnimador(final AnimadorFrame control, Drawer dw, Contexto cntxt) {
 		// Estado S;
 		this.setTitle("Animador v1");
 		ActionListener actionListener = new ActionListener() {
@@ -78,7 +78,7 @@ public class FrameAnimador<S> extends JFrame {
 				control.aplicaRetrocede();
 			}
 		};
-		lab = control.getLab();
+		//lab = control.getLab();
 		estadoactual = (S) control.getEstadoactual();
 		JPanel pane = new JPanel();
 		pane.setLayout(new GridLayout());
@@ -86,9 +86,12 @@ public class FrameAnimador<S> extends JFrame {
 		JButton boton1 = new JButton("Avanzar");
 		JButton boton2 = new JButton("Go To");
 		JButton boton3 = new JButton("Retroceder");
-		lienzo = (Panel<S>) lab.getRepresentacion();
-		lienzo.pintaEstado(estadoactual);
-		lienzo.setSize(200, 200);
+		//lienzo = (Panel<S>) lab.getRepresentacion();
+                this.lienzo = new PanelLaberinto<S>(cntxt);
+                this.lienzo.setContexto(cntxt);
+                this.lienzo.setDrawer(dw);
+		this.lienzo.pintaEstado(estadoactual);
+		this.lienzo.setSize(200, 200);
 		boton1.setHorizontalTextPosition(SwingConstants.CENTER);
 		boton2.setHorizontalTextPosition(SwingConstants.CENTER);
 		boton3.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -106,7 +109,7 @@ public class FrameAnimador<S> extends JFrame {
 		c.add(lienzo, BorderLayout.CENTER);
 		this.getContentPane().add(new JScrollPane(pane), BorderLayout.SOUTH);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(lab.getDim()*50, lab.getDim()*40);
+		//this.setSize(lab.getDim()*50, lab.getDim()*40);
 		this.setVisible(true);
 
 	}
@@ -209,5 +212,10 @@ public class FrameAnimador<S> extends JFrame {
 	public void rePinta() {
 		lienzo.rePinta(estadoactual);
 	}
+        
+        public void setDrawer(Drawer<S> dw)
+        {
+            lienzo.setDrawer(dw);
+        }
 
 }
