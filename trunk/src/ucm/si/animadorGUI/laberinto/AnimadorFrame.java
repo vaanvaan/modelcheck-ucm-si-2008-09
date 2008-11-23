@@ -23,15 +23,19 @@ import ucm.si.navegador.events.Avanza;
 import ucm.si.navegador.events.GoToEstado;
 import ucm.si.navegador.events.Retrocede;
 
-public class AnimadorFrame<S> extends AnimadorInterface<S> {
+public class AnimadorFrame<S> extends AnimadorInterface<S> 
+{
 	private S estadoactual;
 	private static Laberinto lab;
-	FrameAnimador<Posicion> frame;
-	public AnimadorFrame(Navegador<S> n) {
+	FrameAnimador<S> frame;
+	
+        public AnimadorFrame(Navegador<S> n, Drawer<S> dw, Contexto cntxt) 
+        {
 		super(n);
-		super.navigator = n;
-        this.estadoactual = navigator.dameInicial();
-        frame = new FrameAnimador(this);
+            
+            this.estadoactual = navigator.dameInicial();
+            this.frame = new FrameAnimador(this, dw, cntxt);
+            //this.frame.setDrawer(dw);
 	}
 
 	/**
@@ -40,7 +44,7 @@ public class AnimadorFrame<S> extends AnimadorInterface<S> {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		lab = new Laberinto(20);
-		ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>();
+	DefaultModelChecker<Posicion> m = new DefaultModelChecker<Posicion>();
         Posicion pos = new Posicion(1, 1);
         LaberintoPropo prop = new LaberintoPropo(pos);
         prop.setLab(lab);
@@ -56,32 +60,39 @@ public class AnimadorFrame<S> extends AnimadorInterface<S> {
             System.out.println("La formula es falsa.");
             nav = new Navegador<Posicion>(res.getContraejemplo());
         }
-        AnimadorFrame<Posicion> anim = new AnimadorFrame<Posicion>(nav);
+        ContextoLaberinto contxt = new ContextoLaberinto();
+        contxt.setLab(lab);
+        AnimadorFrame<Posicion> anim = new AnimadorFrame<Posicion>(nav, new DrawerLaberinto(), contxt);
 	}
 
-	@Override
+        public void setDrawer(Drawer<S> dw)
+        {
+            this.frame.setDrawer(dw);
+        }
+        
+	
 	public void manejaAccion(Avanza<S> accion) {
 		// TODO Auto-generated method stub
 		estadoactual = accion.getEstado();
 		this.printRecorrido();
-		frame.setEstadoactual((Posicion) estadoactual);
+		frame.setEstadoactual(estadoactual);
 		frame.rePinta();
 	}
 
-	@Override
+	
 	public void manejaAccion(GoToEstado<S> accion) {
 		// TODO Auto-generated method stub
 		estadoactual = accion.getEstado();
 		this.printRecorrido();
 	}
 
-	@Override
+	
 	public void manejaAccion(Retrocede<S> accion) {
 		// TODO Auto-generated method stub
 		if(accion.getEstado()!=null)
 		estadoactual = accion.getEstado();
 		this.printRecorrido();
-		frame.setEstadoactual((Posicion) estadoactual);
+		frame.setEstadoactual(estadoactual);
 		frame.rePinta();
 	}
 	
@@ -105,14 +116,14 @@ public class AnimadorFrame<S> extends AnimadorInterface<S> {
 		this.estadoactual = estadoactual;
 	}
 
-	public Laberinto getLab() {
+	/*public Laberinto getLab() {
 		return lab;
-	}
+	}*/
 	
 	public void aplicaAvanza(){
 		Iterator<S> it = this.navigator.damePosibles().iterator();
 		S s = it.next();
-        this.navigator.Avanza(s);
+                this.navigator.Avanza(s);
 	}
 
 	public void aplicaRetrocede(){
@@ -127,7 +138,7 @@ public class AnimadorFrame<S> extends AnimadorInterface<S> {
 			S aux = it.next();
 			posibilidades.add(aux.toString());
 		}
-		String sel= (String) JOptionPane.showInputDialog(null,"Posibles estados:","Seleccione estado siguiente",JOptionPane.QUESTION_MESSAGE,null, posibilidades.toArray(),"Elija una opción.");
+		String sel= (String) JOptionPane.showInputDialog(null,"Posibles estados:","Seleccione estado siguiente",JOptionPane.QUESTION_MESSAGE,null, posibilidades.toArray(),"Elija una opciï¿½n.");
 		it = this.navigator.damePosibles().iterator();
 		boolean ok =false;
 		while(it.hasNext()&&!ok){

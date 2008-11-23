@@ -9,11 +9,15 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Pilar
+ * @author Admin
  */
 public abstract class Panel<S> extends JPanel
 {
+    protected Contexto contexto;
+    protected Drawer<S> drawer;
     public abstract void pintaEstado(S s);
     public abstract void rePinta(S s);
+    public abstract void setDrawer(Drawer<S> dw);
+    public abstract void setContexto(Contexto cntxt);
 
 }
