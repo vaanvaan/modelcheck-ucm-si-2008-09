@@ -52,6 +52,8 @@ public abstract class GrafoCaminos<S>
     
     abstract public int size();
     
+    abstract public Set<S> getEstados();
+    
     @Override
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();

@@ -226,7 +226,7 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
     }
 
     public static void main(String[] args) {        
-        Laberinto lab = new Laberinto(30);
+        Laberinto lab = new Laberinto(13);
         ModelChecker<Posicion> m = new DefaultModelChecker<Posicion>();
         Posicion pos = new Posicion(1, 1);
         LaberintoPropo prop = new LaberintoPropo(pos);
