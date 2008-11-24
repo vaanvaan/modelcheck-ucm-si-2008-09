@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 import ucm.si.Checker.util.Roseta;
 import ucm.si.Checker.util.StateAndLabel;
 import ucm.si.Checker.util.StateLabeledList;
-import ucm.si.Laberinto.Posicion;
 
 /**
  *

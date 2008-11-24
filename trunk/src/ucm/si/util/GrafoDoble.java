@@ -157,5 +157,10 @@ class GrafoDoble<S> extends GrafoCaminos<S> {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
+    public Set<S> getEstados() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
    
 }

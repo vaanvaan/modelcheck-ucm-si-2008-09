@@ -32,7 +32,6 @@ public class Laberinto implements Interprete<Posicion> {
     // se realiza en la posicion 0,0
     private boolean[][] laberinto;
     private int dim;
-   // private PanelLaberinto<Posicion> panel;
 
     public Laberinto(int dim) {
         this.dim = dim;
@@ -40,7 +39,7 @@ public class Laberinto implements Interprete<Posicion> {
         laberinto = new boolean[dim][dim];
         for (int j = 0; j < dim; j++) {
             for (int i = 0; i < dim; i++) {
-                laberinto[i][j] = r.nextBoolean();
+                laberinto[i][j] = true;//r.nextBoolean();
             }
         }
         boolean seguir = true;
@@ -66,7 +65,6 @@ public class Laberinto implements Interprete<Posicion> {
         laberinto[0][4] = false;*/
         //laberinto[3][0] = false;
 //        laberinto[dim-1][dim-1] = false;
-       // panel = new PanelLaberinto<Posicion>();
 
     }
 
@@ -209,10 +207,6 @@ public class Laberinto implements Interprete<Posicion> {
     	return res;
     }
     
-   // public PanelLaberinto<Posicion> getRepresentacion(){
-	//	return panel;
-    	
-  //  }
     
     public static void main(){
         Interprete<Posicion> lab = new Laberinto(10);

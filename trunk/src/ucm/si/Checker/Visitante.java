@@ -18,6 +18,7 @@ import ucm.si.basico.ecuaciones.AX;
 import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.EU;
 import ucm.si.basico.ecuaciones.EX;
+import ucm.si.basico.ecuaciones.Formula;
 import ucm.si.basico.ecuaciones.Not;
 import ucm.si.basico.ecuaciones.Or;
 import ucm.si.basico.ecuaciones.Proposicion;
@@ -250,26 +251,22 @@ public class Visitante<S> {
                 new LinkedBlockingQueue2<NodoVisitados<S>>();
         LinkedBlockingQueue2<S> colaEanterior =
                 new LinkedBlockingQueue2<S>();
-        GrafoCaminos<S> ej = new GrafoUnico<S>(estado);
-        LinkedBlockingQueue2<GrafoCaminos<S>> colacej =
-                new LinkedBlockingQueue2<GrafoCaminos<S>>();
+        GrafoCaminos<S> ej = new GrafoUnico<S>();
+        //GrafoCaminos<S> cej = new GrafoUnico<S>();
         LinkedBlockingQueue2<S> colaEstados =
-                new LinkedBlockingQueue2<S>(interprete.transitar(estado));
-        for (int i = colaEstados.size(); i > 0; i--) {
-            colaVisitados.offer(new NodoVisitados<S>());
-            colaEanterior.offer(eraiz);
-            colacej.offer(new GrafoUnico<S>(eraiz));
-        }
+                new LinkedBlockingQueue2<S>();
+        colaEstados.offer(eraiz);
+        NodoVisitados<S> visitados = new NodoVisitados<S>();
+        colaVisitados.offer(visitados);
+        colaEanterior.offer(null);
         boolean encontrado = false;
         S eanterior;
-        GrafoCaminos<S> cej = null, cejauxf2;
-        NodoVisitados<S> visitados;
+        GrafoCaminos<S> cejauxf2;        
         TreeSet<S> visitadosGlobal = new TreeSet<S>();
         boolean visitado, cumplef2, cumplef1;
         while (!encontrado && !colaEstados.isEmpty()) {
             estado = colaEstados.poll();
             eanterior = colaEanterior.poll();
-            cej = colacej.poll();
             visitados = colaVisitados.poll();
             visitado = visitados.contains(estado);
             visitados.add(estado);
@@ -284,19 +281,23 @@ public class Visitante<S> {
             }
             cumplef2 = resParcial.equals(Resultado.COD_TRUE);
             if (cumplef2) {
-                ej.setArista(eanterior, estado);
+                if (eanterior != null) {
+                    ej.setArista(eanterior, estado);
+                }
                 if (!visitado) {
                     ej.union(resParcial.getEjemplo());
                 }
             } else if (visitado) {
                 encontrado = true;
-                cej.setArista(eanterior, estado);
+            //if (eanterior!=null) cej.setArista(eanterior, estado);
             } else {
                 cejauxf2 = resParcial.getContraejemplo();
-                ej.setArista(eanterior, estado);
-                cej.setArista(eanterior, estado);
+                if (eanterior != null) {
+                    ej.setArista(eanterior, estado);
+                //cej.setArista(eanterior, estado);
+                }
                 ej.union(cejauxf2);
-                cej.union(cejauxf2);
+                //cej.union(cejauxf2);
                 if (!tabFormulas.tieneEtiqueta(estado, au.getOperando(0))) {
                     au.getOperando(0).accept(this);
                 } else {
@@ -308,7 +309,7 @@ public class Visitante<S> {
                 cumplef1 = resParcial.equals(Resultado.COD_TRUE);
                 if (cumplef1) {
                     ej.union(resParcial.getEjemplo());
-                    cej.union(resParcial.getEjemplo());
+                    //cej.union(resParcial.getEjemplo());
                     List<S> listaHijos = interprete.transitar(estado);
                     for (Iterator<S> it = listaHijos.iterator(); it.hasNext();) {
                         S s = it.next();
@@ -316,14 +317,13 @@ public class Visitante<S> {
                             colaEstados.offer(s);
                             colaEanterior.offer(estado);
                             colaVisitados.offer(new NodoVisitados<S>(visitados));
-                            colacej.offer(GrafoCaminos.CreateGrafo(cej));
                         } else {
                             ej.setArista(estado, s);
                         }
                     }
                 } else {//if (resParcial.equals(Resultado.COD_FALSE)) {
                     encontrado = true;
-                    cej.union(resParcial.getContraejemplo());
+                //cej.union(resParcial.getContraejemplo());
                 }
             }
         }
@@ -332,11 +332,42 @@ public class Visitante<S> {
             resParcial.setResultado(Resultado.COD_TRUE);
             resParcial.setEjemplo(ej);
         } else {
+            GrafoCaminos<S> cej =
+                    busquedaDijkstra(visitados,au.getOperando(0),au.getOperando(1));
             cej.setInicio(eraiz);
             resParcial.setResultado(Resultado.COD_FALSE);
             resParcial.setContraejemplo(cej);
         }
         estado = eraiz;
+    }
+
+    GrafoCaminos<S> busquedaDijkstra(NodoVisitados<S> nodovisitadosini,
+                Formula f1, Formula f2) {
+        NodoVisitados<S> nodo = nodovisitadosini;
+        GrafoCaminos<S> g = new GrafoUnico<S>();
+        S s,shijo = null;
+        Resultado r;
+        while (nodo != null) {
+            s = nodo.set;
+            r = tabFormulas.getResultado(s, f2);
+            if (r.getResultado().equals(Resultado.COD_TRUE)){
+                g.union(r.getEjemplo());
+            }else{
+                g.union(r.getContraejemplo());
+                r = tabFormulas.getResultado(s, f1);
+                if (r.getResultado().equals(Resultado.COD_TRUE)){
+                    g.union(r.getEjemplo());
+                } else {
+                    g.union(r.getContraejemplo());
+                }
+            }
+            if (shijo!=null){
+                g.setArista(s, shijo);
+            }
+            shijo = s;
+            nodo = nodo.ant;
+        }
+        return g;
     }
 
     public void visita(EU eu) {

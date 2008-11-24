@@ -22,28 +22,32 @@ import java.util.TreeSet;
 
 public class GrafoUnico<S> extends GrafoCaminos<S> implements Comparable<GrafoUnico<S>>
 {
-    private LinkedList<GrafoCaminos<S>> ant = new LinkedList<GrafoCaminos<S>>();
+    //private LinkedList<GrafoCaminos<S>> ant = new LinkedList<GrafoCaminos<S>>();
     private TLG<S> camino;
+    private TreeSet<S> estados;
     private S inicial;
     private static int id = 0;
     private int numid;
     
     public GrafoUnico()
     {
-        this.camino = new TLG<S>(); 
+        this.camino = new TLG<S>();        
+        this.estados = new TreeSet<S>();
         numid = id++;
         // Genera un grafo unico
     }
     
     public GrafoUnico(S eini){
         this.camino = new TLG<S>();
+        this.estados = new TreeSet<S>();
         this.setS(eini, new TreeSet<S>());
         this.setInicio(eini);        
     }
 
     public GrafoUnico(GrafoCaminos<S> g){
-        this.ant.add(g);
         this.camino = new TLG();
+        this.estados = new TreeSet<S>();
+        this.union(g);
         this.inicial = g.getInicio();
     }
     
@@ -51,6 +55,7 @@ public class GrafoUnico<S> extends GrafoCaminos<S> implements Comparable<GrafoUn
     public void setArista(S eini, S efin) 
     {
         this.camino.setArista(eini, efin);
+        this.estados.add(eini);
     }
 
     @Override
@@ -64,11 +69,6 @@ public class GrafoUnico<S> extends GrafoCaminos<S> implements Comparable<GrafoUn
         if (this.camino.getHijo(e)!=null)
             s = this.camino.getHijo(e);
         else s = new TreeSet<S>();
-        for (int i=0; i < ant.size();i++){
-            Set<S> h = ant.get(i).getHijos(e);
-            if ((h!=null)&&(h.size()>0))
-                    s.addAll(h);
-        }        
         return s;
     }
 
@@ -76,6 +76,7 @@ public class GrafoUnico<S> extends GrafoCaminos<S> implements Comparable<GrafoUn
     public void setS(S e, Set<S> Hijos) 
     {
         this.camino.setAristas(e, Hijos);
+        this.estados.add(e);
     }
 
     @Override
@@ -85,17 +86,17 @@ public class GrafoUnico<S> extends GrafoCaminos<S> implements Comparable<GrafoUn
 
     @Override
     public void union(GrafoCaminos<S> g) {
-        ant.add(g);
-        
+        Set<S> s = g.getEstados();
+        for (Iterator<S> it = s.iterator(); it.hasNext();) {
+            S s1 = it.next();
+            this.camino.addAristas(s1, g.getHijos(s1));
+            this.estados.add(s1);
+        }
     }
 
     @Override
     public int size() {
-        int suma = 0;
-        GrafoCaminos<S>[] ant2 = (GrafoCaminos<S>[]) ant.toArray();
-        for (int i =0; i < ant.size();i++)
-            suma = suma + ant2[i].size();
-        return this.camino.size()+suma;
+        return this.camino.size();
     }
 
     public int compareTo(GrafoUnico<S> o) {
@@ -104,6 +105,11 @@ public class GrafoUnico<S> extends GrafoCaminos<S> implements Comparable<GrafoUn
         else if (this.numid<o.numid)
             return -1;
         else return 0;
+    }
+
+    @Override
+    public Set<S> getEstados() {
+        return this.estados;
     }
 
    
