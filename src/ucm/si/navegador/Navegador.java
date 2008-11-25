@@ -6,10 +6,14 @@ package ucm.si.navegador;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
+
+import ucm.si.Checker.util.Roseta;
+import ucm.si.Checker.util.StateAndLabel;
 import ucm.si.navegador.events.Avanza;
 import ucm.si.navegador.events.GoToEstado;
 import ucm.si.navegador.events.Retrocede;
@@ -23,6 +27,7 @@ public class Navegador<S> extends NavigatorInterface<S> {
 
     private GrafoCaminos<S> grafo;
     private Stack<S> recorrido;
+    private Roseta<S> roseta;
 
     public GrafoCaminos<S> getGrafo() {
         return grafo;
@@ -32,10 +37,11 @@ public class Navegador<S> extends NavigatorInterface<S> {
         this.grafo = grafo;
     }
 
-    public Navegador(GrafoCaminos<S> grafo) {
+    public Navegador(GrafoCaminos<S> grafo, Roseta<S> roseta) {
         this.grafo = grafo;
         this.recorrido = new Stack<S>();
         this.recorrido.push(this.grafo.getInicio());
+        this.roseta = roseta;
     }
 
     
@@ -85,15 +91,24 @@ public class Navegador<S> extends NavigatorInterface<S> {
     }
 
     @Override
-    public Set<S> damePosibles() {
+    public Set<StateAndLabel<S>> damePosibles() throws Exception { 
         S e = this.recorrido.peek();
         if(e == null)
         {
-            Set<S> l = new TreeSet<S>();
-            l.add(this.grafo.getInicio());
+            Set<StateAndLabel<S>> l = new TreeSet<StateAndLabel<S>>();
+            l.add(this.roseta.getSAL(e, this.grafo.getInicio()));
+            
             return l;
         }
-        return this.grafo.getHijos(e);
+        
+        Iterator<S> laux = this.grafo.getHijos(e).iterator();
+        TreeSet<StateAndLabel<S>> taux = new TreeSet<StateAndLabel<S>>();
+        while(laux.hasNext())
+        {
+        	taux.add(this.roseta.getSAL(e,  laux.next()));
+        }
+        
+        return taux;
     }
 
     @Override

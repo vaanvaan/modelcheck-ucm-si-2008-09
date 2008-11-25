@@ -175,7 +175,9 @@ public class InterpreteWrapper<S> implements Interprete<S> {
     
     public Roseta<S> getRoseta()
     {
-        Roseta<S> roseta = (Roseta<S>) new HashMap<S, List<StateAndLabel<S>>>();
+//        Roseta<S> roseta = (Roseta<S>) new HashMap<S, List<StateAndLabel<S>>>();
+        
+        Roseta<S> roseta = new Roseta<S>();
         
         Set<S> set = this.hijos.keySet();
         Iterator<S> it = set.iterator();

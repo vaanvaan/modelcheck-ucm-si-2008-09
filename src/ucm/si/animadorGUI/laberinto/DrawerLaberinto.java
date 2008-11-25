@@ -25,7 +25,7 @@ public class DrawerLaberinto extends Drawer<Posicion> {
     private ArrayList<JButton> botones;
     
     @Override
-    public void pintaEstado(Posicion s, Panel<Posicion> panel) {
+    public void pintaEstado(Posicion s, PanelInterface<Posicion> panel) {
                 ContextoLaberinto context =  (ContextoLaberinto) super.contexto;
                 this.lab = context.getLab();
                 this.estado = s;
@@ -73,7 +73,7 @@ public class DrawerLaberinto extends Drawer<Posicion> {
     }
 
     @Override
-    public void rePinta(Posicion p, Panel<Posicion> panel) {
+    public void rePinta(Posicion p, PanelInterface<Posicion> panel) {
                 
                 
                 ContextoLaberinto context =  (ContextoLaberinto) super.contexto;

@@ -16,7 +16,7 @@ import ucm.si.Checker.InterpreteWrapper;
 import ucm.si.Checker.ModelChecker;
 import ucm.si.Checker.Resultado;
 import ucm.si.Checker.util.StateLabeledList;
-import ucm.si.animadorGUI.laberinto.PanelLaberinto;
+import ucm.si.animadorGUI.laberinto.PanelJPane;
 import ucm.si.basico.ecuaciones.AU;
 import ucm.si.basico.ecuaciones.Formula;
 import ucm.si.basico.ecuaciones.Not;

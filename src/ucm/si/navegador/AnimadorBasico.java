@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import ucm.si.Checker.DefaultModelChecker;
 import ucm.si.Checker.ModelChecker;
 import ucm.si.Checker.Resultado;
+import ucm.si.Checker.util.StateAndLabel;
 import ucm.si.Laberinto.Final;
 import ucm.si.Laberinto.Laberinto;
 import ucm.si.Laberinto.LaberintoPropo;
@@ -134,17 +135,24 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
     }
 
     public void printOpciones() {
-        Iterator<S> it = this.navigator.damePosibles().iterator();
-        int i = 0;
-        while (it.hasNext()) {
-            S s = it.next();
-            System.out.println("Opcion " + i + " : " + s.toString());
-            i++;
-        }
-        int pos = this.navigator.dameRecorrido().size() - 1;
-        if (pos > 0) {
-            System.out.println("Opcion " + i + " : " + "RETROCEDER a estado : " + this.navigator.dameRecorrido().get(pos - 1));
-        }
+        Iterator<StateAndLabel<S>> it;
+		try {
+			it = this.navigator.damePosibles().iterator();
+		
+			int i = 0;
+			while (it.hasNext()) {
+				S s = it.next().getState();
+				System.out.println("Opcion " + i + " : " + s.toString());
+				i++;
+			}
+			int pos = this.navigator.dameRecorrido().size() - 1;
+			if (pos > 0) {
+				System.out.println("Opcion " + i + " : " + "RETROCEDER a estado : " + this.navigator.dameRecorrido().get(pos - 1));
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     public int getOpciones() {
@@ -171,27 +179,40 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
     }
 
     public boolean opcionCorrecta(int op) {
-        Set<S> l = this.navigator.damePosibles();
-        if ((op <= l.size()) && (op >= 0)) {
-            return true;
-        }
+        Set<StateAndLabel<S>> l;
+		try {
+			l = this.navigator.damePosibles();
+		
+			if ((op <= l.size()) && (op >= 0)) {
+				return true;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return false;
+		
     }
 
     public void aplicaOpcion(int op) {
-        if ((op == this.navigator.damePosibles().size()) && (this.navigator.dameRecorrido().size() > 1)) {
-            this.navigator.Retrocede();
-        } else if ((op < this.navigator.damePosibles().size()) &&
-                op >= 0) {
-            Iterator<S> it = this.navigator.damePosibles().iterator();
+        try {
+			if ((op == this.navigator.damePosibles().size()) && (this.navigator.dameRecorrido().size() > 1)) {
+			    this.navigator.Retrocede();
+			} else if ((op < this.navigator.damePosibles().size()) &&
+			        op >= 0) {
+			    Iterator<StateAndLabel<S>> it = this.navigator.damePosibles().iterator();
 
-            int i = 0;
-            while (op > i++) {
-                it.next();
-            }
-            S s = it.next();
-            this.navigator.Avanza(s);
-        }
+			    int i = 0;
+			    while (op > i++) {
+			        it.next();
+			    }
+			    S s = it.next().getState();
+			    this.navigator.Avanza(s);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     public void inicia() {
@@ -238,10 +259,10 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
         Navegador<Posicion> nav;
         if (res.equals(Resultado.COD_TRUE)) {
             System.out.println("La formula es cierta.");
-            nav = new Navegador<Posicion>(res.getEjemplo());
+            nav = new Navegador<Posicion>(res.getEjemplo(), m.getRoseta());
         } else {
             System.out.println("La formula es falsa.");
-            nav = new Navegador<Posicion>(res.getContraejemplo());
+            nav = new Navegador<Posicion>(res.getContraejemplo(), m.getRoseta());
         }
         AnimadorBasico<Posicion> anim = new AnimadorBasico<Posicion>(nav);
 
