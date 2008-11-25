@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Set;
 import java.util.Vector;
+
+import ucm.si.Checker.util.StateAndLabel;
 import ucm.si.navegador.Listener.AccionListener;
 import ucm.si.navegador.events.Accion;
 import ucm.si.navegador.events.Avanza;
@@ -79,7 +81,7 @@ public abstract class NavigatorInterface<S>  //extends Observable
         }
     }
     
-    public abstract Set<S> damePosibles();
+    public abstract Set<StateAndLabel<S>> damePosibles() throws Exception;
     
     public abstract S dameInicial();
     

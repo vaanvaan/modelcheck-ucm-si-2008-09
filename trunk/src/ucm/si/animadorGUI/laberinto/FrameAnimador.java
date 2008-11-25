@@ -7,7 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Stack;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -16,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import ucm.si.Checker.util.StateAndLabel;
 import ucm.si.Laberinto.Laberinto;
 import ucm.si.Laberinto.Posicion;
 import ucm.si.navegador.Navegador;
@@ -34,10 +37,9 @@ public class FrameAnimador<S> extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Navegador<S> nav;
-	private Panel<S> lienzo;
+	private PanelInterface<S> lienzo;
 	private S estadoactual;
-	//private Laberinto lab;
-	private ArrayList<JButton> botones;
+	ComboBoxExtend<S> combo;
 
 	public S getEstadoactual() {
 		return estadoactual;
@@ -51,13 +53,13 @@ public class FrameAnimador<S> extends JFrame {
 		return lienzo;
 	}
 
-	public void setLienzo(Panel lienzo) {
+	public void setLienzo(PanelInterface lienzo) {
 		this.lienzo = lienzo;
 	}
 
-	public FrameAnimador(final AnimadorFrame control, Drawer dw, Contexto cntxt) {
+	public FrameAnimador(final AnimadorGrafico<S> control, Drawer dw, Contexto cntxt) {
 		// Estado S;
-		this.setTitle("Animador v1");
+		
 		ActionListener actionListener = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				FrameAnimador.this.dispose();
@@ -65,12 +67,13 @@ public class FrameAnimador<S> extends JFrame {
 		};
 		ActionListener actionListenerAvanzar = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
-				control.aplicaAvanza();
+				S s = combo.getSelectedItem();//obtenemos el estado siguiente seleccionado
+				control.aplicaAvanza(s);//avanzamos a ese estado
 			}
 		};
 		ActionListener actionListenerGo_to = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
-				control.aplicaGoTo();
+//				control.aplicaGoTo();
 			}
 		};
 		ActionListener actionListenerRetroceder = new ActionListener() {
@@ -78,40 +81,85 @@ public class FrameAnimador<S> extends JFrame {
 				control.aplicaRetrocede();
 			}
 		};
-		//lab = control.getLab();
+		
+		
+		nav = control.getNavigator();
 		estadoactual = (S) control.getEstadoactual();
+		/*
+		 * Sección de construcción de componentes:
+		 * Botones inferiores y sus caracteristicas
+		 */
 		JPanel pane = new JPanel();
 		pane.setLayout(new GridLayout());
-		JButton boton = new JButton("Cerrar");
 		JButton boton1 = new JButton("Avanzar");
-		JButton boton2 = new JButton("Go To");
+		combo = creaComboEstadoActual();
 		JButton boton3 = new JButton("Retroceder");
-		//lienzo = (Panel<S>) lab.getRepresentacion();
-                this.lienzo = new PanelLaberinto<S>(cntxt);
-                this.lienzo.setContexto(cntxt);
-                this.lienzo.setDrawer(dw);
-		this.lienzo.pintaEstado(estadoactual);
-		this.lienzo.setSize(200, 200);
 		boton1.setHorizontalTextPosition(SwingConstants.CENTER);
-		boton2.setHorizontalTextPosition(SwingConstants.CENTER);
 		boton3.setHorizontalTextPosition(SwingConstants.CENTER);
 		boton1.addActionListener(actionListenerAvanzar);
-		boton2.addActionListener(actionListenerGo_to);
 		boton3.addActionListener(actionListenerRetroceder);
-		boton.addActionListener(actionListener);
-		pane.add(lienzo);
 		pane.add(boton1);
-		pane.add(boton2);
+		pane.add(combo);
 		pane.add(boton3);
+		/*
+		 * Sección de tratamiento del panel cuyo objetivo es ser el marco
+		 * donde se va a pintar el estado. 
+		 */
+        lienzo = new PanelJPane<S>(cntxt);
+        lienzo.setContexto(cntxt);
+        lienzo.setDrawer(dw);
+		lienzo.pintaEstado(estadoactual);
+		lienzo.setSize(200, 200);
+		pane.add(lienzo);
+		
+		/*
+		 * Configuración del contenedor.(del propio frame)
+		 */
 		Container c = this.getContentPane();
 		c.setLayout(new BorderLayout());
-		c.add(boton, BorderLayout.NORTH);
 		c.add(lienzo, BorderLayout.CENTER);
 		this.getContentPane().add(new JScrollPane(pane), BorderLayout.SOUTH);
+		this.setTitle("Animador gráfico");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//this.setSize(lab.getDim()*50, lab.getDim()*40);
+		this.setSize(500,500);
 		this.setVisible(true);
 
+	}
+
+	/**
+	 * Método que se encarga de generar el combo con los valores de los posibles movimientos
+	 * de los que se dispone.
+	 * @param control  
+	 * @return
+	 */
+	private ComboBoxExtend<S> creaComboEstadoActual() {
+		//Aqui voy a suponer que puedo tener un vector a partir de dameSiguientes() del navegador
+		Vector<StateAndLabel<S>> siguientes = new Vector<StateAndLabel<S>>();
+		ComboBoxExtend<S> combo = null;
+		try {
+			Iterator it = nav.damePosibles().iterator();
+			while(it.hasNext()){
+				siguientes.add((StateAndLabel<S>) it.next());
+			}
+			combo = new ComboBoxExtend<S>(siguientes);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return combo;
+	}
+	private Vector generaComboVector(){
+		Vector<StateAndLabel<S>> siguientes = new Vector<StateAndLabel<S>>();
+		try {
+			Iterator it = nav.damePosibles().iterator();
+			while(it.hasNext()){
+				siguientes.add((StateAndLabel<S>) it.next());
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return siguientes;
 	}
 
 	public Navegador<S> getNav() {
@@ -122,95 +170,16 @@ public class FrameAnimador<S> extends JFrame {
 		this.nav = nav;
 	}
 
-//	public JPanel pintaEstado() {
-//		/*
-//		 * Pintamos el laberinto.
-//		 */
-//		ImageIcon aguaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/agua.jpg");
-//		ImageIcon hierbaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/hierba.jpg");
-//		ImageIcon caballeroIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/caballero.jpg");
-//		botones = new ArrayList<JButton>((lab.getDim()^2)); //al menos va a tener dim x dim
-//		Posicion p = (Posicion) estadoactual;
-//
-//		JPanel estado = new JPanel();
-//		GridLayout cuadrados = new GridLayout(lab.getDim(), lab.getDim());
-//		// JButton boton = new JButton();
-//		cuadrados.setColumns(lab.getDim());
-//		cuadrados.setHgap(lab.getDim());
-//		// Image imagenFuente =
-//		// Toolkit.getDefaultToolkit().getImage("agua.jpg");
-//
-//		estado.setLayout(cuadrados);
-//
-//		for (int i = 0; i < lab.getDim(); i++) {
-//			for (int j = 0; j < lab.getDim(); j++) {
-//				if (p.getPosX() == i && p.getPosY() == j) {
-//					JButton jb = new JButton();
-//					jb.setName("b" + i + "," + j);
-//					jb.setIcon(caballeroIcon);
-//					botones.add(jb);
-//					estado.add(jb);
-//				} else {
-//					if (lab.checkPos(new Posicion(i, j))) {
-//						JButton jb = new JButton();
-//						jb.setName("b" + i + "," + j);
-//						jb.setIcon(hierbaIcon);
-//						botones.add(jb);
-//						estado.add(jb);
-//					} else {
-//						JButton jb = new JButton();
-//						jb.setName("b" + i + "," + j);
-//						jb.setIcon(aguaIcon);
-//						botones.add(jb);
-//						estado.add(jb);
-//					}
-//				}
-//			}
-//		}
-//		return estado;
-//	}
-
-//	public void rePinta() {
-//		ImageIcon aguaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/agua.jpg");
-//		ImageIcon hierbaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/hierba.jpg");
-//		ImageIcon caballeroIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/caballero.jpg");
-//
-//		Posicion p = (Posicion) estadoactual;
-//
-//		lienzo = new JPanel();
-//		GridLayout cuadrados = new GridLayout(lab.getDim(), lab.getDim());
-//		cuadrados.setColumns(lab.getDim());
-//		cuadrados.setHgap(lab.getDim());
-//
-//		lienzo.setLayout(cuadrados);
-//
-//		for (int i = 0; i < lab.getDim(); i++) {
-//			for (int j = 0; j < lab.getDim(); j++) {
-//				if (p.getPosX() == i && p.getPosY() == j) {
-//					JButton jb = new JButton();
-//					jb.setName("b" + i + "," + j);
-//					jb.setIcon(caballeroIcon);
-//					lienzo.add(jb);
-//				} else {
-//					if (lab.checkPos(new Posicion(i, j))) {
-//						JButton jb = new JButton();
-//						jb.setName("b" + i + "," + j);
-//						jb.setIcon(hierbaIcon);
-//						lienzo.add(jb);
-//					} else {
-//						JButton jb = new JButton();
-//						jb.setName("b" + i + "," + j);
-//						jb.setIcon(aguaIcon);
-//						lienzo.add(jb);
-//					}
-//				}
-//			}
-//		}
-//		lienzo.repaint();
-//	}
 
 	public void rePinta() {
 		lienzo.rePinta(estadoactual);
+		combo.removeAllItems();
+		Vector<StateAndLabel<S>> nuevas = generaComboVector();
+		Iterator it = nuevas.iterator();
+		while (it.hasNext()) {
+			combo.addItem(it.next()); 
+		}
+		this.repaint();
 	}
         
         public void setDrawer(Drawer<S> dw)

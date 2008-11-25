@@ -32,7 +32,7 @@ public abstract class Drawer<S>
         this.estado = estado;
     }
     
-    public abstract void pintaEstado(S s, Panel<S> panel);
-    public abstract void rePinta(S s, Panel<S> panel);
+    public abstract void pintaEstado(S s, PanelInterface<S> pane);
+    public abstract void rePinta(S s, PanelInterface<S> pane);
 
 }

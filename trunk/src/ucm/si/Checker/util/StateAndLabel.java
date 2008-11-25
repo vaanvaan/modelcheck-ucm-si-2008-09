@@ -9,7 +9,7 @@ package ucm.si.Checker.util;
  *
  * @author Pilar
  */
-public class StateAndLabel<S>
+public class StateAndLabel<S> implements Comparable<S>
 {
     private S state;
     private String label;
@@ -68,6 +68,22 @@ public class StateAndLabel<S>
         hash = 59 * hash + (this.label != null ? this.label.hashCode() : 0);
         return hash;
     }
+
+	@Override
+	public int compareTo(S obj) {
+		final int BEFORE = -1;
+	    final int EQUAL = 0;
+	    final int AFTER = 1;
+
+        final StateAndLabel<S> other = (StateAndLabel<S>) obj;
+        if (this.state != other.state && (this.state == null || !this.state.equals(other.state))) {
+            return AFTER;
+        }
+        if (this.label != other.label && (this.label == null || !this.label.equals(other.label))) {
+            return AFTER;
+        }
+        return EQUAL;
+	}
 
 
     
