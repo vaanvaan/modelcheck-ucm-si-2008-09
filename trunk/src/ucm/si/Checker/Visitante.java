@@ -246,128 +246,97 @@ public class Visitante<S> {
     }
 
     public void visita(AU au) {
-        S eraiz = estado;
-        LinkedBlockingQueue2<NodoVisitados<S>> colaVisitados =
-                new LinkedBlockingQueue2<NodoVisitados<S>>();
-        LinkedBlockingQueue2<S> colaEanterior =
-                new LinkedBlockingQueue2<S>();
         GrafoCaminos<S> ej = new GrafoUnico<S>();
-        //GrafoCaminos<S> cej = new GrafoUnico<S>();
-        LinkedBlockingQueue2<S> colaEstados =
-                new LinkedBlockingQueue2<S>();
-        colaEstados.offer(eraiz);
-        NodoVisitados<S> visitados = new NodoVisitados<S>();
-        colaVisitados.offer(visitados);
-        colaEanterior.offer(null);
-        boolean encontrado = false;
-        S eanterior;
-        GrafoCaminos<S> cejauxf2;        
-        TreeSet<S> visitadosGlobal = new TreeSet<S>();
-        boolean visitado, cumplef2, cumplef1;
-        while (!encontrado && !colaEstados.isEmpty()) {
-            estado = colaEstados.poll();
-            eanterior = colaEanterior.poll();
-            visitados = colaVisitados.poll();
-            visitado = visitados.contains(estado);
-            visitados.add(estado);
-            visitadosGlobal.add(estado);
-            if (!tabFormulas.tieneEtiqueta(estado, au.getOperando(1))) {
-                au.getOperando(1).accept(this);
-            } else {
-                Resultado r = tabFormulas.getResultado(estado, au.getOperando(1));
-                resParcial.setResultado(r.getResultado());
-                resParcial.setContraejemplo(r.getContraejemplo());
-                resParcial.setEjemplo(r.getEjemplo());
-            }
-            cumplef2 = resParcial.equals(Resultado.COD_TRUE);
-            if (cumplef2) {
-                if (eanterior != null) {
-                    ej.setArista(eanterior, estado);
-                }
-                if (!visitado) {
-                    ej.union(resParcial.getEjemplo());
-                }
-            } else if (visitado) {
-                encontrado = true;
-            //if (eanterior!=null) cej.setArista(eanterior, estado);
-            } else {
-                cejauxf2 = resParcial.getContraejemplo();
-                if (eanterior != null) {
-                    ej.setArista(eanterior, estado);
-                //cej.setArista(eanterior, estado);
-                }
-                ej.union(cejauxf2);
-                //cej.union(cejauxf2);
-                if (!tabFormulas.tieneEtiqueta(estado, au.getOperando(0))) {
-                    au.getOperando(0).accept(this);
-                } else {
-                    Resultado r = tabFormulas.getResultado(estado, au.getOperando(0));
-                    resParcial.setResultado(r.getResultado());
-                    resParcial.setContraejemplo(r.getContraejemplo());
-                    resParcial.setEjemplo(r.getEjemplo());
-                }
-                cumplef1 = resParcial.equals(Resultado.COD_TRUE);
-                if (cumplef1) {
-                    ej.union(resParcial.getEjemplo());
-                    //cej.union(resParcial.getEjemplo());
-                    List<S> listaHijos = interprete.transitar(estado);
-                    for (Iterator<S> it = listaHijos.iterator(); it.hasNext();) {
-                        S s = it.next();
-                        if (!visitadosGlobal.contains(s)) {
-                            colaEstados.offer(s);
-                            colaEanterior.offer(estado);
-                            colaVisitados.offer(new NodoVisitados<S>(visitados));
-                        } else {
-                            ej.setArista(estado, s);
-                        }
-                    }
-                } else {//if (resParcial.equals(Resultado.COD_FALSE)) {
-                    encontrado = true;
-                //cej.union(resParcial.getContraejemplo());
-                }
-            }
+        GrafoCaminos<S> cej = new GrafoUnico<S>();
+        int i = 0;
+        while (!this.auProfIter(au, ej, cej, new NodoVisitados<S>(), i)) {
+            i++;
         }
-        if (!encontrado) {
-            ej.setInicio(eraiz);
-            resParcial.setResultado(Resultado.COD_TRUE);
-            resParcial.setEjemplo(ej);
-        } else {
-            GrafoCaminos<S> cej =
-                    busquedaDijkstra(visitados,au.getOperando(0),au.getOperando(1));
-            cej.setInicio(eraiz);
-            resParcial.setResultado(Resultado.COD_FALSE);
-            resParcial.setContraejemplo(cej);
-        }
-        estado = eraiz;
     }
 
-    GrafoCaminos<S> busquedaDijkstra(NodoVisitados<S> nodovisitadosini,
-                Formula f1, Formula f2) {
-        NodoVisitados<S> nodo = nodovisitadosini;
-        GrafoCaminos<S> g = new GrafoUnico<S>();
-        S s,shijo = null;
-        Resultado r;
-        while (nodo != null) {
-            s = nodo.set;
-            r = tabFormulas.getResultado(s, f2);
-            if (r.getResultado().equals(Resultado.COD_TRUE)){
-                g.union(r.getEjemplo());
-            }else{
-                g.union(r.getContraejemplo());
-                r = tabFormulas.getResultado(s, f1);
-                if (r.getResultado().equals(Resultado.COD_TRUE)){
-                    g.union(r.getEjemplo());
+    private boolean auProfIter(AU au, GrafoCaminos<S> ej, GrafoCaminos<S> cej,
+            NodoVisitados<S> visitados, int i) {
+        boolean definido = true;  // sera false si falta profundizar mas
+        S eraiz = estado;
+        GrafoCaminos<S> cejauxf2, ejauxf1;
+        boolean visitado, cumplef2, cumplef1;
+        visitado = visitados.contains(estado);
+        visitados.add(estado);
+        this.comprobarFormula(estado, au.getOperando(1)); // comprobar f2
+        cumplef2 = resParcial.equals(Resultado.COD_TRUE);
+        if (cumplef2) { // AU entonces es cierta
+            ej.union(resParcial.getEjemplo());
+            resParcial.setResultado(Resultado.COD_TRUE);
+            resParcial.setEjemplo(ej);
+            tabFormulas.aniadirEtiqueta(estado, au, resParcial);
+            return true;
+        } else if (visitado) { // camino infinito: AU es falsa
+            Resultado<S> r = tabFormulas.getResultado(estado, au.getOperando(0));
+            if (r.equals(Resultado.COD_TRUE)) {
+                cej.union(r.getEjemplo());
+            } else {
+                cej.union(r.getContraejemplo());
+            }
+            resParcial.setResultado(Resultado.COD_FALSE);
+            resParcial.setContraejemplo(cej);
+            tabFormulas.aniadirEtiqueta(estado, au, resParcial);
+            return true;
+        } else {  // no cumple f2 y no visitado
+            cejauxf2 = resParcial.getContraejemplo();
+            ej.union(cejauxf2);
+            comprobarFormula(estado, au.getOperando(0)); //comprobamos f1
+            cumplef1 = resParcial.equals(Resultado.COD_TRUE);
+            if (!cumplef1) { //no cumple ni f1 ni f2
+                cej.union(resParcial.getContraejemplo());
+                cej.union(cejauxf2);
+                resParcial.setContraejemplo(cej);
+                tabFormulas.aniadirEtiqueta(estado, au, resParcial);
+                return true;
+            } else { //cumple f1 y no f2 --> miramos hijos
+                ejauxf1 = resParcial.getEjemplo();
+                ej.union(ejauxf1);
+                if (i == 0) { // por esta rama no se puede profundizar mas
+                    ej.setInicio(eraiz);
+                    return false;
                 } else {
-                    g.union(r.getContraejemplo());
+                    List<S> listaHijos = interprete.transitar(estado);
+                    Iterator<S> it = listaHijos.iterator();
+                    boolean hijodefinido;
+                    while (it.hasNext()) {
+                        estado = it.next();
+                        if (tabFormulas.tieneEtiqueta(estado, au)){
+                            Resultado<S> r = tabFormulas.getResultado(estado, au);
+                            resParcial.setResultado(r.getResultado());
+                            resParcial.setEjemplo(r.getEjemplo());
+                            resParcial.setContraejemplo(r.getContraejemplo());
+                            hijodefinido = true;
+                        } else {
+                            hijodefinido = auProfIter(au, ej, cej, new NodoVisitados<S>(visitados), i - 1);
+                        }
+                        if (hijodefinido) {
+                            if (resParcial.equals(Resultado.COD_FALSE)) {
+                                cej.union(cejauxf2);
+                                cej.union(ejauxf1);
+                                cej.setArista(eraiz, estado);
+                                cej.setInicio(eraiz);
+                                resParcial.setContraejemplo(cej);
+                                estado = eraiz;
+                                tabFormulas.aniadirEtiqueta(estado, au, resParcial);
+                                return true;
+                            } else {
+                                ej.setArista(eraiz, estado);
+                            }
+                        } else {
+                            definido = false;
+                        }
+                    }
+                    estado = eraiz;
+                    ej.setInicio(eraiz);
+                    if (definido) tabFormulas.aniadirEtiqueta(estado, au, resParcial);
+                    return definido;
                 }
             }
-            if (shijo!=null){
-                g.setArista(s, shijo);
-            }
-            shijo = s;
-            nodo = nodo.ant;
         }
-        return g;
     }
 
     public void visita(EU eu) {
@@ -458,5 +427,19 @@ public class Visitante<S> {
             resParcial.setContraejemplo(cej);
         }
         estado = eraiz;
+    }
+
+    private void comprobarFormula(S s, Formula f) {
+        if (!tabFormulas.tieneEtiqueta(s, f)) {
+            S s2 = estado;
+            estado = s;
+            f.accept(this);
+            estado = s2;
+        } else {
+            Resultado<S> r = tabFormulas.getResultado(s, f);
+            resParcial.setResultado(r.getResultado());
+            resParcial.setContraejemplo(r.getContraejemplo());
+            resParcial.setEjemplo(r.getEjemplo());
+        }
     }
 }
