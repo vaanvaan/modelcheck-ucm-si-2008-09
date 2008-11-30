@@ -18,6 +18,7 @@ public class Roseta<S> extends HashMap<S, List<StateAndLabel<S>>> {
 		super();
 	}
 
+
 	public Roseta(int cap) {
 		super(cap);
 	}
@@ -64,7 +65,7 @@ public class Roseta<S> extends HashMap<S, List<StateAndLabel<S>>> {
 
 	public StateAndLabel<S> getSAL(S padre, S hijo) throws Exception {
 		List<StateAndLabel<S>> l = super.get(padre);//esto devuelve los movimientos del padre
-//		if (l.contains(hijo)) {//comprobamos si hay transición al hijo
+//		if (l.contains(hijo)) {//comprobamos si hay transiciï¿½n al hijo
 //			int i = l.indexOf(hijo);// en caso que la haya
 //			StateAndLabel<S> sal = l.get(i);
 //			return sal;
@@ -82,5 +83,6 @@ public class Roseta<S> extends HashMap<S, List<StateAndLabel<S>>> {
 		if(!encontrado) throw (new Exception("Arista no encontrada"));
 		return sal;
 	}
+
 
 }

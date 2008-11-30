@@ -5,6 +5,7 @@
 
 package ucm.si.animadorGUI.laberinto;
 
+import ucm.si.util.Contexto;
 import ucm.si.Laberinto.Laberinto;
 
 /**

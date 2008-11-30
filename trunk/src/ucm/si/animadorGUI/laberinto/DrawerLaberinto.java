@@ -5,6 +5,8 @@
 
 package ucm.si.animadorGUI.laberinto;
 
+import ucm.si.animadorGUI.PanelInterface;
+import ucm.si.animadorGUI.Drawer;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -75,7 +77,7 @@ public class DrawerLaberinto extends Drawer<Posicion> {
     @Override
     public void rePinta(Posicion p, PanelInterface<Posicion> panel) {
                 
-                
+                panel.repaint();
                 ContextoLaberinto context =  (ContextoLaberinto) super.contexto;
                 this.lab = context.getLab();
                 ImageIcon aguaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/agua.jpg");
@@ -107,6 +109,7 @@ public class DrawerLaberinto extends Drawer<Posicion> {
 				
 			}
 		}
+                panel.repaint();
 	
     }
 

@@ -1,5 +1,6 @@
-package ucm.si.animadorGUI.laberinto;
+package ucm.si.animadorGUI;
 
+import ucm.si.util.Contexto;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -40,32 +41,7 @@ public class AnimadorGrafico<S> extends AnimadorInterface<S>
             //this.frame.setDrawer(dw);
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		lab = new Laberinto(20);
-	DefaultModelChecker<Posicion> m = new DefaultModelChecker<Posicion>();
-        Posicion pos = new Posicion(1, 1);
-        LaberintoPropo prop = new LaberintoPropo(pos);
-        prop.setLab(lab);
-        Final fin = new Final(lab.getDim()-1, lab.getDim()-1);
-        Formula nofin = new And(new Not(fin), prop);
-        Formula haycamino = new EU(nofin, fin);
-        Resultado<Posicion> res = m.chequear(lab, new Not(haycamino), pos);
-        Navegador<Posicion> nav;
-        if (res.equals(Resultado.COD_TRUE)) {
-            System.out.println("La formula es cierta.");
-            nav = new Navegador<Posicion>(res.getEjemplo(), m.getRoseta());
-        } else {
-            System.out.println("La formula es falsa.");
-            nav = new Navegador<Posicion>(res.getContraejemplo(), m.getRoseta());
-        }
-        ContextoLaberinto contxt = new ContextoLaberinto();
-        contxt.setLab(lab);
-        AnimadorGrafico<Posicion> anim = new AnimadorGrafico<Posicion>(nav, new DrawerLaberinto(), contxt);
-	}
+	
 
         public void setDrawer(Drawer<S> dw)
         {
@@ -74,26 +50,26 @@ public class AnimadorGrafico<S> extends AnimadorInterface<S>
         
 	
 	public void manejaAccion(Avanza<S> accion) {
-		// TODO Auto-generated method stub
+		
 		estadoactual = accion.getEstado();
-		this.printRecorrido();
+		//this.printRecorrido();
 		frame.setEstadoactual(estadoactual);
 		frame.rePinta();
 	}
 
 	
 	public void manejaAccion(GoToEstado<S> accion) {
-		// TODO Auto-generated method stub
+		
 		estadoactual = accion.getEstado();
-		this.printRecorrido();
+		//this.printRecorrido();
 	}
 
 	
 	public void manejaAccion(Retrocede<S> accion) {
-		// TODO Auto-generated method stub
+		
 		if(accion.getEstado()!=null)
 		estadoactual = accion.getEstado();
-		this.printRecorrido();
+		//this.printRecorrido();
 		frame.setEstadoactual(estadoactual);
 		frame.rePinta();
 	}
@@ -122,7 +98,10 @@ public class AnimadorGrafico<S> extends AnimadorInterface<S>
 		return lab;
 	}*/
 	
-	public void aplicaAvanza(S s){
+	public void aplicaAvanza(S s)
+        {
+            //if (s != null)
+            {   
 		Iterator<StateAndLabel<S>> it;
 		try {
 			it = this.navigator.damePosibles().iterator();
@@ -131,13 +110,14 @@ public class AnimadorGrafico<S> extends AnimadorInterface<S>
 				if (it.next().getState().equals(s))
 					this.navigator.Avanza(s);
 				else {
-					// lenzar excepcion
+					// lanzar excepcion
 				}
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
+            }
 	}
 
 	public void aplicaRetrocede(){
@@ -148,5 +128,32 @@ public class AnimadorGrafico<S> extends AnimadorInterface<S>
 		this.navigator.GoToEstado(s);
 		
 	}
+        
+        /**
+	 * @param args
+	 */
+	/*   public static void main(String[] args) {
+        
+        lab = new Laberinto(20);
+        DefaultModelChecker<Posicion> m = new DefaultModelChecker<Posicion>();
+        Posicion pos = new Posicion(1, 1);
+        LaberintoPropo prop = new LaberintoPropo(pos);
+        prop.setLab(lab);
+        Final fin = new Final(lab.getDim() - 1, lab.getDim() - 1);
+        Formula nofin = new And(new Not(fin), prop);
+        Formula haycamino = new EU(nofin, fin);
+        Resultado<Posicion> res = m.chequear(lab, new Not(haycamino), pos);
+        Navegador<Posicion> nav;
+        if (res.equals(Resultado.COD_TRUE)) {
+            System.out.println("La formula es cierta.");
+            nav = new Navegador<Posicion>(res.getEjemplo(), m.getRoseta());
+        } else {
+            System.out.println("La formula es falsa.");
+            nav = new Navegador<Posicion>(res.getContraejemplo(), m.getRoseta());
+        }
+        ContextoLaberinto contxt = new ContextoLaberinto();
+        contxt.setLab(lab);
+        AnimadorGrafico<Posicion> anim = new AnimadorGrafico<Posicion>(nav, new DrawerLaberinto(), contxt);
+    }*/
 
 }

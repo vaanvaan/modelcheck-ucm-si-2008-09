@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package ucm.si.animadorGUI.laberinto;
+package ucm.si.util;
 
 /**
  *

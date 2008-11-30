@@ -179,7 +179,7 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
     }
 
     public boolean opcionCorrecta(int op) {
-        Set<StateAndLabel<S>> l;
+        List<StateAndLabel<S>> l;
 		try {
 			l = this.navigator.damePosibles();
 		
@@ -187,7 +187,7 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
 				return true;
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
         return false;

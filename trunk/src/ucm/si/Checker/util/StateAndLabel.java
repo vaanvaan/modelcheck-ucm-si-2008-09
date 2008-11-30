@@ -69,6 +69,12 @@ public class StateAndLabel<S> implements Comparable<S>
         return hash;
     }
 
+
+    @Override
+    public String toString() {
+        return this.label;
+    }
+
 	@Override
 	public int compareTo(S obj) {
 		final int BEFORE = -1;
@@ -84,6 +90,7 @@ public class StateAndLabel<S> implements Comparable<S>
         }
         return EQUAL;
 	}
+
 
 
     

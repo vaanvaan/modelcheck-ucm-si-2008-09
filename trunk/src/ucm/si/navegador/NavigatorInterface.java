@@ -81,7 +81,7 @@ public abstract class NavigatorInterface<S>  //extends Observable
         }
     }
     
-    public abstract Set<StateAndLabel<S>> damePosibles() throws Exception;
+    public abstract List<StateAndLabel<S>> damePosibles() throws Exception;
     
     public abstract S dameInicial();
     
