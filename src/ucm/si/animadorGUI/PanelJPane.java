@@ -1,5 +1,6 @@
-package ucm.si.animadorGUI.laberinto;
+package ucm.si.animadorGUI;
 
+import ucm.si.util.Contexto;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,15 +26,15 @@ public class PanelJPane<S> extends PanelInterface<S>{
 	@Override
 	public void pintaEstado(S p) {
 		this.drawer.pintaEstado(p, this);
+                this.repaint();
 	
 	}
 
 	@Override
 	public void rePinta(S p) 
         {
-
 		this.drawer.rePinta(p, this);
-		
+                this.repaint();	
 	}
 
     @Override

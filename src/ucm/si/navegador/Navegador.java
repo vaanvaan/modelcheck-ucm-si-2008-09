@@ -91,21 +91,23 @@ public class Navegador<S> extends NavigatorInterface<S> {
     }
 
     @Override
-    public Set<StateAndLabel<S>> damePosibles() throws Exception { 
+    public List<StateAndLabel<S>> damePosibles() throws Exception { 
         S e = this.recorrido.peek();
         if(e == null)
         {
-            Set<StateAndLabel<S>> l = new TreeSet<StateAndLabel<S>>();
+            List<StateAndLabel<S>> l = new ArrayList<StateAndLabel<S>>();
             l.add(this.roseta.getSAL(e, this.grafo.getInicio()));
             
             return l;
         }
         
         Iterator<S> laux = this.grafo.getHijos(e).iterator();
-        TreeSet<StateAndLabel<S>> taux = new TreeSet<StateAndLabel<S>>();
+        ArrayList<StateAndLabel<S>> taux = new ArrayList<StateAndLabel<S>>();
         while(laux.hasNext())
         {
-        	taux.add(this.roseta.getSAL(e,  laux.next()));
+                S aux = laux.next();
+                StateAndLabel<S> salAux = this.roseta.getSAL(e,  aux);
+        	taux.add(salAux);
         }
         
         return taux;

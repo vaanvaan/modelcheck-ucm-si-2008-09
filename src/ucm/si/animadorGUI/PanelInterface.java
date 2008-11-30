@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package ucm.si.animadorGUI.laberinto;
+package ucm.si.animadorGUI;
 
+import ucm.si.util.Contexto;
 import javax.swing.JPanel;
 
 /**
