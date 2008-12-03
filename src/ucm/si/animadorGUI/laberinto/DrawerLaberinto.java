@@ -45,8 +45,8 @@ public class DrawerLaberinto extends Drawer<Posicion> {
 		
 		panel.setLayout(cuadrados);
 
-		for (int i = 0; i < lab.getDim(); i++) {
-			for (int j = 0; j < lab.getDim(); j++) {
+		for (int j = 0; j < lab.getDim(); j++) {
+			for (int i = 0; i < lab.getDim(); i++) {
 				if (this.estado.getPosX() == i && this.estado.getPosY() == j) {
 					JButton jb = new JButton();
 					jb.setName("b" + i + "," + j);
