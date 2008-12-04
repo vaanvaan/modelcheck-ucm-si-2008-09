@@ -6,6 +6,8 @@
 package ucm.si.animadorGUI.laberinto;
 
 import javax.swing.JPanel;
+import ucm.si.animadorGUI.Drawer;
+import ucm.si.util.Contexto;
 
 /**
  *
