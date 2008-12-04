@@ -196,7 +196,8 @@ public class Visitante<S> {
     public void visita(AX allnext) {
         List<S> listaEstados;
         S epadre = estado;
-        listaEstados = interprete.transitar(estado);
+        GrafoCaminos<S> ej = new GrafoUnico<S>(epadre);
+        listaEstados = interprete.transitar(epadre);
         Iterator<S> it = listaEstados.iterator();
         boolean seguir = true;
         while (it.hasNext() && seguir) {
@@ -211,7 +212,13 @@ public class Visitante<S> {
                 //GrafoCaminos<S> gaux2 = GrafoCaminos.CreateGrafo(gaux, resParcial.getContraejemplo());
                 //gaux2.setInicio(epadre);                
                 resParcial.setContraejemplo(gaux);
+            } else {
+                ej.setArista(epadre,estado);
             }
+        }
+        if (seguir){
+            resParcial.setResultado(Resultado.COD_TRUE);
+            resParcial.setEjemplo(ej);
         }
         estado = epadre;
     }
@@ -343,15 +350,14 @@ public class Visitante<S> {
         S eraiz = estado;
         LinkedBlockingQueue2<S> colaEanterior =
                 new LinkedBlockingQueue2<S>();
-        GrafoCaminos<S> cej = new GrafoUnico<S>(estado);
+        GrafoCaminos<S> cej = new GrafoUnico<S>();
         LinkedBlockingQueue2<GrafoCaminos<S>> colaej =
                 new LinkedBlockingQueue2<GrafoCaminos<S>>();
         LinkedBlockingQueue2<S> colaEstados =
-                new LinkedBlockingQueue2<S>(interprete.transitar(estado));
-        for (int i = colaEstados.size(); i > 0; i--) {
-            colaEanterior.offer(eraiz);
-            colaej.offer(new GrafoUnico<S>(eraiz));
-        }
+                new LinkedBlockingQueue2<S>();
+        colaEstados.offer(estado);
+        colaEanterior.offer(null);
+        colaej.offer(new GrafoUnico<S>());
         boolean encontrado = false;
         S eanterior;
         GrafoCaminos<S> ej = null, cejauxf2;
@@ -374,7 +380,7 @@ public class Visitante<S> {
             cumplef2 = resParcial.equals(Resultado.COD_TRUE);
             if (cumplef2) {
                 encontrado = true;
-                ej.setArista(eanterior, estado);
+                if (eanterior!=null) ej.setArista(eanterior, estado);
                 if (!visitado) {
                     ej.union(resParcial.getEjemplo());
                 }
@@ -383,8 +389,10 @@ public class Visitante<S> {
                     cej.setArista(eanterior, estado);
                 } else {
                     cejauxf2 = resParcial.getContraejemplo();
-                    ej.setArista(eanterior, estado);
-                    cej.setArista(eanterior, estado);
+                    if (eanterior!=null){
+                        ej.setArista(eanterior, estado);
+                        cej.setArista(eanterior, estado);
+                    }
                     ej.union(cejauxf2);
                     cej.union(cejauxf2);
                     if (!tabFormulas.tieneEtiqueta(estado, eu.getOperando(0))) {
@@ -411,7 +419,7 @@ public class Visitante<S> {
                             }
                         }
                     } else if (resParcial.equals(Resultado.COD_FALSE)) {
-                        cej.setArista(eanterior, estado);
+                        if (eanterior!=null) cej.setArista(eanterior, estado);
                         cej.union(resParcial.getContraejemplo());
                     }
                 }

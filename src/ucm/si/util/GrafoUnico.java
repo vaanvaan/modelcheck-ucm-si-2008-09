@@ -89,7 +89,7 @@ public class GrafoUnico<S> extends GrafoCaminos<S> implements Comparable<GrafoUn
         Set<S> s = g.getEstados();
         for (Iterator<S> it = s.iterator(); it.hasNext();) {
             S s1 = it.next();
-            this.camino.addAristas(s1, g.getHijos(s1));
+            this.camino.addAristas(s1, new TreeSet<S>(g.getHijos(s1)));
             this.estados.add(s1);
         }
     }
