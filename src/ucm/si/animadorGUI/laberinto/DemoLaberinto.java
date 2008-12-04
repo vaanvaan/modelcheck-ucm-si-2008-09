@@ -30,7 +30,7 @@ public class DemoLaberinto {
         // TODO code application logic here
         
         ContextoLaberinto context = new ContextoLaberinto();
-        Laberinto lab = new Laberinto(15);
+        Laberinto lab = new Laberinto(12);
         context.setLab(lab);
         
         Posicion pos = new Posicion(1, 1);
