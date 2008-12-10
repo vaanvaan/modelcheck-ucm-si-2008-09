@@ -38,7 +38,7 @@ public class DemoLaberinto {
         prop.setLab(lab);
         Final fin = new Final(lab.getDim() - 1, lab.getDim() - 1);
         Formula nofin = new And(new Not(fin), prop);
-        Formula haycamino = new AU(nofin, fin);
+        Formula haycamino = new EU(nofin, fin);
         Formula formula = new Not(haycamino);
         
         Launcher<Posicion> launcher = new Launcher<Posicion> (context, lab, formula);

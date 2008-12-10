@@ -15,7 +15,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import ucm.si.Checker.Resultado;
-import ucm.si.Checker.Visitante;
+import ucm.si.Checker.VisitanteConector;
 import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.Formula;
 import ucm.si.basico.ecuaciones.Not;
@@ -65,7 +65,7 @@ public class ExpresNotTest extends TestCase {
     };
 
     public void test2Not() throws Exception {
-        Visitante<Posicion> visitante = new Visitante<Posicion>(
+        VisitanteConector<Posicion> visitante = new VisitanteConector<Posicion>(
                 new Posicion(0, 0),
                 new Laberinto(50));
         Formula ctlexp = new Not(new Not(pfalsa));
@@ -75,7 +75,7 @@ public class ExpresNotTest extends TestCase {
     }
 
     public void testAnd() throws Exception {
-        Visitante<Posicion> visitante = new Visitante<Posicion>(
+        VisitanteConector<Posicion> visitante = new VisitanteConector<Posicion>(
                 new Posicion(0, 0),
                 new Laberinto(50));
         Formula ctlexp = new And(new Not(pfalsa), pcierta);
@@ -85,7 +85,7 @@ public class ExpresNotTest extends TestCase {
     }
 
     public void testOr() throws Exception {
-        Visitante<Posicion> visitante = new Visitante<Posicion>(
+        VisitanteConector<Posicion> visitante = new VisitanteConector<Posicion>(
                 new Posicion(0, 0),
                 new Laberinto(50));
         Formula ctlexp = new Or(pmaybefalsa, new Not(pfalsa));

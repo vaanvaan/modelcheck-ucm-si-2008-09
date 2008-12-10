@@ -2,7 +2,7 @@ package ucm.si.basico.ecuaciones;
 
 
 import ucm.si.Checker.Resultado;
-import ucm.si.Checker.Visitante;
+import ucm.si.Checker.VisitanteConector;
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.14B913A8-ED73-E3E0-9667-7203B3DB2505]
@@ -14,7 +14,7 @@ public class Or extends OperacionBinaria {
     }
 
     @Override
-    public void accept(Visitante v) {
+    public void accept(VisitanteConector v) {
         v.visita(this);
     }
     
