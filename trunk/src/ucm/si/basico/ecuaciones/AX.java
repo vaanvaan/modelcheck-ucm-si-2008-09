@@ -1,6 +1,6 @@
 package ucm.si.basico.ecuaciones;
 
-import ucm.si.Checker.VisitanteConector;
+import ucm.si.Checker.Visitante;
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.2AD68957-6A72-B3B8-D7C3-5328088B8926]
@@ -12,7 +12,7 @@ public class AX extends OperacionUnaria {
     }
 
     @Override
-    public void accept(VisitanteConector v) {
+    public void accept(Visitante v) {
         v.visita(this);
     }
 
