@@ -1,7 +1,7 @@
 package ucm.si.basico.ecuaciones;
 
 import ucm.si.Checker.ModelChecker; 
-import ucm.si.Checker.Visitante;
+import ucm.si.Checker.VisitanteConector;
 
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.232CA67B-758C-D54D-26EC-244346BE81DA]
@@ -13,7 +13,7 @@ public class EU extends OperacionBinaria {
     }
 
     @Override
-    public void accept(Visitante v) {
+    public void accept(VisitanteConector v) {
         v.visita(this);
     }
 

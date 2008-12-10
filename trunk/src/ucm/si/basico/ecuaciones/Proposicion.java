@@ -1,7 +1,7 @@
 package ucm.si.basico.ecuaciones;
 
 
-import ucm.si.Checker.Visitante;
+import ucm.si.Checker.VisitanteConector;
 
 /**
  *  @author nico
@@ -14,7 +14,7 @@ public abstract class Proposicion<S> extends Formula {
 	public abstract boolean esCierta(S s);
         
 	@Override
-	public void accept(Visitante v) {
+	public void accept(VisitanteConector v) {
                v.visita(this);		
 	}
 

@@ -5,7 +5,7 @@
 
 package ucm.si.basico.ecuaciones;
 
-import ucm.si.Checker.Visitante;
+import ucm.si.Checker.VisitanteConector;
 
 /**
  *
