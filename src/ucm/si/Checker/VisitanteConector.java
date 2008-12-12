@@ -1,33 +1,16 @@
 package ucm.si.Checker;
 
 import ucm.si.Checker.tabulacion.TabulacionFormulas;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
-import java.util.TreeSet;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import ucm.si.Checker.tabulacion.TabulacionMemSistema;
-import ucm.si.basico.ecuaciones.AU;
-import ucm.si.basico.ecuaciones.AX;
-import ucm.si.basico.ecuaciones.And;
-import ucm.si.basico.ecuaciones.EU;
-import ucm.si.basico.ecuaciones.EX;
-import ucm.si.basico.ecuaciones.Formula;
-import ucm.si.basico.ecuaciones.Not;
-import ucm.si.basico.ecuaciones.Or;
-import ucm.si.basico.ecuaciones.Proposicion;
+import ucm.si.basico.ecuaciones.*;
 // a�adir constructora para usar logs globales, si es necesario.
-import ucm.si.util.*;
-
 public class VisitanteConector<S> extends Visitante<S> {
+
     private Interprete<S> interprete = null;
     private TabulacionFormulas<S> tabFormulas;
+    private Visitante[] visitantes = new Visitante[8];
+    private S estado;
     public static final int TPROP = 0;
     public static final int TAND = 1;
     public static final int TOR = 2;
@@ -36,21 +19,27 @@ public class VisitanteConector<S> extends Visitante<S> {
     public static final int TEX = 5;
     public static final int TAU = 6;
     public static final int TEU = 7;
-    private Visitante[] visitantes= new Visitante[8];
+
+    public S getEstado() {
+        return estado;
+    }
+
+    public void setEstado(S estado) {
+        this.estado = estado;
+    }
 
     public VisitanteConector(S estado, Interprete<S> interprete) {
         super();
         this.estado = estado;
         this.interprete = interprete;
         this.tabFormulas = new TabulacionMemSistema<S>();
-        Visitante<S> visitantePorDefecto = new VisitantePorDefecto<S>(estado,interprete,this);
-        for (int i=0;i<8;i++)
+        Visitante<S> visitantePorDefecto = new VisitantePorDefecto<S>(interprete, this);
+        for (int i = 0; i < 8; i++) {
             this.visitantes[i] = visitantePorDefecto;
-        
-    //this.tabFormulas = new TabulacionFormulas<S>();
+        }
     }
-    
-    public void setVisitante(int TFormula, Visitante<S> v){
+
+    public void setVisitante(int TFormula, Visitante<S> v) {
         this.visitantes[TFormula] = v;
     }
 
@@ -61,9 +50,8 @@ public class VisitanteConector<S> extends Visitante<S> {
             resParcial.setContraejemplo(r.getContraejemplo());
             resParcial.setEjemplo(r.getEjemplo());
         } else {
-            visitantes[TPROP].actualizar(estado,resParcial);
             visitantes[TPROP].visita(p);
-            this.resParcial = visitantes[TPROP].getResParcial();            
+            this.resParcial = visitantes[TPROP].getResParcial();
             this.tabFormulas.aniadirEtiqueta(estado, p, resParcial);
         }
 
@@ -76,7 +64,6 @@ public class VisitanteConector<S> extends Visitante<S> {
             resParcial.setContraejemplo(r.getContraejemplo());
             resParcial.setEjemplo(r.getEjemplo());
         } else {
-            visitantes[TNOT].actualizar(estado,resParcial);
             visitantes[TNOT].visita(n);
             this.resParcial = visitantes[TNOT].getResParcial();
             this.tabFormulas.aniadirEtiqueta(estado, n, resParcial);
@@ -90,7 +77,6 @@ public class VisitanteConector<S> extends Visitante<S> {
             resParcial.setContraejemplo(r.getContraejemplo());
             resParcial.setEjemplo(r.getEjemplo());
         } else {
-            visitantes[TOR].actualizar(estado,resParcial);
             visitantes[TOR].visita(or);
             this.resParcial = visitantes[TOR].getResParcial();
             tabFormulas.aniadirEtiqueta(estado, or, resParcial);
@@ -104,9 +90,9 @@ public class VisitanteConector<S> extends Visitante<S> {
             resParcial.setContraejemplo(r.getContraejemplo());
             resParcial.setEjemplo(r.getEjemplo());
         } else {
-            visitantes[TAND].actualizar(estado,resParcial);
+            ;
             visitantes[TAND].visita(and);
-            this.resParcial = visitantes[TAND].getResParcial();            
+            this.resParcial = visitantes[TAND].getResParcial();
             this.tabFormulas.aniadirEtiqueta(estado, and, resParcial);
         }
     }
@@ -118,9 +104,8 @@ public class VisitanteConector<S> extends Visitante<S> {
             resParcial.setContraejemplo(r.getContraejemplo());
             resParcial.setEjemplo(r.getEjemplo());
         } else {
-            visitantes[TAX].actualizar(estado,resParcial);
             visitantes[TAX].visita(allnext);
-            this.resParcial = visitantes[TAX].getResParcial();            
+            this.resParcial = visitantes[TAX].getResParcial();
             this.tabFormulas.aniadirEtiqueta(estado, allnext, resParcial);
         }
     }
@@ -132,9 +117,8 @@ public class VisitanteConector<S> extends Visitante<S> {
             resParcial.setContraejemplo(r.getContraejemplo());
             resParcial.setEjemplo(r.getEjemplo());
         } else {
-            visitantes[TEX].actualizar(estado,resParcial);
             visitantes[TEX].visita(eventx);
-            this.resParcial = visitantes[TEX].getResParcial();            
+            this.resParcial = visitantes[TEX].getResParcial();
             this.tabFormulas.aniadirEtiqueta(estado, eventx, resParcial);
         }
     }
@@ -146,14 +130,12 @@ public class VisitanteConector<S> extends Visitante<S> {
             resParcial.setContraejemplo(r.getContraejemplo());
             resParcial.setEjemplo(r.getEjemplo());
         } else {
-            visitantes[TAU].actualizar(estado,resParcial);
             visitantes[TAU].visita(au);
-            this.resParcial = visitantes[TAU].getResParcial();            
+            this.resParcial = visitantes[TAU].getResParcial();
             this.tabFormulas.aniadirEtiqueta(estado, au, resParcial);
         }
     }
 
-    
     public void visita(EU eu) {
         if (tabFormulas.tieneEtiqueta(estado, eu)) {
             Resultado r = tabFormulas.getResultado(estado, eu);
@@ -161,11 +143,9 @@ public class VisitanteConector<S> extends Visitante<S> {
             resParcial.setContraejemplo(r.getContraejemplo());
             resParcial.setEjemplo(r.getEjemplo());
         } else {
-            visitantes[TEU].actualizar(estado,resParcial);
             visitantes[TEU].visita(eu);
-            this.resParcial = visitantes[TEU].getResParcial();            
+            this.resParcial = visitantes[TEU].getResParcial();
             this.tabFormulas.aniadirEtiqueta(estado, eu, resParcial);
         }
     }
-    
 }

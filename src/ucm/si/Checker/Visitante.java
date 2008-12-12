@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ucm.si.Checker;
 
 import ucm.si.basico.ecuaciones.AU;
@@ -19,19 +18,13 @@ import ucm.si.basico.ecuaciones.Proposicion;
  * @author nico
  */
 public abstract class Visitante<S> {
-    protected S estado;
+
     protected Resultado resParcial = new Resultado(Resultado.COD_TRUE);
-
-
-    public void actualizar(S estado, Resultado<S> resParcial) {
-        this.estado = estado;
-        this.resParcial = resParcial;
-    }
 
     public Resultado getResParcial() {
         return resParcial;
     }
-    
+
     public void setResParcial(Resultado resParcial) {
         this.resParcial = resParcial;
     }
@@ -51,6 +44,4 @@ public abstract class Visitante<S> {
     public abstract void visita(AU au);
 
     public abstract void visita(EU eu);
-
-
 }

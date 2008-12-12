@@ -1,159 +1,150 @@
 package ucm.si.Checker;
 
 import ucm.si.Checker.tabulacion.TabulacionFormulas;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.Stack;
-import java.util.TreeSet;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import ucm.si.Checker.tabulacion.TabulacionMemSistema;
-import ucm.si.basico.ecuaciones.AU;
-import ucm.si.basico.ecuaciones.AX;
-import ucm.si.basico.ecuaciones.And;
-import ucm.si.basico.ecuaciones.EU;
-import ucm.si.basico.ecuaciones.EX;
-import ucm.si.basico.ecuaciones.Formula;
-import ucm.si.basico.ecuaciones.Not;
-import ucm.si.basico.ecuaciones.Or;
-import ucm.si.basico.ecuaciones.Proposicion;
+import ucm.si.basico.ecuaciones.*;
 // a�adir constructora para usar logs globales, si es necesario.
 import ucm.si.util.*;
 
-public class VisitantePorDefecto<S> extends Visitante<S>{
+public class VisitantePorDefecto<S> extends Visitante<S> {
 
     private Interprete<S> interprete = null;
     private TabulacionFormulas<S> tabFormulas;
     private VisitanteConector<S> conector;
 
-    public VisitantePorDefecto(S estado, Interprete<S> interprete, VisitanteConector<S> conector) {
-        super();
-        this.estado = estado;
+    public VisitantePorDefecto(Interprete<S> interprete, VisitanteConector<S> conector) {
         this.interprete = interprete;
         this.tabFormulas = new TabulacionMemSistema<S>();
         this.conector = conector;
     //this.tabFormulas = new TabulacionFormulas<S>();
     }
 
-   
     public void visita(Proposicion<S> p) {
+        S estado = conector.getEstado();
         if (p.esCierta(estado)) {
-                resParcial.setResultado(Resultado.COD_TRUE);
-                GrafoCaminos<S> gce = new GrafoUnico<S>(estado);
-                resParcial.setEjemplo(gce);
-            } else {
-                resParcial.setResultado(Resultado.COD_FALSE);
-                GrafoCaminos<S> gcce = new GrafoUnico<S>(estado);
-                resParcial.setContraejemplo(gcce);
-            }
-   
+            resParcial.setResultado(Resultado.COD_TRUE);
+            GrafoCaminos<S> gce = new GrafoUnico<S>(estado);
+            resParcial.setEjemplo(gce);
+        } else {
+            resParcial.setResultado(Resultado.COD_FALSE);
+            GrafoCaminos<S> gcce = new GrafoUnico<S>(estado);
+            resParcial.setContraejemplo(gcce);
+        }
+
     }
 
     public void visita(Not n) {
-         n.getOperando(0).accept(this.conector);
-            if (resParcial.equals(Resultado.COD_TRUE)) {
-                resParcial.setResultado(Resultado.COD_FALSE);
-                resParcial.setContraejemplo(resParcial.getEjemplo());
-            } else if (resParcial.equals(Resultado.COD_FALSE)) {
-                resParcial.setResultado(Resultado.COD_TRUE);
-                resParcial.setEjemplo(resParcial.getContraejemplo());
-            } else if (resParcial.equals(Resultado.COD_MAYBEF)) {
-                resParcial.setResultado(Resultado.COD_MAYBET);
-            } else {
-                resParcial.setResultado(Resultado.COD_MAYBEF);
-            }
+        n.getOperando(0).accept(this.conector);
+        this.resParcial = this.conector.getResParcial();
+        if (resParcial.equals(Resultado.COD_TRUE)) {
+            resParcial.setResultado(Resultado.COD_FALSE);
+            resParcial.setContraejemplo(resParcial.getEjemplo());
+        } else if (resParcial.equals(Resultado.COD_FALSE)) {
+            resParcial.setResultado(Resultado.COD_TRUE);
+            resParcial.setEjemplo(resParcial.getContraejemplo());
+        } else if (resParcial.equals(Resultado.COD_MAYBEF)) {
+            resParcial.setResultado(Resultado.COD_MAYBET);
+        } else {
+            resParcial.setResultado(Resultado.COD_MAYBEF);
+        }
     }
 
     public void visita(Or or) {
-            or.getOperando(0).accept(this.conector);
-            Resultado resIzq = new Resultado(resParcial.getResultado());
-            if (resIzq.equals(Resultado.COD_TRUE)) {
-                resIzq.setEjemplo(resParcial.getEjemplo());
+        or.getOperando(0).accept(this.conector);
+        this.resParcial = this.conector.getResParcial();
+        Resultado resIzq = new Resultado(resParcial.getResultado());
+        if (resIzq.equals(Resultado.COD_TRUE)) {
+            resIzq.setEjemplo(resParcial.getEjemplo());
+        } else {
+            resIzq.setContraejemplo(resParcial.getContraejemplo());
+        }
+        or.getOperando(1).accept(this.conector);
+        this.resParcial = this.conector.getResParcial();
+        Resultado resDer = new Resultado(resParcial.getResultado());
+        if (resDer.equals(Resultado.COD_TRUE)) {
+            resDer.setEjemplo(resParcial.getEjemplo());
+        } else {
+            resDer.setContraejemplo(resParcial.getContraejemplo());
+        }
+        Resultado resOR;
+        try {
+            boolean part1 = Boolean.parseBoolean(resIzq.getResultado());
+            boolean part2 = Boolean.parseBoolean(resDer.getResultado());
+            boolean or2 = part1 || part2;
+            resOR = new Resultado(String.valueOf(or2));
+            if (!or2) {
+                resOR.setContraejemplo(GrafoCaminos.CreateGrafo(
+                        resIzq.getContraejemplo(), resDer.getContraejemplo()));
+            } else if (part1 && !part2) {
+                resOR.setEjemplo(GrafoCaminos.CreateGrafo(
+                        resIzq.getEjemplo(), resDer.getContraejemplo()));
             } else {
-                resIzq.setContraejemplo(resParcial.getContraejemplo());
+                resOR.setEjemplo(GrafoCaminos.CreateGrafo(
+                        resIzq.getEjemplo(), resDer.getEjemplo()));
             }
-            or.getOperando(1).accept(this.conector);
-            Resultado resDer = new Resultado(resParcial.getResultado());
-            if (resDer.equals(Resultado.COD_TRUE)) {
-                resDer.setEjemplo(resParcial.getEjemplo());
+        } catch (Exception e) {
+            if ((resIzq.getResultado().equals(Resultado.COD_TRUE)) ||
+                    (resDer.getResultado().equals(Resultado.COD_TRUE))) {
+                resOR = new Resultado(Resultado.COD_TRUE);
             } else {
-                resDer.setContraejemplo(resParcial.getContraejemplo());
+                resOR = new Resultado(Resultado.COD_MAYBET);
             }
-            Resultado resOR;
-            try {
-                boolean part1 = Boolean.parseBoolean(resIzq.getResultado());
-                boolean part2 = Boolean.parseBoolean(resDer.getResultado());
-                boolean or2 = part1 || part2;
-                resOR = new Resultado(String.valueOf(or2));
-                if (!or2) {
-                    resOR.setContraejemplo(GrafoCaminos.CreateGrafo(
-                            resIzq.getContraejemplo(), resDer.getContraejemplo()));
-                } else if (part1 && !part2) {
-                    resOR.setEjemplo(GrafoCaminos.CreateGrafo(
-                            resIzq.getEjemplo(), resDer.getContraejemplo()));
-                } else {
-                    resOR.setEjemplo(GrafoCaminos.CreateGrafo(
-                            resIzq.getEjemplo(), resDer.getEjemplo()));
-                }
-            } catch (Exception e) {
-                if ((resIzq.getResultado().equals(Resultado.COD_TRUE)) ||
-                        (resDer.getResultado().equals(Resultado.COD_TRUE))) {
-                    resOR = new Resultado(Resultado.COD_TRUE);
-                } else {
-                    resOR = new Resultado(Resultado.COD_MAYBET);
-                }
-            }
-            resParcial = resOR;
+        }
+        resParcial = resOR;
+        this.conector.setResParcial(this.resParcial);
     }
 
     public void visita(And and) {
-            and.getOperando(0).accept(this.conector);
-            Resultado resIzq = new Resultado(resParcial.getResultado());
-            if (resIzq.equals(Resultado.COD_TRUE)) {
-                resIzq.setEjemplo(resParcial.getEjemplo());
+        and.getOperando(0).accept(this.conector);
+        this.resParcial = conector.getResParcial();
+        Resultado resIzq = new Resultado(resParcial.getResultado());
+        if (resIzq.equals(Resultado.COD_TRUE)) {
+            resIzq.setEjemplo(resParcial.getEjemplo());
+        } else {
+            resIzq.setContraejemplo(resParcial.getContraejemplo());
+        }
+        and.getOperando(1).accept(this.conector);
+        this.resParcial = this.conector.getResParcial();
+        Resultado resDer = new Resultado(resParcial.getResultado());
+        if (resDer.equals(Resultado.COD_TRUE)) {
+            resDer.setEjemplo(resParcial.getEjemplo());
+        } else {
+            resDer.setContraejemplo(resParcial.getContraejemplo());
+        }
+        Resultado resAND;
+        try {
+            boolean part1 = Boolean.parseBoolean(resIzq.getResultado());
+            boolean part2 = Boolean.parseBoolean(resDer.getResultado());
+            part1 = part1 && part2;
+            resAND = new Resultado(String.valueOf(part1));
+            if (part1) {
+                resAND.setEjemplo(GrafoCaminos.CreateGrafo(
+                        resIzq.getEjemplo(), resDer.getEjemplo()));
+            } else if (part2) {
+                resAND.setContraejemplo(GrafoCaminos.CreateGrafo(
+                        resIzq.getContraejemplo(), resDer.getEjemplo()));
             } else {
-                resIzq.setContraejemplo(resParcial.getContraejemplo());
+                resAND.setContraejemplo(GrafoCaminos.CreateGrafo(
+                        resIzq.getContraejemplo(), resDer.getContraejemplo()));
             }
-            and.getOperando(1).accept(this.conector);
-            Resultado resDer = new Resultado(resParcial.getResultado());
-            if (resDer.equals(Resultado.COD_TRUE)) {
-                resDer.setEjemplo(resParcial.getEjemplo());
+        } catch (Exception e) {
+            if ((resIzq.getResultado().equals(Resultado.COD_FALSE)) ||
+                    (resDer.getResultado().equals(Resultado.COD_FALSE))) {
+                resAND = new Resultado(Resultado.COD_FALSE);
             } else {
-                resDer.setContraejemplo(resParcial.getContraejemplo());
+                resAND = new Resultado(Resultado.COD_MAYBEF);
             }
-            Resultado resAND;
-            try {
-                boolean part1 = Boolean.parseBoolean(resIzq.getResultado());
-                boolean part2 = Boolean.parseBoolean(resDer.getResultado());
-                part1 = part1 && part2;
-                resAND = new Resultado(String.valueOf(part1));
-                if (part1) {
-                    resAND.setEjemplo(GrafoCaminos.CreateGrafo(
-                            resIzq.getEjemplo(), resDer.getEjemplo()));
-                } else if (part2) {
-                    resAND.setContraejemplo(GrafoCaminos.CreateGrafo(
-                            resIzq.getContraejemplo(), resDer.getEjemplo()));
-                } else {
-                    resAND.setContraejemplo(GrafoCaminos.CreateGrafo(
-                            resIzq.getContraejemplo(), resDer.getContraejemplo()));
-                }
-            } catch (Exception e) {
-                if ((resIzq.getResultado().equals(Resultado.COD_FALSE)) ||
-                        (resDer.getResultado().equals(Resultado.COD_FALSE))) {
-                    resAND = new Resultado(Resultado.COD_FALSE);
-                } else {
-                    resAND = new Resultado(Resultado.COD_MAYBEF);
-                }
-            }
-            resParcial = resAND;
+        }
+        resParcial = resAND;
+        this.conector.setResParcial(this.resParcial);
     }
 
     public void visita(AX allnext) {
+        S estado = this.conector.getEstado();
         List<S> listaEstados;
         S epadre = estado;
         GrafoCaminos<S> ej = new GrafoUnico<S>(epadre);
@@ -162,8 +153,9 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
         boolean seguir = true;
         while (it.hasNext() && seguir) {
             estado = it.next();
-            this.conector.estado = estado;
+            this.conector.setEstado(estado);
             allnext.getOperando(0).accept(this.conector);
+            this.resParcial = this.conector.getResParcial();
             if (!resParcial.equals(Resultado.COD_TRUE)) {
                 seguir = false;
                 //resParcial se queda con false, asi que no lo tocamos.
@@ -174,18 +166,20 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
                 //gaux2.setInicio(epadre);                
                 resParcial.setContraejemplo(gaux);
             } else {
-                ej.setArista(epadre,estado);
+                ej.setArista(epadre, estado);
             }
         }
-        if (seguir){
+        if (seguir) {
             resParcial.setResultado(Resultado.COD_TRUE);
             resParcial.setEjemplo(ej);
         }
         estado = epadre;
-        this.conector.estado = estado;
+        this.conector.setEstado(estado);
+        this.conector.setResParcial(this.resParcial);
     }
 
     public void visita(EX eventx) {
+        S estado = this.conector.getEstado();
         List<S> listaEstados;
         S epadre = estado;
         listaEstados = interprete.transitar(estado);
@@ -194,8 +188,9 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
         GrafoCaminos<S> grafoaux = new GrafoUnico<S>(estado);
         while (it.hasNext() && seguir) {
             estado = it.next();
-            this.conector.estado = estado;
+            this.conector.setEstado(estado);
             eventx.getOperando(0).accept(this.conector);
+            this.conector.setResParcial(this.resParcial);
             if (resParcial.equals(Resultado.COD_TRUE)) {
                 //hemos encontrado uno que nos vale
                 seguir = false;
@@ -213,20 +208,25 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
             resParcial.setContraejemplo(grafoaux);
         }
         estado = epadre;
-        this.conector.estado = estado;
+        this.conector.setEstado(estado);
+        this.conector.setResParcial(this.resParcial);
     }
 
     public void visita(AU au) {
+        S estado = this.conector.getEstado();
         GrafoCaminos<S> ej = new GrafoUnico<S>();
         GrafoCaminos<S> cej = new GrafoUnico<S>();
         int i = 0;
         while (!this.auProfIter(au, ej, cej, new NodoVisitados<S>(), i)) {
             i++;
         }
+        this.conector.setResParcial(this.resParcial);
+        this.conector.setEstado(estado);
     }
 
     private boolean auProfIter(AU au, GrafoCaminos<S> ej, GrafoCaminos<S> cej,
             NodoVisitados<S> visitados, int i) {
+        S estado = this.conector.getEstado();
         boolean definido = true;  // sera false si falta profundizar mas
         S eraiz = estado;
         GrafoCaminos<S> cejauxf2, ejauxf1;
@@ -234,7 +234,8 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
         visitado = visitados.contains(estado);
         visitados.add(estado);
         this.comprobarFormula(estado, au.getOperando(1)); // comprobar f2
-        cumplef2 = resParcial.equals(Resultado.COD_TRUE);
+        estado = this.conector.getEstado();
+        cumplef2 = this.resParcial.equals(Resultado.COD_TRUE);
         if (cumplef2) { // AU entonces es cierta
             ej.union(resParcial.getEjemplo());
             resParcial.setResultado(Resultado.COD_TRUE);
@@ -256,6 +257,7 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
             cejauxf2 = resParcial.getContraejemplo();
             ej.union(cejauxf2);
             comprobarFormula(estado, au.getOperando(0)); //comprobamos f1
+            estado = this.conector.getEstado();
             cumplef1 = resParcial.equals(Resultado.COD_TRUE);
             if (!cumplef1) { //no cumple ni f1 ni f2
                 cej.union(resParcial.getContraejemplo());
@@ -275,8 +277,8 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
                     boolean hijodefinido;
                     while (it.hasNext()) {
                         estado = it.next();
-                        this.conector.estado = estado;
-                        if (tabFormulas.tieneEtiqueta(estado, au)){
+                        this.conector.setEstado(estado);
+                        if (tabFormulas.tieneEtiqueta(estado, au)) {
                             Resultado<S> r = tabFormulas.getResultado(estado, au);
                             resParcial.setResultado(r.getResultado());
                             resParcial.setEjemplo(r.getEjemplo());
@@ -293,7 +295,7 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
                                 cej.setInicio(eraiz);
                                 resParcial.setContraejemplo(cej);
                                 estado = eraiz;
-                                this.conector.estado = estado;
+                                this.conector.setEstado(estado);
                                 tabFormulas.aniadirEtiqueta(estado, au, resParcial);
                                 return true;
                             } else {
@@ -304,9 +306,11 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
                         }
                     }
                     estado = eraiz;
-                    this.conector.estado = estado;
+                    this.conector.setEstado(estado);
                     ej.setInicio(eraiz);
-                    if (definido) tabFormulas.aniadirEtiqueta(estado, au, resParcial);
+                    if (definido) {
+                        tabFormulas.aniadirEtiqueta(estado, au, resParcial);
+                    }
                     return definido;
                 }
             }
@@ -314,6 +318,7 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
     }
 
     public void visita(EU eu) {
+        S estado = this.conector.getEstado();
         S eraiz = estado;
         LinkedBlockingQueue2<S> colaEanterior =
                 new LinkedBlockingQueue2<S>();
@@ -332,13 +337,14 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
         boolean visitado, cumplef2, cumplef1;
         while (!encontrado && !colaEstados.isEmpty()) {
             estado = colaEstados.poll();
-            this.conector.estado = estado;
+            this.conector.setEstado(estado);
             eanterior = colaEanterior.poll();
             ej = colaej.poll();
             visitado = visitados.contains(estado);
             visitados.add(estado);
             if (!tabFormulas.tieneEtiqueta(estado, eu.getOperando(1))) {
                 eu.getOperando(1).accept(this.conector);
+                this.resParcial = this.conector.getResParcial();
             } else {
                 Resultado r = tabFormulas.getResultado(estado, eu.getOperando(1));
                 resParcial.setResultado(r.getResultado());
@@ -348,7 +354,9 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
             cumplef2 = resParcial.equals(Resultado.COD_TRUE);
             if (cumplef2) {
                 encontrado = true;
-                if (eanterior!=null) ej.setArista(eanterior, estado);
+                if (eanterior != null) {
+                    ej.setArista(eanterior, estado);
+                }
                 if (!visitado) {
                     ej.union(resParcial.getEjemplo());
                 }
@@ -357,7 +365,7 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
                     cej.setArista(eanterior, estado);
                 } else {
                     cejauxf2 = resParcial.getContraejemplo();
-                    if (eanterior!=null){
+                    if (eanterior != null) {
                         ej.setArista(eanterior, estado);
                         cej.setArista(eanterior, estado);
                     }
@@ -365,6 +373,7 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
                     cej.union(cejauxf2);
                     if (!tabFormulas.tieneEtiqueta(estado, eu.getOperando(0))) {
                         eu.getOperando(0).accept(this.conector);
+                        this.resParcial = this.conector.getResParcial();
                     } else {
                         Resultado r = tabFormulas.getResultado(estado, eu.getOperando(0));
                         resParcial.setResultado(r.getResultado());
@@ -387,7 +396,9 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
                             }
                         }
                     } else if (resParcial.equals(Resultado.COD_FALSE)) {
-                        if (eanterior!=null) cej.setArista(eanterior, estado);
+                        if (eanterior != null) {
+                            cej.setArista(eanterior, estado);
+                        }
                         cej.union(resParcial.getContraejemplo());
                     }
                 }
@@ -403,17 +414,19 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
             resParcial.setContraejemplo(cej);
         }
         estado = eraiz;
-        this.conector.estado = estado;
+        this.conector.setEstado(estado);
     }
 
     private void comprobarFormula(S s, Formula f) {
+        S estado = this.conector.getEstado();
         if (!tabFormulas.tieneEtiqueta(s, f)) {
             S s2 = estado;
             estado = s;
-            this.conector.estado = estado;
+            this.conector.setEstado(estado);
             f.accept(this.conector);
+            this.resParcial = this.conector.getResParcial();
             estado = s2;
-            this.conector.estado = estado;
+            this.conector.setEstado(estado);
         } else {
             Resultado<S> r = tabFormulas.getResultado(s, f);
             resParcial.setResultado(r.getResultado());
@@ -421,6 +434,4 @@ public class VisitantePorDefecto<S> extends Visitante<S>{
             resParcial.setEjemplo(r.getEjemplo());
         }
     }
-
-
 }
