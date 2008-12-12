@@ -203,6 +203,10 @@ public class InterpreteWrapper<S> implements Interprete<S> {
         return roseta;
         
     }
+
+    public List<String> dameTransiciones() {
+        return interprete.dameTransiciones();
+    }
     
     
 }

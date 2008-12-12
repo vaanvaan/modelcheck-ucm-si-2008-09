@@ -75,4 +75,8 @@ public class AdHoc implements Interprete<Integer>{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public List<String> dameTransiciones() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

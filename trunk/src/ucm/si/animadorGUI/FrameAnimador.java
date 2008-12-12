@@ -5,6 +5,9 @@ import ucm.si.animadorGUI.laberinto.*;
 import ucm.si.util.Contexto;
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,8 +26,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.OverlayLayout;
 import javax.swing.SwingConstants;
 
+import sun.awt.VariableGridLayout;
 import ucm.si.Checker.util.StateAndLabel;
 import ucm.si.Laberinto.Laberinto;
 import ucm.si.Laberinto.Posicion;
@@ -32,232 +37,240 @@ import ucm.si.navegador.Navegador;
 
 public class FrameAnimador<S> extends JFrame {
 
-	/**
-	 * 
-	 */
-	/*
-	 * M�todos que metan mano al lienzo --separarlos de los botones.
-	 * Clase Abstracta que herede de Jpanel con esos m�todos.
-	 * otra clase que herede de a la abstracta
-	 * 
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Navegador<S> nav;
-	private PanelInterface<S> lienzo;
-	private S estadoactual;
-	ComboBoxExtend<StateAndLabel<S>> combo;
+    /**
+     * 
+     */
+    /*
+     * M�todos que metan mano al lienzo --separarlos de los botones.
+     * Clase Abstracta que herede de Jpanel con esos m�todos.
+     * otra clase que herede de a la abstracta
+     * 
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private Navegador<S> nav;
+    private PanelInterface<S> lienzo;
+    private S estadoactual;
+    Vector<JButton> botonesAcciones;
 
-	public S getEstadoactual() {
-		return estadoactual;
-	}
+    public S getEstadoactual() {
+        return estadoactual;
+    }
 
-	public void setEstadoactual(S estadoactual) {
-            this.estadoactual = estadoactual;            
-            this.actualizaComoboBox();
-            
-        }
+    public void setEstadoactual(S estadoactual) {
+        this.estadoactual = estadoactual;
+        this.actualizaBotonera();
 
-	public JPanel getLienzo() {
-		return lienzo;
-	}
+    }
 
-	public void setLienzo(PanelInterface lienzo) {
-		this.lienzo = lienzo;
-	}
+    public JPanel getLienzo() {
+        return lienzo;
+    }
 
-	public FrameAnimador(final AnimadorGrafico<S> control, Drawer dw, Contexto cntxt) {
-		// Estado S;
-		
-		ActionListener actionListener = new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				FrameAnimador.this.dispose();
-			}
-		};
-		ActionListener actionListenerAvanzar = new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				StateAndLabel<S> s =  combo.getSelectedItem();//obtenemos el estado siguiente seleccionado
-				//System.out.println("Avanzo estado : \n "+s.getState().toString() + "  .\n" );
-                                if(s != null)
-                                    control.aplicaAvanza(s.getState());//avanzamos a ese estado
-			}
-		};
-		ActionListener actionListenerGo_to = new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
+    public void setLienzo(PanelInterface lienzo) {
+        this.lienzo = lienzo;
+    }
+
+    public FrameAnimador(final AnimadorGrafico<S> control, Drawer dw, Contexto cntxt) {
+        // Estado S;
+
+        ActionListener actionListener = new ActionListener() {
+
+            public void actionPerformed(ActionEvent actionEvent) {
+                FrameAnimador.this.dispose();
+            }
+        };
+        ActionListener actionListenerAvanzar = new ActionListener() {
+
+            public void actionPerformed(ActionEvent actionEvent) {
+                StateAndLabel<S> s =
+                        pulsadaAccion((JButton) actionEvent.getSource());//obtenemos el estado siguiente seleccionado
+                //System.out.println("Avanzo estado : \n "+s.getState().toString() + "  .\n" );
+                if (s != null) {
+                    control.aplicaAvanza(s.getState());//avanzamos a ese estado
+                }
+            }
+        };
+        ActionListener actionListenerGo_to = new ActionListener() {
+
+            public void actionPerformed(ActionEvent actionEvent) {
 //				control.aplicaGoTo();
-			}
-		};
-		ActionListener actionListenerRetroceder = new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				control.aplicaRetrocede();
-			}
-		};
-		
-		
-		nav = control.getNavigator();
-		estadoactual = (S) control.getEstadoactual();
-		/*
-		 * Secci�n de construcci�n de componentes:
-		 * Botones inferiores y sus caracteristicas
-		 */
-		JPanel pane = new JPanel();
-		pane.setLayout(new GridLayout());
-		JButton boton1 = new JButton("Avanzar");
-		//combo = creaComboEstadoActual();
-		JButton boton3 = new JButton("Retroceder");
-		boton1.setHorizontalTextPosition(SwingConstants.CENTER);
-		boton3.setHorizontalTextPosition(SwingConstants.CENTER);
-		boton1.addActionListener(actionListenerAvanzar);
-		boton3.addActionListener(actionListenerRetroceder);
-                
-                
-                this.creaNuevaComboBox();
-            
-                
-		pane.add(boton1);
-		pane.add(combo);
-		pane.add(boton3);
-		/*
-		 * Secci�n de tratamiento del panel cuyo objetivo es ser el marco
-		 * donde se va a pintar el estado. 
-		 */
-                lienzo = new PanelJPane<S>(cntxt);
-                lienzo.setContexto(cntxt);
-                 lienzo.setDrawer(dw);
-        
-        
-		lienzo.pintaEstado(estadoactual);
-		lienzo.setSize(200, 200);
-		pane.add(lienzo);
-		
-		/*
-		 * Configuraci�n del contenedor.(del propio frame)
-		 */
-		Container c = this.getContentPane();
-		c.setLayout(new BorderLayout());
-		c.add(lienzo, BorderLayout.CENTER);
-		this.getContentPane().add(new JScrollPane(pane), BorderLayout.SOUTH);
-		this.setTitle("Animador grafico");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(500,500);
-		this.setVisible(true);
+            }
+        };
+        ActionListener actionListenerRetroceder = new ActionListener() {
 
-	}
-
-	/**
-	 * M�todo que se encarga de generar el combo con los valores de los posibles movimientos
-	 * de los que se dispone.
-	 * @param control  
-	 * @return
-	 */
-	/*private ComboBoxExtend<S> creaComboEstadoActual() {
-		//Aqui voy a suponer que puedo tener un vector a partir de dameSiguientes() del navegador
-		Vector<StateAndLabel<S>> siguientes = new Vector<StateAndLabel<S>>();
-		ComboBoxExtend<S> combo = null;
-		try {
-			Iterator it = nav.damePosibles().iterator();
-			            
-                        while(it.hasNext()){
-				siguientes.add((StateAndLabel<S>) it.next());
-			}
-			combo = new ComboBoxExtend<S>(siguientes);
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return combo;
-	}*/
-
-	public Navegador<S> getNav() {
-		return nav;
-	}
-
-	public void setNav(Navegador<S> nav) {
-		this.nav = nav;
-	}
+            public void actionPerformed(ActionEvent actionEvent) {
+                control.aplicaRetrocede();
+            }
+        };
 
 
-	public void rePinta() {
-            this.lienzo.rePinta(estadoactual);
-            //this.combo.repaint();
-            this.repaint();
-            
-                
-		
-                        //combo = creaComboEstadoActual();
-	}
-        
-        public void setDrawer(Drawer<S> dw)
-        {
-            this.lienzo.setDrawer(dw);
-        }
-        
-        /**
-         * Actualiza el ComboBoxExtend Con los elemetos devueltos en el List
-         * @param vect
+        nav = control.getNavigator();
+        estadoactual = (S) control.getEstadoactual();
+        /*
+         * Secci�n de construcci�n de componentes:
+         * Botones inferiores y sus caracteristicas
          */
-        private void actualizaComoboBox(List<StateAndLabel<S>> vect)
-        {
-            this.combo.removeAllItems();
-            for(int i = 0; i< vect.size(); i++)
-            {
-                this.combo.addItem(vect.get(i));
-            }
+        JPanel pane = new JPanel();
+        pane.setLayout(new GridLayout(1, 2,5,5));
+        this.creaBotonesAccion(actionListenerAvanzar);
+        this.actualizaBotonera();
+        JPanel botoneraAcciones = new JPanel();
+        int lado = Math.round((float)Math.sqrt(nav.dameTransiciones().size()));
+        botoneraAcciones.setLayout(new GridLayout(lado,lado,5,5));
+        for (int i = 0; i < botonesAcciones.size(); i++) {
+            botoneraAcciones.add(botonesAcciones.get(i));
         }
-        
-       /**
-        * Crea un ComboBoxExtend Nuevo a partir de los elemetos posibles.
-        */ 
-      private void creaNuevaComboBox()
-      {
-          try {
-                
-                List<StateAndLabel<S>> l = this.nav.damePosibles();
-                Vector<StateAndLabel<S>> v  = new Vector<StateAndLabel<S>>(l); 
-                this.combo = new ComboBoxExtend<StateAndLabel<S>>(v);
-                if(l.size() == 0)
-                {
-                    this.combo.addItem("No Mas Posibles");
-                   
-                }
-                
-               
-            } catch (Exception ex) {
-                Logger.getLogger(FrameAnimador.class.getName()).log(Level.SEVERE, 
-                        "Error al generar ComboBox, Excepcion lanzada desde damePosibles", ex);
-                //System.out.println("Error al generar ComboBox");
-            }
-          
-          
-      
-                  
-      }
-        
-        /**
-         * Actualiza el ComboBoxExtend con los objetos que devuelve DamePosibles
+        //combo = creaComboEstadoActual();
+        JButton boton3 = new JButton("Retroceder");
+        boton3.setHorizontalTextPosition(SwingConstants.CENTER);
+        boton3.addActionListener(actionListenerRetroceder);
+
+
+
+        pane.add(botoneraAcciones);
+        pane.add(boton3);
+        /*
+         * Secci�n de tratamiento del panel cuyo objetivo es ser el marco
+         * donde se va a pintar el estado. 
          */
-       private void actualizaComoboBox() {
-            try {
-                this.combo.removeAllItems();
-                List<StateAndLabel<S>> l = this.nav.damePosibles();
-                for (int i = 0; i < l.size(); i++) {
-                    StateAndLabel<S> st = l.get(i);
-                    this.combo.addItem(st);
-                }
-                
-                if(l.size() == 0)
-                {
-                    this.combo.addItem("No Mas Posibles");
-                    //System.out.print("Fuera");
-                }
+        lienzo = new PanelJPane<S>(cntxt);
+        lienzo.setContexto(cntxt);
+        lienzo.setDrawer(dw);
 
-            } catch (Exception ex) {
-                Logger.getLogger(FrameAnimador.class.getName()).log(Level.SEVERE, 
-                        "Error al gnerar ComboBox, Excepcion lanzada desde damePosibles", ex);
-                System.out.println("Error al generar ComboBox");
+
+        lienzo.pintaEstado(estadoactual);
+        //lienzo.setPreferredSize(new Dimension(100, 100));
+        //pane.add(lienzo);
+
+        /*
+         * Configuraci�n del contenedor.(del propio frame)
+         */
+        Container c = this.getContentPane();
+        c.setLayout(new BorderLayout());
+        c.add(lienzo, BorderLayout.CENTER);
+        c.add(pane, BorderLayout.SOUTH);
+        this.setTitle("Animador grafico");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //this.setSize(500, 500);
+        this.pack();
+        this.setVisible(true);
+
+    }
+
+    /**
+     * M�todo que se encarga de generar el combo con los valores de los posibles movimientos
+     * de los que se dispone.
+     * @param control  
+     * @return
+     */
+    /*private ComboBoxExtend<S> creaComboEstadoActual() {
+    //Aqui voy a suponer que puedo tener un vector a partir de dameSiguientes() del navegador
+    Vector<StateAndLabel<S>> siguientes = new Vector<StateAndLabel<S>>();
+    ComboBoxExtend<S> combo = null;
+    try {
+    Iterator it = nav.damePosibles().iterator();
+    
+    while(it.hasNext()){
+    siguientes.add((StateAndLabel<S>) it.next());
+    }
+    combo = new ComboBoxExtend<S>(siguientes);
+    
+    } catch (Exception e) {
+    // TODO Auto-generated catch block
+    e.printStackTrace();
+    }
+    return combo;
+    }*/
+    public Navegador<S> getNav() {
+        return nav;
+    }
+
+    public void setNav(Navegador<S> nav) {
+        this.nav = nav;
+    }
+
+    public void rePinta() {
+        this.lienzo.rePinta(estadoactual);
+        //this.combo.repaint();
+        this.repaint();
+
+
+
+    //combo = creaComboEstadoActual();
+    }
+
+    public void setDrawer(Drawer<S> dw) {
+        this.lienzo.setDrawer(dw);
+    }
+
+    private StateAndLabel<S> pulsadaAccion(Object o) {
+        int numAccion = this.botonesAcciones.indexOf(o);
+        List<String> transiciones = this.nav.dameTransiciones();
+        String nombreAccion = transiciones.get(numAccion);
+        List<StateAndLabel<S>> listaPosibles;
+        int i = 0;
+        StateAndLabel<S> salfinal = null;
+        try {
+            listaPosibles = this.nav.damePosibles();
+            while ((salfinal == null) && (i < listaPosibles.size())) {
+                if (listaPosibles.get(i).getLabel().equalsIgnoreCase(nombreAccion)) {
+                    salfinal = listaPosibles.get(i);
+                }
             }
-     
+        } catch (Exception ex) {
+            Logger.getLogger(FrameAnimador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return salfinal;
+    }
+
+    /**
+     * Crea un ComboBoxExtend Nuevo a partir de los elemetos posibles.
+     */
+    private void creaBotonesAccion(ActionListener listenerAcciones) {
+        try {
+
+
+            List<StateAndLabel<S>> l = this.nav.damePosibles();
+            List<String> ltodas = this.nav.dameTransiciones();
+
+            this.botonesAcciones = new Vector<JButton>();
+            for (Iterator<String> it = ltodas.iterator(); it.hasNext();) {
+                String nombreAccion = it.next();
+                JButton boton = new JButton(nombreAccion);
+                boton.setHorizontalTextPosition(SwingConstants.CENTER);
+                boton.addActionListener(listenerAcciones);
+                this.botonesAcciones.add(boton);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(FrameAnimador.class.getName()).log(Level.SEVERE,
+                    "Error al generar la botonera, Excepcion lanzada desde damePosibles", ex);
+        //System.out.println("Error al generar ComboBox");
         }
 
+    }
+
+    /**
+     * Actualiza el ComboBoxExtend con los objetos que devuelve DamePosibles
+     */
+    private void actualizaBotonera() {
+        try {
+            for (int i = 0; i < botonesAcciones.size(); i++) {
+                botonesAcciones.get(i).setEnabled(false);
+            }
+            List<StateAndLabel<S>> l = this.nav.damePosibles();
+            List<String> ltransiciones = this.nav.dameTransiciones();
+            for (int i = 0; i < l.size(); i++) {
+                String nombreAccion = l.get(i).getLabel();
+                botonesAcciones.get(ltransiciones.indexOf(nombreAccion)).setEnabled(true);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(FrameAnimador.class.getName()).log(Level.SEVERE,
+                    "Error al gnerar ComboBox, Excepcion lanzada desde damePosibles", ex);
+            System.out.println("Error al generar ComboBox");
+        }
+
+    }
 }

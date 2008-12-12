@@ -28,6 +28,11 @@ public class Navegador<S> extends NavigatorInterface<S> {
     private GrafoCaminos<S> grafo;
     private Stack<S> recorrido;
     private Roseta<S> roseta;
+    private List<String> transiciones;
+
+    public List<String> dameTransiciones() {
+        return transiciones;
+    }
 
     public GrafoCaminos<S> getGrafo() {
         return grafo;
@@ -37,11 +42,12 @@ public class Navegador<S> extends NavigatorInterface<S> {
         this.grafo = grafo;
     }
 
-    public Navegador(GrafoCaminos<S> grafo, Roseta<S> roseta) {
+    public Navegador(GrafoCaminos<S> grafo, Roseta<S> roseta, List<String> transiciones) {
         this.grafo = grafo;
         this.recorrido = new Stack<S>();
         this.recorrido.push(this.grafo.getInicio());
         this.roseta = roseta;
+        this.transiciones = transiciones;
     }
 
     

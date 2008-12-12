@@ -5,6 +5,7 @@
 
 package ucm.si.animadorGUI.laberinto;
 
+import java.awt.Dimension;
 import ucm.si.animadorGUI.PanelInterface;
 import ucm.si.animadorGUI.Drawer;
 import java.awt.GridLayout;
@@ -38,8 +39,8 @@ public class DrawerLaberinto extends Drawer<Posicion> {
 		
 		GridLayout cuadrados = new GridLayout(lab.getDim(), lab.getDim());
 		// JButton boton = new JButton();
-		cuadrados.setColumns(lab.getDim());
-		cuadrados.setHgap(lab.getDim());
+		//cuadrados.setColumns(lab.getDim());
+		//cuadrados.setHgap(lab.getDim());
 		// Image imagenFuente =
 		// Toolkit.getDefaultToolkit().getImage("agua.jpg");
 		
@@ -106,7 +107,6 @@ public class DrawerLaberinto extends Drawer<Posicion> {
 				if(boton.getName().equals(nomBoton)){
 					boton.setIcon(caballeroIcon);
 				}
-				
 			}
 		}
                 panel.repaint();

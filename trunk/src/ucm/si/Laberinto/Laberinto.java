@@ -68,6 +68,16 @@ public class Laberinto implements Interprete<Posicion> {
 
     }
 
+    @Override
+    public List<String> dameTransiciones() {
+        ArrayList<String> ltrans = new ArrayList<String>();
+        ltrans.add("Avanza Norte");
+        ltrans.add("Avanza Sur");
+        ltrans.add("Avanza Este");
+        ltrans.add("Avanza Oeste");
+        return ltrans;
+    }
+
     public int getDim() {
         return dim;
     }
