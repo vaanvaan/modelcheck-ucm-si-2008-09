@@ -97,7 +97,7 @@ public class Launcher<S>
         }
         
         Roseta<S> roseta = this.checker.getRoseta();
-        this.navegador = new Navegador<S>(camino, roseta);
+        this.navegador = new Navegador<S>(camino, roseta,interprete.dameTransiciones());
     }
     
     public void launchGrafico(Drawer<S> dw )

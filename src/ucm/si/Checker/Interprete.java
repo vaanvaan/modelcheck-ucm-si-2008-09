@@ -20,6 +20,8 @@ public interface Interprete<S> {
     public List<S> transitar (S state);
     
     public StateLabeledList<S> transitarConEtiqueta(S state);
+    
+    public List<String> dameTransiciones();
 
 }
 

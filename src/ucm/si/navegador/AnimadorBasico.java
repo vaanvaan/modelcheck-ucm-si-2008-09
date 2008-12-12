@@ -259,10 +259,10 @@ public class AnimadorBasico<S> extends AnimadorInterface<S> {
         Navegador<Posicion> nav;
         if (res.equals(Resultado.COD_TRUE)) {
             System.out.println("La formula es cierta.");
-            nav = new Navegador<Posicion>(res.getEjemplo(), m.getRoseta());
+            nav = new Navegador<Posicion>(res.getEjemplo(), m.getRoseta(),lab.dameTransiciones());
         } else {
             System.out.println("La formula es falsa.");
-            nav = new Navegador<Posicion>(res.getContraejemplo(), m.getRoseta());
+            nav = new Navegador<Posicion>(res.getContraejemplo(), m.getRoseta(),lab.dameTransiciones());
         }
         AnimadorBasico<Posicion> anim = new AnimadorBasico<Posicion>(nav);
 
