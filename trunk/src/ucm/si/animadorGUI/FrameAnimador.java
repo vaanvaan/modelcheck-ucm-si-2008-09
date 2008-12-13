@@ -1,38 +1,24 @@
 package ucm.si.animadorGUI;
 
-import ucm.si.animadorGUI.util.ComboBoxExtend;
-import ucm.si.animadorGUI.laberinto.*;
 import ucm.si.util.Contexto;
-import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.Stack;
-import java.util.StringTokenizer;
 import java.util.Vector;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.OverlayLayout;
+import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 
-import sun.awt.VariableGridLayout;
 import ucm.si.Checker.util.StateAndLabel;
-import ucm.si.Laberinto.Laberinto;
-import ucm.si.Laberinto.Posicion;
 import ucm.si.navegador.Navegador;
 
 public class FrameAnimador<S> extends JFrame {
@@ -72,14 +58,7 @@ public class FrameAnimador<S> extends JFrame {
     }
 
     public FrameAnimador(final AnimadorGrafico<S> control, Drawer dw, Contexto cntxt) {
-        // Estado S;
-
-        ActionListener actionListener = new ActionListener() {
-
-            public void actionPerformed(ActionEvent actionEvent) {
-                FrameAnimador.this.dispose();
-            }
-        };
+        
         ActionListener actionListenerAvanzar = new ActionListener() {
 
             public void actionPerformed(ActionEvent actionEvent) {
@@ -121,7 +100,6 @@ public class FrameAnimador<S> extends JFrame {
         for (int i = 0; i < botonesAcciones.size(); i++) {
             botoneraAcciones.add(botonesAcciones.get(i));
         }
-        //combo = creaComboEstadoActual();
         JButton boton3 = new JButton("Retroceder");
         boton3.setHorizontalTextPosition(SwingConstants.CENTER);
         boton3.addActionListener(actionListenerRetroceder);
@@ -140,21 +118,20 @@ public class FrameAnimador<S> extends JFrame {
 
 
         lienzo.pintaEstado(estadoactual);
-        //lienzo.setPreferredSize(new Dimension(100, 100));
-        //pane.add(lienzo);
-
+        
         /*
          * Configuraci�n del contenedor.(del propio frame)
          */
-        Container c = this.getContentPane();
-        c.setLayout(new BorderLayout());
-        c.add(lienzo, BorderLayout.CENTER);
-        c.add(pane, BorderLayout.SOUTH);
+        JScrollPane panelArriba = new JScrollPane(lienzo);
+        JScrollPane panelAbajo = new JScrollPane(pane);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                panelArriba,panelAbajo);
+        splitPane.setResizeWeight(0.8);
+        this.setContentPane(splitPane);
         this.setTitle("Animador grafico");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //this.setSize(500, 500);
-        this.pack();
         this.setVisible(true);
+        this.pack();
 
     }
 
@@ -217,6 +194,7 @@ public class FrameAnimador<S> extends JFrame {
                 if (listaPosibles.get(i).getLabel().equalsIgnoreCase(nombreAccion)) {
                     salfinal = listaPosibles.get(i);
                 }
+                i++;
             }
         } catch (Exception ex) {
             Logger.getLogger(FrameAnimador.class.getName()).log(Level.SEVERE, null, ex);

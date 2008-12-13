@@ -30,7 +30,7 @@ public class DemoLaberinto {
         // TODO code application logic here
         
         ContextoLaberinto context = new ContextoLaberinto();
-        Laberinto lab = new Laberinto(12);
+        Laberinto lab = new Laberinto(10);
         context.setLab(lab);
         
         Posicion pos = new Posicion(1, 1);
@@ -38,7 +38,7 @@ public class DemoLaberinto {
         prop.setLab(lab);
         Final fin = new Final(lab.getDim() - 1, lab.getDim() - 1);
         Formula nofin = new And(new Not(fin), prop);
-        Formula haycamino = new EU(nofin, fin);
+        Formula haycamino = new AU(nofin, fin);
         Formula formula = new Not(haycamino);
         
         Launcher<Posicion> launcher = new Launcher<Posicion> (context, lab, formula);
