@@ -1,17 +1,8 @@
 package ucm.si.animadorGUI;
 
 import ucm.si.util.Contexto;
-import java.awt.GridLayout;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.StringTokenizer;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 
-import ucm.si.Laberinto.Laberinto;
-import ucm.si.Laberinto.Posicion;
 public class PanelJPane<S> extends PanelInterface<S>{
 	
         
@@ -20,9 +11,7 @@ public class PanelJPane<S> extends PanelInterface<S>{
         {
             super.contexto = cnt;
         }
-	/*public PanelLaberinto(Laberinto l) {
-		lab = l;
-	}*/
+	
 	@Override
 	public void pintaEstado(S p) {
 		this.drawer.pintaEstado(p, this);
@@ -50,7 +39,7 @@ public class PanelJPane<S> extends PanelInterface<S>{
         super.contexto = cntxt;
     }
 
-   
+    
     
 
     

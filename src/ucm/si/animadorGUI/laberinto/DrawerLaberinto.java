@@ -45,6 +45,7 @@ public class DrawerLaberinto extends Drawer<Posicion> {
 		// Toolkit.getDefaultToolkit().getImage("agua.jpg");
 		
 		panel.setLayout(cuadrados);
+                
 
 		for (int j = 0; j < lab.getDim(); j++) {
 			for (int i = 0; i < lab.getDim(); i++) {
@@ -71,14 +72,14 @@ public class DrawerLaberinto extends Drawer<Posicion> {
 				}
 			}
 		}
-	
-
-    }
+               
+                
+}
 
     @Override
     public void rePinta(Posicion p, PanelInterface<Posicion> panel) {
                 
-                panel.repaint();
+                
                 ContextoLaberinto context =  (ContextoLaberinto) super.contexto;
                 this.lab = context.getLab();
                 ImageIcon aguaIcon = new ImageIcon("src/ucm/si/animadorGUI/laberinto/agua.jpg");
@@ -109,7 +110,6 @@ public class DrawerLaberinto extends Drawer<Posicion> {
 				}
 			}
 		}
-                panel.repaint();
 	
     }
 
