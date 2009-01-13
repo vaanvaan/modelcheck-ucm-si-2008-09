@@ -243,12 +243,6 @@ public class VisitantePorDefecto<S> extends Visitante<S> {
             tabFormulas.aniadirEtiqueta(estado, au, resParcial);
             return true;
         } else if (visitado) { // camino infinito: AU es falsa
-            Resultado<S> r = tabFormulas.getResultado(estado, au.getOperando(0));
-            if (r.equals(Resultado.COD_TRUE)) {
-                cej.union(r.getEjemplo());
-            } else {
-                cej.union(r.getContraejemplo());
-            }
             resParcial.setResultado(Resultado.COD_FALSE);
             resParcial.setContraejemplo(cej);
             tabFormulas.aniadirEtiqueta(estado, au, resParcial);
