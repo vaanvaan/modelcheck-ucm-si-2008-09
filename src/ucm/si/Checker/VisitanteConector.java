@@ -1,5 +1,6 @@
 package ucm.si.Checker;
 
+import java.util.EnumMap;
 import ucm.si.Checker.tabulacion.TabulacionFormulas;
 
 import ucm.si.Checker.tabulacion.TabulacionMemSistema;
@@ -9,16 +10,10 @@ public class VisitanteConector<S> extends Visitante<S> {
 
     private Interprete<S> interprete = null;
     private TabulacionFormulas<S> tabFormulas;
-    private Visitante[] visitantes = new Visitante[8];
+    public enum TFormula {PROP,AND,OR,NOT,AX,EX,AU,EU};
+    private EnumMap<TFormula,Visitante<S>> visitantes = new EnumMap<TFormula, Visitante<S>>(TFormula.class);
     private S estado;
-    public static final int TPROP = 0;
-    public static final int TAND = 1;
-    public static final int TOR = 2;
-    public static final int TNOT = 3;
-    public static final int TAX = 4;
-    public static final int TEX = 5;
-    public static final int TAU = 6;
-    public static final int TEU = 7;
+    
 
     public S getEstado() {
         return estado;
@@ -34,13 +29,13 @@ public class VisitanteConector<S> extends Visitante<S> {
         this.interprete = interprete;
         this.tabFormulas = new TabulacionMemSistema<S>();
         Visitante<S> visitantePorDefecto = new VisitantePorDefecto<S>(interprete, this);
-        for (int i = 0; i < 8; i++) {
-            this.visitantes[i] = visitantePorDefecto;
+        for (TFormula tf : TFormula.values()) {
+            this.visitantes.put(tf, visitantePorDefecto);
         }
     }
 
-    public void setVisitante(int TFormula, Visitante<S> v) {
-        this.visitantes[TFormula] = v;
+    public void setVisitante(TFormula t, Visitante<S> v) {
+        this.visitantes.put(t,v);
     }
 
     public void visita(Proposicion<S> p) {
@@ -50,8 +45,8 @@ public class VisitanteConector<S> extends Visitante<S> {
             resParcial.setContraejemplo(r.getContraejemplo());
             resParcial.setEjemplo(r.getEjemplo());
         } else {
-            visitantes[TPROP].visita(p);
-            this.resParcial = visitantes[TPROP].getResParcial();
+            visitantes.get(TFormula.PROP).visita(p);
+            this.resParcial = visitantes.get(TFormula.PROP).getResParcial();
             this.tabFormulas.aniadirEtiqueta(estado, p, resParcial);
         }
 
@@ -64,8 +59,8 @@ public class VisitanteConector<S> extends Visitante<S> {
             resParcial.setContraejemplo(r.getContraejemplo());
             resParcial.setEjemplo(r.getEjemplo());
         } else {
-            visitantes[TNOT].visita(n);
-            this.resParcial = visitantes[TNOT].getResParcial();
+            visitantes.get(TFormula.NOT).visita(n);
+            this.resParcial = visitantes.get(TFormula.NOT).getResParcial();
             this.tabFormulas.aniadirEtiqueta(estado, n, resParcial);
         }
     }
@@ -77,8 +72,8 @@ public class VisitanteConector<S> extends Visitante<S> {
             resParcial.setContraejemplo(r.getContraejemplo());
             resParcial.setEjemplo(r.getEjemplo());
         } else {
-            visitantes[TOR].visita(or);
-            this.resParcial = visitantes[TOR].getResParcial();
+            visitantes.get(TFormula.OR).visita(or);
+            this.resParcial = visitantes.get(TFormula.OR).getResParcial();
             tabFormulas.aniadirEtiqueta(estado, or, resParcial);
         }
     }
@@ -90,9 +85,8 @@ public class VisitanteConector<S> extends Visitante<S> {
             resParcial.setContraejemplo(r.getContraejemplo());
             resParcial.setEjemplo(r.getEjemplo());
         } else {
-            ;
-            visitantes[TAND].visita(and);
-            this.resParcial = visitantes[TAND].getResParcial();
+            visitantes.get(TFormula.AND).visita(and);
+            this.resParcial = visitantes.get(TFormula.AND).getResParcial();
             this.tabFormulas.aniadirEtiqueta(estado, and, resParcial);
         }
     }
@@ -104,8 +98,8 @@ public class VisitanteConector<S> extends Visitante<S> {
             resParcial.setContraejemplo(r.getContraejemplo());
             resParcial.setEjemplo(r.getEjemplo());
         } else {
-            visitantes[TAX].visita(allnext);
-            this.resParcial = visitantes[TAX].getResParcial();
+            visitantes.get(TFormula.AX).visita(allnext);
+            this.resParcial = visitantes.get(TFormula.AX).getResParcial();
             this.tabFormulas.aniadirEtiqueta(estado, allnext, resParcial);
         }
     }
@@ -117,8 +111,8 @@ public class VisitanteConector<S> extends Visitante<S> {
             resParcial.setContraejemplo(r.getContraejemplo());
             resParcial.setEjemplo(r.getEjemplo());
         } else {
-            visitantes[TEX].visita(eventx);
-            this.resParcial = visitantes[TEX].getResParcial();
+            visitantes.get(TFormula.EX).visita(eventx);
+            this.resParcial = visitantes.get(TFormula.EX).getResParcial();
             this.tabFormulas.aniadirEtiqueta(estado, eventx, resParcial);
         }
     }
@@ -130,8 +124,8 @@ public class VisitanteConector<S> extends Visitante<S> {
             resParcial.setContraejemplo(r.getContraejemplo());
             resParcial.setEjemplo(r.getEjemplo());
         } else {
-            visitantes[TAU].visita(au);
-            this.resParcial = visitantes[TAU].getResParcial();
+            visitantes.get(TFormula.AU).visita(au);
+            this.resParcial = visitantes.get(TFormula.AU).getResParcial();
             this.tabFormulas.aniadirEtiqueta(estado, au, resParcial);
         }
     }
@@ -143,8 +137,8 @@ public class VisitanteConector<S> extends Visitante<S> {
             resParcial.setContraejemplo(r.getContraejemplo());
             resParcial.setEjemplo(r.getEjemplo());
         } else {
-            visitantes[TEU].visita(eu);
-            this.resParcial = visitantes[TEU].getResParcial();
+            visitantes.get(TFormula.EU).visita(eu);
+            this.resParcial = visitantes.get(TFormula.EU).getResParcial();
             this.tabFormulas.aniadirEtiqueta(estado, eu, resParcial);
         }
     }
