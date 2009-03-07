@@ -1,31 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ucm.si.Checker;
 
 
-/**
- *
- * @author nico
- */
-class NodoVisitados<S> {
+public class NodoVisitados<S> {
     NodoVisitados<S> ant;
-    S set;
+    S estado;
     
     public NodoVisitados() {
         this.ant = null;
-        this.set = null;
+        this.estado = null;
     }
     
     public NodoVisitados(NodoVisitados<S> ant) {
         this.ant = ant;
-        this.set = null;
+        this.estado = null;
     }
     
     public boolean contains(S s){
-        if ((set!=null)&&(set.equals(s))){
+        if ((estado!=null)&&(estado.equals(s))){
             return true;
         } else if (ant==null){
             return false;
@@ -33,7 +24,7 @@ class NodoVisitados<S> {
     }
     
     public void add(S s){
-        this.set = s;
+        this.estado = s;
     }
 
 }

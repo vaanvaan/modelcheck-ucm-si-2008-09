@@ -1,27 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ucm.si.Checker;
 
 import java.util.List;
 
-/**
- *
- * @author nico
- */
-class LinkedBlockingQueue2<S> {
+public class Cola<S> {
     NodoLista<S> ini, fin;
     int n;
     
-    public LinkedBlockingQueue2(){
+    public Cola(){
         ini = null;
         fin = null;
         n = 0;
     }
     
-    public LinkedBlockingQueue2(List<S> l){
+    public Cola(List<S> l){
         NodoLista<S> aux;
         n = l.size();
         for(int i=0;i<n;i++){            
@@ -52,11 +43,11 @@ class LinkedBlockingQueue2<S> {
         n++;
     }
 
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return n==0;
     }
     
-    S poll(){
+    public S poll(){
         S s = ini.getS();
         ini = ini.getAnt();
         if (ini == null) fin = null;

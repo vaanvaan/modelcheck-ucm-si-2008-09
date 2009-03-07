@@ -314,13 +314,13 @@ public class VisitantePorDefecto<S> extends Visitante<S> {
     public void visita(EU eu) {
         S estado = this.conector.getEstado();
         S eraiz = estado;
-        LinkedBlockingQueue2<S> colaEanterior =
-                new LinkedBlockingQueue2<S>();
+        Cola<S> colaEanterior =
+                new Cola<S>();
         GrafoCaminos<S> cej = new GrafoUnico<S>();
-        LinkedBlockingQueue2<GrafoCaminos<S>> colaej =
-                new LinkedBlockingQueue2<GrafoCaminos<S>>();
-        LinkedBlockingQueue2<S> colaEstados =
-                new LinkedBlockingQueue2<S>();
+        Cola<GrafoCaminos<S>> colaej =
+                new Cola<GrafoCaminos<S>>();
+        Cola<S> colaEstados =
+                new Cola<S>();
         colaEstados.offer(estado);
         colaEanterior.offer(null);
         colaej.offer(new GrafoUnico<S>());
