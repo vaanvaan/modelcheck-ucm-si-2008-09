@@ -7,6 +7,7 @@ package ucm.si.Checker;
 
 import java.util.Iterator;
 import java.util.List;
+import ucm.si.Checker.modular.VisitanteConectorModular;
 import ucm.si.Checker.util.Roseta;
 import ucm.si.basico.ecuaciones.And; 
 import ucm.si.basico.ecuaciones.Formula;
@@ -49,7 +50,7 @@ public class DefaultModelChecker<S> implements ModelChecker<S>{
         this.interprete = new InterpreteWrapper<S>(interprete);
         if( estado == null)
            s = this.interprete.iniciales().get(0); 
-        VisitanteConector<S> v = new VisitanteConector(estado,this.interprete);
+        VisitanteConectorModular<S> v = new VisitanteConectorModular<S>(estado,this.interprete);
         formula.accept(v);
         return v.getResParcial();
     }

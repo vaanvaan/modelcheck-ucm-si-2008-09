@@ -11,11 +11,7 @@ import ucm.si.Laberinto.Final;
 import ucm.si.Laberinto.Laberinto;
 import ucm.si.Laberinto.LaberintoPropo;
 import ucm.si.Laberinto.Posicion;
-import ucm.si.basico.ecuaciones.AU;
-import ucm.si.basico.ecuaciones.And;
-import ucm.si.basico.ecuaciones.EU;
-import ucm.si.basico.ecuaciones.Formula;
-import ucm.si.basico.ecuaciones.Not;
+import ucm.si.basico.ecuaciones.*;
 
 /**
  *
