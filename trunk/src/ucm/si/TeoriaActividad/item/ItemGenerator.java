@@ -53,5 +53,8 @@ public class ItemGenerator {
         return this.conjunto.containsKey(item.getClave());
     }
 
+    public String[] getItems(){
+        return this.conjunto.keySet().toArray(new String[0]);
+    }
 
 }

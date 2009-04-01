@@ -6,8 +6,13 @@
 package ucm.si.TeoriaActividad.Interprete;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ArrayBlockingQueue;
 import ucm.si.TeoriaActividad.actividad.Actividad;
 import ucm.si.TeoriaActividad.actividad.ActividadGenerator;
@@ -43,18 +48,42 @@ public class Pruebas
         
         // Creamos la tabla para particionar los items en subconjuntos
         // por ahora hacemos para 32 actividades, pero es facil hacerlo generico
-        int[] litems = new int[itemGen.Elements()];
+        
+        String[] lItems = itemGen.getItems();
+        int[] lClaves = new int[lItems.length];
         Actividad[] lacts = activGen.getConjunto().keySet().
                 toArray(new Actividad[activGen.Elements()]);
+        for (int j = 0; j < lItems.length; j++){
+            if (lacts[0].necesita(itemGen.getItem(lItems[j]))){
+                lClaves[j] = 1;
+            } else {
+                lClaves[j] = 0;
+            }
+        }
         for (int i = 0; i < lacts.length; i++){
-            for (int j =0; j < litems.length; j++){
-                if (i==0){
-                    // Voy por aqui
-                }else{
-                }
+            for (int j =0; j < lItems.length; j++){
+                if (lacts[i].necesita(itemGen.getItem(lItems[j])))
+                    lClaves[j] = lClaves[j] + 2^i;
+            }
+        }
+        HashMap<Integer,Set<String>> conjuntosItems = new HashMap<Integer,Set<String>>();
+        for (int i=0; i < lClaves.length; i++){
+            if (!conjuntosItems.containsKey(new Integer(lClaves[i]))){
+                TreeSet<String> saux = new TreeSet<String>();
+                saux.add(lItems[i]);                
+                conjuntosItems.put(new Integer(lClaves[i]), saux);
+            } else {
+                conjuntosItems.get(lClaves[i]).add(lItems[i]);
             }
         }
         
+        // Ahora nos quedamos solo con los conjuntos conflictivos
+        for (int i = 0; i < lacts.length+1; i++) {
+            Integer clave = new Integer(2^i);
+            if (conjuntosItems.containsKey(clave)){
+                conjuntosItems.remove(clave);
+            }
+        }
         
         PseudoEstado estadoIni = new PseudoEstado();
         estadoIni.actividades = new ListaEstadosActividades();

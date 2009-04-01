@@ -83,6 +83,15 @@ public class Actividad
         this.nombre = nombre;
     }
 
+    public boolean necesita(Item item){
+        int i=0;
+        boolean encontrado = false;
+        while ((i<itemNecesarios.length)&&(!encontrado)){
+            encontrado = itemNecesarios[i].equals(item);
+            i++;
+        }
+        return encontrado;
+    }
 
     @Override
     public boolean equals(Object obj) {
