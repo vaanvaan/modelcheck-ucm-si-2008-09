@@ -29,7 +29,7 @@ public class ActividadGenerator
     }
 
 
-    private HashMap<String,Actividad> conjunto;
+    private HashMap<String,Actividad> conjunto = new HashMap<String,Actividad>();
 
     public HashMap<String, Actividad> getConjunto() {
         return conjunto;

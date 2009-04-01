@@ -28,7 +28,7 @@ public class ItemGenerator {
             ItemGenerator.reference = new ItemGenerator();
     }
 
-    private HashMap<String,Item> conjunto;
+    private HashMap<String,Item> conjunto = new HashMap<String,Item>();
 
     public void addItem(Item item) throws Exception
     {

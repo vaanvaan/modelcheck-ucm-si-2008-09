@@ -40,9 +40,22 @@ public class Pruebas
         itemGen.addItem(item3);
         activGen.addActividad(actividad1);
         activGen.addActividad(actividad2);
-
-
-
+        
+        // Creamos la tabla para particionar los items en subconjuntos
+        // por ahora hacemos para 32 actividades, pero es facil hacerlo generico
+        int[] litems = new int[itemGen.Elements()];
+        Actividad[] lacts = activGen.getConjunto().keySet().
+                toArray(new Actividad[activGen.Elements()]);
+        for (int i = 0; i < lacts.length; i++){
+            for (int j =0; j < litems.length; j++){
+                if (i==0){
+                    // Voy por aqui
+                }else{
+                }
+            }
+        }
+        
+        
         PseudoEstado estadoIni = new PseudoEstado();
         estadoIni.actividades = new ListaEstadosActividades();
         estadoIni.items = new ListaEstadosItems();
@@ -62,7 +75,7 @@ public class Pruebas
            lanzar en el siguiente estado
          */
         if(estado.isEmpty())
-        {}
+        {} // este if no sirve de nada
 
 
 
@@ -79,7 +92,7 @@ public class Pruebas
             List<String> listaClaves = new ArrayList<String>();
             listaClaves.add(st);
             estadoNuevo.actividades = new ListaEstadosActividades(lista, listaClaves);
-            backtracking(estadoNuevo);
+            backtracking(estadoNuevo); // Aqui se esta haciendo bucle infinito
 
         }
     }
