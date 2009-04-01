@@ -21,6 +21,7 @@ public class ProposicionItem extends Proposicion<Item>{
 	 * Pues si metemos roles, si rol = null, no nos importa el rol que haya tenido
 	 * pero puede que necesitemos algo como, item = destroyed, owner = ActividadPepe,
 	 * rol= tool;
+	 * item = null (nos da igual su estado) owner= ActividadPepe rol=Subject;
 	 * 
 	 * XD espero que se entienda
 	 * 
