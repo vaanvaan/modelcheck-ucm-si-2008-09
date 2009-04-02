@@ -35,6 +35,10 @@ public class ListaEstadosActividades
         this.clavesActividad = new ArrayList<String>(capacidad);
     }
 
+    public List<String> keySet() {
+        return this.clavesActividad;
+    }
+
     public int size()
     {
         return this.estado.size();

@@ -223,7 +223,10 @@ public class Pruebas implements Interprete<EstadoTA>
     public static void main(String[] args){
         Pruebas p = new Pruebas();
         List<EstadoTA> l = p.iniciales();
-        boolean a = l.isEmpty();
+        for (Iterator<EstadoTA> it = l.iterator(); it.hasNext();) {
+            EstadoTA e = it.next();
+            System.out.println(e);
+        }
         
     }
 
