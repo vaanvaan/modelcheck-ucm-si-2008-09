@@ -67,6 +67,13 @@ public class EstadoTA
                 this.actividades.setEstado(a.getNombre(), EstadoActividad.Waiting);
             }
         }
+        for (Iterator<Actividad> it = this.propietarias.keySet().iterator(); it.hasNext();) {
+            Actividad a = it.next();            
+            for (Iterator<String> it2 = this.propietarias.get(a).iterator(); it2.hasNext();) {
+                String itemaux = it2.next();
+                p.itemGen.getItem(itemaux).setPropietaria(null);
+            }
+        }
     }
 
     @Override
@@ -79,6 +86,7 @@ public class EstadoTA
             strbuf.append(actividades.getEstado(s) + ", ");            
         }
         strbuf.append("\n");
+        /*
         for (Iterator<String> it = this.items.keySet().iterator(); it.hasNext();) {
             String s = it.next();
             strbuf.append(s);
@@ -87,6 +95,17 @@ public class EstadoTA
             if (items.getEstado(s)==EstadoItem.BUSY){
                 
             }
+        }*/
+        for (Iterator<Actividad> it = this.propietarias.keySet().iterator(); it.hasNext();) {
+            Actividad a = it.next();
+            strbuf.append(a.getNombre());
+            strbuf.append(" tiene ");
+            for (Iterator<String> it2 = this.propietarias.get(a).iterator(); it2.hasNext();) {
+                String s = it2.next();
+                strbuf.append(s+" ");
+                strbuf.append(", ");                
+            }
+            strbuf.append("\n");
         }
         return strbuf.toString();
     }

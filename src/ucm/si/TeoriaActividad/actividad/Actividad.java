@@ -131,6 +131,12 @@ public class Actividad implements Comparable<Actividad>
         return this.getNombre().compareTo(arg0.getNombre());
     }
 
+    @Override
+    public String toString() {
+        return this.getNombre();
+    }
+
+    
 
 
 }
