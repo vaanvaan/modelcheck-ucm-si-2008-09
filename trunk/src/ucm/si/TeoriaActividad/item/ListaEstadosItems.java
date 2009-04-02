@@ -20,6 +20,11 @@ public class ListaEstadosItems
     List<EstadoItem> estado;
     List<String> clavesEstado;
 
+    public ListaEstadosItems(ListaEstadosItems items) {
+        this.estado = new ArrayList<EstadoItem>(items.estado);
+        this.clavesEstado = new ArrayList<String>(items.clavesEstado);
+    }
+
     public ListaEstadosItems(List<EstadoItem> estado, List<String> clavesEstado) {
         this.estado = estado;
         this.clavesEstado = clavesEstado;

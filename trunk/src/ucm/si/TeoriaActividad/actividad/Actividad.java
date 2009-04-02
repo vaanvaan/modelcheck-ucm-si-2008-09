@@ -11,7 +11,7 @@ import ucm.si.TeoriaActividad.item.Item;
  *
  * @author José Antonio
  */
-public class Actividad
+public class Actividad implements Comparable<Actividad>
 {
     private Item[] itemNecesarios;
     private Item[] itemToDispose;
@@ -125,6 +125,10 @@ public class Actividad
         hash = 37 * hash + (this.itemToGenerate != null ? this.itemToGenerate.hashCode() : 0);
         hash = 37 * hash + (this.condiciones != null ? this.condiciones.hashCode() : 0);
         return hash;
+    }
+
+    public int compareTo(Actividad arg0) {
+        return this.getNombre().compareTo(arg0.getNombre());
     }
 
 
