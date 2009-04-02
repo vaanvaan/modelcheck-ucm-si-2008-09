@@ -203,6 +203,7 @@ public class Pruebas implements Interprete<EstadoTA>
         for (int j=0; j<conjActs.length;j++){
             Actividad a = conjActs[j];
             TreeSet<String> propaux = new TreeSet<String>(conjuntosItems.get(claveConj));
+            
             if (propietarias.containsKey(a)){
                 propietarias.get(a).addAll(propaux);
             } else {
@@ -210,12 +211,15 @@ public class Pruebas implements Interprete<EstadoTA>
             }    
             if (i==conjItemsConflictivos.length-1){ // ya hemos asignado el ultimo
                 EstadoTA estadoaux = new EstadoTA(eini);
-                estadoaux.propietarias = new TreeMap<Actividad,Set<String>>(propietarias);
+                estadoaux.propietarias = copiaPropietarias(propietarias);
                 estadoaux.lanzarPosibles(this);
                 laux.add(estadoaux);
             } else {
-                backtracking2(eini,i+1, propietarias, conjItemsConflictivos, laux);
-                propietarias.get(a).removeAll(propaux);
+                backtracking2(eini,i+1, propietarias, conjItemsConflictivos, laux);                
+            }
+            propietarias.get(a).removeAll(propaux);
+            if (propietarias.get(a).isEmpty()){
+                propietarias.remove(a);
             }
         }
     }
@@ -228,6 +232,15 @@ public class Pruebas implements Interprete<EstadoTA>
             System.out.println(e);
         }
         
+    }
+
+    private TreeMap<Actividad, Set<String>> copiaPropietarias(TreeMap<Actividad, Set<String>> propietarias) {
+        TreeMap<Actividad, Set<String>> propaux = new TreeMap<Actividad, Set<String>>();
+        for (Iterator<Actividad> it = propietarias.keySet().iterator(); it.hasNext();) {
+            Actividad a = it.next();
+            propaux.put(a, new TreeSet<String>(propietarias.get(a)));
+        }
+        return propaux;
     }
 
 }
