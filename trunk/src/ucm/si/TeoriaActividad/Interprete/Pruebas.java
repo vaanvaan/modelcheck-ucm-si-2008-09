@@ -13,13 +13,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.ArrayBlockingQueue;
+import ucm.si.Checker.Interprete;
+import ucm.si.Checker.util.StateLabeledList;
 import ucm.si.TeoriaActividad.actividad.Actividad;
 import ucm.si.TeoriaActividad.actividad.ActividadGenerator;
 import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.actividad.ListaEstadosActividades;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
+import ucm.si.TeoriaActividad.item.EstadoItem;
 import ucm.si.TeoriaActividad.item.Item;
 import ucm.si.TeoriaActividad.item.ItemGenerator;
 import ucm.si.TeoriaActividad.item.ListaEstadosItems;
@@ -28,17 +32,23 @@ import ucm.si.TeoriaActividad.item.ListaEstadosItems;
  *
  * @author José Antonio
  */
-public class Pruebas
+public class Pruebas implements Interprete<EstadoTA>
 {
-    public static void main(String[] args) throws Exception {
-
+    public ItemGenerator itemGen;
+    public ActividadGenerator activGen;
+    public HashMap<Integer, Set<String>> conjuntosItems;
+    public HashMap<Integer, Set<Actividad>> conjuntosActividades;
+    public String[] actividades;
+    public String[] items;
+    
+    public Pruebas(){
         Item item1 = new Item("1");
         Item item2 = new Item("2");
         Item item3 = new Item("3");
         Item item4 = new Item("4");
         Item item5 = new Item("5");
         Item item6 = new Item("6");        
-        ItemGenerator itemGen = ItemGenerator.getReference();
+        itemGen = ItemGenerator.getReference();
         Item[] listaItem1 = {item1, item2, item3};
         Item[] listaItem2 = {item1, item2, item4};
         Item[] listaItem3 = {item1, item3, item5};
@@ -46,7 +56,8 @@ public class Pruebas
         Actividad actividad1 = new Actividad("A1", listaItem1, null, null, null);
         Actividad actividad2 = new Actividad("A2", listaItem2, null, null, null);
         Actividad actividad3 = new Actividad("A3", listaItem3, null, null, null);
-        ActividadGenerator activGen = ActividadGenerator.getReference();
+        activGen = ActividadGenerator.getReference();
+        try{
         itemGen.addItem(item1);
         itemGen.addItem(item2);
         itemGen.addItem(item3);
@@ -56,6 +67,7 @@ public class Pruebas
         activGen.addActividad(actividad1);
         activGen.addActividad(actividad2);
         activGen.addActividad(actividad3);
+        
         
         // Creamos la tabla para particionar los items en subconjuntos
         // por ahora hacemos para 32 actividades, pero es facil hacerlo generico
@@ -79,7 +91,7 @@ public class Pruebas
             }
             pot2 = pot2 << 1;
         }
-        HashMap<Integer,Set<String>> conjuntosItems = new HashMap<Integer,Set<String>>();
+        conjuntosItems = new HashMap<Integer,Set<String>>();
         for (int i=0; i < lClaves.length; i++){
             if (!conjuntosItems.containsKey(new Integer(lClaves[i]))){
                 TreeSet<String> saux = new TreeSet<String>();
@@ -102,10 +114,12 @@ public class Pruebas
             }
             pot2 = pot2<<1;
         }
-        HashMap<Integer,Set<Actividad>> conjuntosActividades = new HashMap<Integer,Set<Actividad>>();
+        // Ahora generamos, para cada conjunto conflictivo, el conjunto 
+        // de actividades que lo necesitan.
+        conjuntosActividades = new HashMap<Integer,Set<Actividad>>();
         for (Iterator<Integer> it = conjuntosItems.keySet().iterator(); it.hasNext();) {
             Integer i = it.next();
-            String[] lString = conjuntosItems.get(i).toArray(new String[0]);            
+            //String[] lString = conjuntosItems.get(i).toArray(new String[0]);            
             pot2=1;
             for (int j=1;j<=lacts.length;j++){
                 if ((pot2&i)>=1){
@@ -119,6 +133,7 @@ public class Pruebas
                 }
                 pot2 = pot2<<1;
             }
+            /* Lo de aqui es para comprobar que funciona
             StringBuffer strbuf = new StringBuffer("Grupo items ");
             strbuf.append(i);
             strbuf.append(": ");
@@ -134,46 +149,68 @@ public class Pruebas
                 strbuf.append(',');
             }
             strbuf.deleteCharAt(strbuf.length()-1);
-            System.out.println(strbuf.toString());
+            System.out.println(strbuf.toString());*/
         }
-        /*PseudoEstado estadoIni = new PseudoEstado();
-        estadoIni.actividades = new ListaEstadosActividades();
-        estadoIni.items = new ListaEstadosItems();
-
-
-        backtracking(estadoIni);*/
-
-
-
-
-
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        
+    }
+    
+    public List<EstadoTA> iniciales() {
+        ListaEstadosActividades lEstAct = new ListaEstadosActividades();
+        actividades = activGen.getConjunto().keySet().toArray(new String[0]);
+        for (int i=0; i<actividades.length;i++){
+        lEstAct.addEstado(actividades[i], EstadoActividad.Idle);
+        }
+        ListaEstadosItems lEstItems = new ListaEstadosItems();
+        items = itemGen.getItems();
+        for (int i=0; i<items.length;i++){
+        lEstItems.addEstado(items[i], EstadoItem.FREE);
+        }
+        EstadoTA estadoIni = new EstadoTA(lEstItems, lEstAct, new TreeMap<Integer, Actividad>());
+        return backtracking(estadoIni);
     }
 
-    public static void backtracking(PseudoEstado estado)
+    public List<EstadoTA> transitar(EstadoTA state) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public StateLabeledList<EstadoTA> transitarConEtiqueta(EstadoTA state) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public List<String> dameTransiciones() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    
+
+    public List<EstadoTA> backtracking(EstadoTA estado)
     {
-        /* suponemos que obtenemos el conjunto de Actividades que podriamos
-           lanzar en el siguiente estado
-         */
-        if(estado.isEmpty())
-        {} // este if no sirve de nada
+        TreeMap<Integer, Actividad> propietarias = new TreeMap<Integer,Actividad>();
+        Integer[] conjItemsConflictivos = 
+                conjuntosItems.keySet().toArray(new Integer[0]);        
+        ArrayList<EstadoTA> laux = new ArrayList<EstadoTA>();
+        backtracking2(estado,0,propietarias,conjItemsConflictivos,laux);
+        return laux;
+    }
 
-
-
-
-        int numActiv = ActividadGenerator.getReference().Elements();
-        for (String st : ActividadGenerator.getReference().getConjunto().keySet())
-        {
-
-            PseudoEstado estadoNuevo = new PseudoEstado();
-
-
-            List<EstadoActividad> lista = new ArrayList<EstadoActividad>();
-
-            List<String> listaClaves = new ArrayList<String>();
-            listaClaves.add(st);
-            estadoNuevo.actividades = new ListaEstadosActividades(lista, listaClaves);
-            backtracking(estadoNuevo); // Aqui se esta haciendo bucle infinito
-
+    private void backtracking2(EstadoTA eini,int i, TreeMap<Integer, Actividad> propietarias,
+            Integer[] conjItemsConflictivos, ArrayList<EstadoTA> laux) {
+        Integer claveConj = conjItemsConflictivos[i];
+        Actividad[] conjActs = conjuntosActividades.get(claveConj).toArray(new Actividad[0]);
+        for (int j=0; j<conjActs.length;j++){
+            Actividad a = conjActs[j];
+            propietarias.put(claveConj,a);
+            if (i==conjItemsConflictivos.length-1){ // ya hemos asignado el ultimo
+                EstadoTA estadoaux = new EstadoTA(eini);
+                estadoaux.propietarias = new TreeMap<Integer, Actividad>(propietarias);
+                estadoaux.lanzarPosibles();
+                laux.add(estadoaux);
+            } else {
+                backtracking2(eini,i+1, propietarias, conjItemsConflictivos, laux);
+            }
         }
     }
 
