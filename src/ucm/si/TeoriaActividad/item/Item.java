@@ -5,6 +5,8 @@
 
 package ucm.si.TeoriaActividad.item;
 
+import ucm.si.TeoriaActividad.actividad.Actividad;
+
 /**
  *
  * @author José Antonio
@@ -12,7 +14,8 @@ package ucm.si.TeoriaActividad.item;
 public class Item
 {
     private String clave;
-
+    private Actividad propietaria;
+    
     public Item(String clave) {
         this.clave = clave;
     }
@@ -23,6 +26,14 @@ public class Item
 
     public void setClave(String clave) {
         this.clave = clave;
+    }
+
+    public void setPropietaria(Actividad a) {
+        this.propietaria = a;
+    }
+
+    public Actividad getPropietaria() {
+        return propietaria;
     }
 
 

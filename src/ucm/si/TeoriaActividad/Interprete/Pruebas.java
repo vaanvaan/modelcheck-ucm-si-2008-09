@@ -106,14 +106,14 @@ public class Pruebas implements Interprete<EstadoTA>
         if (conjuntosItems.containsKey(new Integer(0))){
                 conjuntosItems.remove(new Integer(0));
         }
-        pot2 = 1;
+        /*pot2 = 1;
         for (int i = 0; i < lacts.length; i++) {
             Integer clave = new Integer(pot2);
             if (conjuntosItems.containsKey(clave)){
                 conjuntosItems.remove(clave);
             }
             pot2 = pot2<<1;
-        }
+        }*/
         // Ahora generamos, para cada conjunto conflictivo, el conjunto 
         // de actividades que lo necesitan.
         conjuntosActividades = new HashMap<Integer,Set<Actividad>>();
@@ -168,7 +168,7 @@ public class Pruebas implements Interprete<EstadoTA>
         for (int i=0; i<items.length;i++){
         lEstItems.addEstado(items[i], EstadoItem.FREE);
         }
-        EstadoTA estadoIni = new EstadoTA(lEstItems, lEstAct, new TreeMap<Integer, Actividad>());
+        EstadoTA estadoIni = new EstadoTA(lEstItems, lEstAct, new TreeMap<Actividad,Set<String>>());
         return backtracking(estadoIni);
     }
 
@@ -188,7 +188,7 @@ public class Pruebas implements Interprete<EstadoTA>
 
     public List<EstadoTA> backtracking(EstadoTA estado)
     {
-        TreeMap<Integer, Actividad> propietarias = new TreeMap<Integer,Actividad>();
+        TreeMap<Actividad,Set<String>> propietarias = new TreeMap<Actividad, Set<String>>();
         Integer[] conjItemsConflictivos = 
                 conjuntosItems.keySet().toArray(new Integer[0]);        
         ArrayList<EstadoTA> laux = new ArrayList<EstadoTA>();
@@ -196,22 +196,35 @@ public class Pruebas implements Interprete<EstadoTA>
         return laux;
     }
 
-    private void backtracking2(EstadoTA eini,int i, TreeMap<Integer, Actividad> propietarias,
+    private void backtracking2(EstadoTA eini,int i, TreeMap<Actividad,Set<String>> propietarias,
             Integer[] conjItemsConflictivos, ArrayList<EstadoTA> laux) {
         Integer claveConj = conjItemsConflictivos[i];
         Actividad[] conjActs = conjuntosActividades.get(claveConj).toArray(new Actividad[0]);
         for (int j=0; j<conjActs.length;j++){
             Actividad a = conjActs[j];
-            propietarias.put(claveConj,a);
+            TreeSet<String> propaux = new TreeSet<String>(conjuntosItems.get(claveConj));
+            if (propietarias.containsKey(a)){
+                propietarias.get(a).addAll(propaux);
+            } else {
+                propietarias.put(a,propaux);
+            }    
             if (i==conjItemsConflictivos.length-1){ // ya hemos asignado el ultimo
                 EstadoTA estadoaux = new EstadoTA(eini);
-                estadoaux.propietarias = new TreeMap<Integer, Actividad>(propietarias);
-                estadoaux.lanzarPosibles();
+                estadoaux.propietarias = new TreeMap<Actividad,Set<String>>(propietarias);
+                estadoaux.lanzarPosibles(this);
                 laux.add(estadoaux);
             } else {
                 backtracking2(eini,i+1, propietarias, conjItemsConflictivos, laux);
+                propietarias.get(a).removeAll(propaux);
             }
         }
+    }
+    
+    public static void main(String[] args){
+        Pruebas p = new Pruebas();
+        List<EstadoTA> l = p.iniciales();
+        boolean a = l.isEmpty();
+        
     }
 
 }
