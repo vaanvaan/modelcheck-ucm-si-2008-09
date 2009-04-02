@@ -42,6 +42,10 @@ public class ListaEstadosItems
         return this.estado.get( indice );
     }
 
+    public List<String> keySet() {
+        return this.clavesEstado;
+    }
+
     public void setEstado(String clave, EstadoItem estado)
     {
         int indice = this.clavesEstado.indexOf(clave);

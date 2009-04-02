@@ -68,5 +68,29 @@ public class EstadoTA
             }
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuffer strbuf = new StringBuffer();        
+        for (Iterator<String> it = this.actividades.keySet().iterator(); it.hasNext();) {
+            String s = it.next();
+            strbuf.append(s);
+            strbuf.append(" => ");
+            strbuf.append(actividades.getEstado(s) + ", ");            
+        }
+        strbuf.append("\n");
+        for (Iterator<String> it = this.items.keySet().iterator(); it.hasNext();) {
+            String s = it.next();
+            strbuf.append(s);
+            strbuf.append(" => ");
+            strbuf.append(items.getEstado(s) + ", ");
+            if (items.getEstado(s)==EstadoItem.BUSY){
+                
+            }
+        }
+        return strbuf.toString();
+    }
+    
+    
     
 }
