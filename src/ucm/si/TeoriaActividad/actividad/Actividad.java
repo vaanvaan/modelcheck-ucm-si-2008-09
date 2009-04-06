@@ -5,6 +5,8 @@
 
 package ucm.si.TeoriaActividad.actividad;
 
+import java.util.Set;
+import java.util.TreeSet;
 import ucm.si.TeoriaActividad.item.Item;
 
 /**
@@ -17,6 +19,7 @@ public class Actividad implements Comparable<Actividad>
     private Item[] itemToDispose;
     private Item[] itemToGenerate;
     private Conditions[] condiciones;
+    private TreeSet<Actividad> actividadesHijas = new TreeSet<Actividad>();
 
     private String nombre;
 
@@ -134,6 +137,14 @@ public class Actividad implements Comparable<Actividad>
     @Override
     public String toString() {
         return this.getNombre();
+    }
+
+    public Set<Actividad> getActividadesHijas() {
+        return actividadesHijas;
+    }
+
+    public void addActividadHija(Actividad actividad) {
+        this.actividadesHijas.add(actividad);
     }
 
     
