@@ -9,7 +9,7 @@ package ucm.si.TeoriaActividad.actividad;
  *
  * @author José Antonio
  */
-public class Contexto {
+public class Contexto extends ucm.si.util.Contexto {
 
     public static Contexto getReference()
     {
