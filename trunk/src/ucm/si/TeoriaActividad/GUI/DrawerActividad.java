@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.util.TreeMap;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import ucm.si.TeoriaActividad.actividad.ActividadGenerator;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
 import ucm.si.TeoriaActividad.item.ItemGenerator;
 import ucm.si.animadorGUI.Drawer;
@@ -21,6 +22,8 @@ import ucm.si.animadorGUI.PanelInterface;
 public class DrawerActividad extends Drawer<EstadoTA>{
     private JList jlItems;
     private DefaultListModel dlmItems;
+    private JList jlActividades;
+    private DefaultListModel dlmActividades;
 
     @Override
     public void pintaEstado(EstadoTA s, PanelInterface<EstadoTA> pane) {
@@ -47,6 +50,32 @@ public class DrawerActividad extends Drawer<EstadoTA>{
         jlItems = new JList(dlmItems);
         jlItems.setCellRenderer(new ItemDrawer(mapeadoColores));
         pane.add(jlItems);
+
+        dlmActividades = new DefaultListModel();
+        String[] actividades = ActividadGenerator.getReference().getConjunto().keySet()
+                .toArray(new String[0]);
+        java.util.Arrays.sort(actividades);
+        mapeadoColores = new TreeMap<String,Color>();
+        base = (int)Math.ceil(Math.pow((double)(actividades.length+1), (1/(double)3)));
+        for (int i = 0; i < actividades.length; i++) {
+            String a = actividades[i];
+            dlmActividades.addElement(new Object[]{a,s.getEstadoActividad(a)});
+            int ni = (i*(base*base*base-2))/(actividades.length);
+            int r = ni/(base*base);
+            int g = (ni - r*base*base)/base;
+            int b = ni%base;
+            if (r==base-1){
+                ni = ((i+1)*(base*base*base-1))/(actividades.length);
+                g = (ni - r*base*base)/base;
+                b = (ni)%base;
+            }
+            Color c = new Color(r*255/(base-1),b*255/(base-1),g*255/(base-1));
+            mapeadoColores.put(a, c);
+        }
+        jlActividades = new JList(dlmActividades);
+        jlActividades.setCellRenderer(new ActivityDrawer(mapeadoColores));
+        pane.add(jlActividades);
+
     }
 
     @Override
@@ -58,7 +87,15 @@ public class DrawerActividad extends Drawer<EstadoTA>{
             String e = items[i];
             dlmItems.addElement(new Object[]{e,s.getEstadoItem(e)});
         }
+        dlmActividades.removeAllElements();
+        String[] actividades = ActividadGenerator.getReference().getConjunto().keySet()
+                .toArray(new String[0]);
+        java.util.Arrays.sort(actividades);
+        for (int i = 0; i < actividades.length; i++) {
+            String a = actividades[i];
+            dlmActividades.addElement(new Object[]{a,s.getEstadoActividad(a)});
+        }
     }
-    
-    
+
+
 }

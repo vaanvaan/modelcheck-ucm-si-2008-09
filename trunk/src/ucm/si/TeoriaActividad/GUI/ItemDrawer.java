@@ -22,7 +22,6 @@ import ucm.si.TeoriaActividad.item.EstadoItem;
 public class ItemDrawer extends Component implements ListCellRenderer{
     private String texto;
     private TreeMap<String, Color> mapeadoColores;
-    private int i;
     private EstadoItem ei;
 
     ItemDrawer(TreeMap<String, Color> mapeadoColores) {
@@ -31,10 +30,8 @@ public class ItemDrawer extends Component implements ListCellRenderer{
 
     public Component getListCellRendererComponent(JList arg0, Object arg1, int arg2, boolean arg3, boolean arg4) {
         Object[] e = (Object[]) arg1;
-        String s = (String)e[0];
+        this.texto = (String)e[0];
         ei = (EstadoItem)e[1];
-        this.texto=s;
-        this.i = arg2;
         return this;
     }
 
@@ -44,9 +41,9 @@ public class ItemDrawer extends Component implements ListCellRenderer{
         Rectangle2D rect = arg0.getFont().getStringBounds(texto, arg0.getFontMetrics().getFontRenderContext());
         Color c = mapeadoColores.get(texto);
         Color cxor = Color.RED;
-        int lado = 2*(int)rect.getHeight() - 4;//*arg0.getFont().getSize();
+        int lado = 2*(int)rect.getHeight() - 4;
         if (ei.equals(EstadoItem.FREE)){
-            arg0.setColor(mapeadoColores.get(texto));
+            arg0.setColor(c);
             arg0.fillOval(0, 1, lado, lado);
             arg0.setColor(Color.black);
             arg0.drawOval(0, 1, lado, lado);
@@ -55,12 +52,12 @@ public class ItemDrawer extends Component implements ListCellRenderer{
             arg0.fillOval(0, 1, lado, lado);
             arg0.setColor(Color.black);
             arg0.drawOval(0, 1, lado, lado);
-            arg0.setColor(mapeadoColores.get(texto));
+            arg0.setColor(c);
             arg0.fillOval(4, 5, lado - 8, lado-8);
             arg0.setColor(Color.black);
             arg0.drawOval(4, 5, lado - 8, lado-8);
         } else {
-            arg0.setColor(mapeadoColores.get(texto));
+            arg0.setColor(c);
             arg0.fillOval(0, 1, lado, lado);
             arg0.setColor(Color.black);
             arg0.drawOval(0, 1, lado, lado);
