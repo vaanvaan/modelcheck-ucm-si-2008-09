@@ -45,7 +45,7 @@ public class DrawerActividad extends Drawer<EstadoTA>{
             mapeadoColores.put(e, c);
         }
         jlItems = new JList(dlmItems);
-        jlItems.setCellRenderer(new ItemDrawer2(mapeadoColores));
+        jlItems.setCellRenderer(new ItemDrawer(mapeadoColores));
         pane.add(jlItems);
     }
 
