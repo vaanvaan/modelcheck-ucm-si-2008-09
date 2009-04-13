@@ -6,7 +6,6 @@
 package ucm.si.TeoriaActividad.GUI;
 
 import java.awt.Color;
-import java.util.Random;
 import java.util.TreeMap;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -22,7 +21,6 @@ import ucm.si.animadorGUI.PanelInterface;
 public class DrawerActividad extends Drawer<EstadoTA>{
     private JList jlItems;
     private DefaultListModel dlmItems;
-    private Random rand = new Random(System.currentTimeMillis());
 
     @Override
     public void pintaEstado(EstadoTA s, PanelInterface<EstadoTA> pane) {
