@@ -7,35 +7,47 @@ package ucm.si.TeoriaActividad.GUI;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.geom.Rectangle2D;
+import java.util.Set;
 import java.util.TreeMap;
+import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
-import ucm.si.TeoriaActividad.actividad.EstadoActividad;
+import ucm.si.TeoriaActividad.estado.EstadoTA;
+import ucm.si.TeoriaActividad.item.EstadoItem;
 
 /**
  *
  * @author nico
  */
-public class ActivityDrawer extends Component implements ListCellRenderer{
+public class ActivityDrawer extends JPanel implements ListCellRenderer{
     private String texto;
     private TreeMap<String, Color> mapeadoColores;
-    private EstadoActividad ei;
-
+    private JList jlitemsObjetos;
+    
     ActivityDrawer(TreeMap<String, Color> mapeadoColores) {
         this.mapeadoColores = mapeadoColores;
     }
 
     public Component getListCellRendererComponent(JList arg0, Object arg1, int arg2, boolean arg3, boolean arg4) {
+        this.removeAll();
         Object[] e = (Object[]) arg1;
         this.texto= (String)e[0];
-        ei = (EstadoActividad)e[1];
+        EstadoTA ei = (EstadoTA)e[1];
+        Set<String> itemsObjetos = ei.propietarias.get(this.texto);
+        DefaultListModel dlmItems = new DefaultListModel();
+        for (String s : itemsObjetos) {
+            dlmItems.addElement(new Object[]{s,EstadoItem.FREE});
+        }
+        this.jlitemsObjetos = new JList(dlmItems);
+        this.jlitemsObjetos.setCellRenderer(new ItemDrawer(mapeadoColores));
+        this.add(this.jlitemsObjetos);
+        this.add(new JLabel(this.texto));
         return this;
     }
 
-    @Override
+    /*@Override
     public void paint(Graphics arg0) {
         super.paint(arg0);
         Rectangle2D rect = arg0.getFont().getStringBounds(texto, arg0.getFontMetrics().getFontRenderContext());
@@ -73,12 +85,14 @@ public class ActivityDrawer extends Component implements ListCellRenderer{
         arg0.setColor(Color.BLACK);
         arg0.setFont(arg0.getFont().deriveFont(2.0F*arg0.getFont().getSize()));
         arg0.drawString(texto, lado+1, lado-1);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public Dimension getPreferredSize() {
-        return new Dimension(2*(14 + 8*texto.length()), 2*14);
-    }
+        //return new Dimension(2*(14 + 8*texto.length()), 2*14);
+
+        return new Dimension(14 + 8*);
+    }*/
 
 
 
