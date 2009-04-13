@@ -51,20 +51,22 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
     public String[] items;
     private ArrayList<String> l;
 
-    public Pruebas(){
+    public Pruebas() {
         Item item1 = new Item("1");
         Item item2 = new Item("2");
         Item item3 = new Item("3");
         Item item4 = new Item("4");
         Item item5 = new Item("5");
         Item item6 = new Item("6");
+        Item item7 = new Item("7");
+        Item item8 = new Item("8");
         itemGen = ItemGenerator.getReference();
         Item[] listaItem1 = {item1, item2, item3};
         Item[] listaItem2 = {item1, item2, item4};
         Item[] listaItem3 = {item1, item3, item5};
 
         Actividad actividad1 = new Actividad("A1", listaItem1, new Item[0], new Item[0], new Conditions[0]);
-        Actividad actividad2 = new Actividad("A2", listaItem2, new Item[0], new Item[0], new Conditions[0]);
+        Actividad actividad2 = new Actividad("A2", listaItem2, new Item[]{item4}, new Item[0], new Conditions[0]);
         Actividad actividad3 = new Actividad("A3", listaItem3, new Item[0], new Item[0], new Conditions[0]);
         activGen = ActividadGenerator.getReference();
         try {
@@ -74,6 +76,8 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
             itemGen.addItem(item4);
             itemGen.addItem(item5);
             itemGen.addItem(item6);
+            itemGen.addItem(item7);
+            itemGen.addItem(item8);
             activGen.addActividad(actividad1);
             activGen.addActividad(actividad2);
             activGen.addActividad(actividad3);
@@ -117,7 +121,7 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
             if (conjuntosItems.containsKey(new Integer(0))) {
                 conjuntosItems.remove(new Integer(0));
             }
-            
+
             // Ahora generamos, para cada conjunto conflictivo, el conjunto 
             // de actividades que lo necesitan.
             conjuntosActividades = new TreeMap<Integer, Set<String>>();
@@ -166,15 +170,16 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         //terminamos actividades ejecutadas
         for (Iterator<String> it = estadoini.actividades.keySet().iterator(); it.hasNext();) {
             String a = it.next();
-            if (estadoini.actividades.getEstado(a).equals(EstadoActividad.Executing)){
+            if (estadoini.actividades.getEstado(a).equals(EstadoActividad.Executing)) {
                 estadoini.actividades.setEstado(a, EstadoActividad.Finalized);
                 for (Iterator<String> it2 = estadoini.propietarias.get(a).iterator(); it2.hasNext();) {
                     String item = it2.next();
                     estadoini.items.setEstado(item, EstadoItem.FREE);
                 }
+                estadoini.propietarias.remove(a);
                 Item[] itemsToDispose = activGen.getItem(a).getItemToDispose();
                 for (int i = 0; i < itemsToDispose.length; i++) {
-                   estadoini.items.setEstado(itemsToDispose[i].getClave(),EstadoItem.DISPOSED);
+                    estadoini.items.setEstado(itemsToDispose[i].getClave(), EstadoItem.DISPOSED);
                 }
             }
         }
@@ -188,18 +193,18 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
             EstadoTA e = it.next();
             laux2.add(e.toString());
         }
-        return new StateLabeledList<EstadoTA>(laux,laux2);
+        return new StateLabeledList<EstadoTA>(laux, laux2);
     }
 
     public List<String> dameTransiciones() {
-        if (l == null){
+        if (l == null) {
             Queue<EstadoTA> q = new LinkedBlockingQueue<EstadoTA>();
             TreeSet<EstadoTA> ts = new TreeSet<EstadoTA>();
             q.addAll(this.iniciales());
             l = new ArrayList<String>();
-            while (!q.isEmpty()){
+            while (!q.isEmpty()) {
                 EstadoTA e = q.poll();
-                if (!ts.contains(e)){
+                if (!ts.contains(e)) {
                     l.add(e.toString());
                     ts.add(e);
                     q.addAll(transitar(e));
@@ -210,7 +215,7 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
     }
 
     public List<EstadoTA> backtracking(EstadoTA estado) {
-        TreeMap<String, Set<String>> propietarias = new TreeMap<String, Set<String>>();
+        TreeMap<String, Set<String>> propietarias = copiaPropietarias(estado.propietarias);
         Integer[] conjItemsConflictivos =
                 conjuntosItems.keySet().toArray(new Integer[0]);
         ArrayList<EstadoTA> laux = new ArrayList<EstadoTA>();
@@ -221,17 +226,37 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
     private void backtracking2(EstadoTA eini, int i, TreeMap<String, Set<String>> propietarias,
             Integer[] conjItemsConflictivos, ArrayList<EstadoTA> laux) {
         Integer claveConj = conjItemsConflictivos[i];
-        String[] conjActs = conjuntosActividades.get(claveConj).toArray(new String[0]);
-        for (int j = 0; j < conjActs.length; j++) {
-            String a = conjActs[j];
-            if (eini.actividades.getEstado(a).equals(EstadoActividad.Waiting)) {
-                TreeSet<String> propaux = new TreeSet<String>(conjuntosItems.get(claveConj));
+        String itemMuestra = conjuntosItems.get(claveConj).iterator().next();
+        if (eini.items.getEstado(itemMuestra).equals(EstadoItem.FREE)) {
+            String[] conjActs = conjuntosActividades.get(claveConj).toArray(new String[0]);
+            boolean adjudicado = false;
+            for (int j = 0; j < conjActs.length; j++) {
+                String a = conjActs[j];
+                if (eini.actividades.getEstado(a).equals(EstadoActividad.Waiting)) {
+                    TreeSet<String> propaux = new TreeSet<String>(conjuntosItems.get(claveConj));
 
-                if (propietarias.containsKey(a)) {
-                    propietarias.get(a).addAll(propaux);
-                } else {
-                    propietarias.put(a, propaux);
+                    if (propietarias.containsKey(a)) {
+                        propietarias.get(a).addAll(propaux);
+                    } else {
+                        propietarias.put(a, propaux);
+                    }
+                    if (i == conjItemsConflictivos.length - 1) { // ya hemos asignado el ultimo
+                        EstadoTA estadoaux = new EstadoTA(eini);
+                        estadoaux.propietarias = copiaPropietarias(propietarias);
+                        estadoaux.lanzarPosibles(this);
+                        laux.add(estadoaux);
+                    } else {
+                        backtracking2(eini, i + 1, propietarias, conjItemsConflictivos, laux);
+                    }
+                    propietarias.get(a).removeAll(propaux);
+                    if (propietarias.get(a).isEmpty()) {
+                        propietarias.remove(a);
+                    }
+                    adjudicado = true;
                 }
+            }
+            if (!adjudicado) {
+                //este conjunto ya no es conflictivo porque nadie lo necesita
                 if (i == conjItemsConflictivos.length - 1) { // ya hemos asignado el ultimo
                     EstadoTA estadoaux = new EstadoTA(eini);
                     estadoaux.propietarias = copiaPropietarias(propietarias);
@@ -240,10 +265,15 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
                 } else {
                     backtracking2(eini, i + 1, propietarias, conjItemsConflictivos, laux);
                 }
-                propietarias.get(a).removeAll(propaux);
-                if (propietarias.get(a).isEmpty()) {
-                    propietarias.remove(a);
-                }
+            }
+        } else {
+            if (i == conjItemsConflictivos.length - 1) { // ya hemos asignado el ultimo
+                EstadoTA estadoaux = new EstadoTA(eini);
+                estadoaux.propietarias = copiaPropietarias(propietarias);
+                estadoaux.lanzarPosibles(this);
+                laux.add(estadoaux);
+            } else {
+                backtracking2(eini, i + 1, propietarias, conjItemsConflictivos, laux);
             }
         }
     }
@@ -252,35 +282,35 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         /*Pruebas p = new Pruebas();
         List<EstadoTA> l = p.transitar(p.iniciales().iterator().next());
         for (Iterator<EstadoTA> it = l.iterator(); it.hasNext();) {
-            EstadoTA e = it.next();
-            System.out.println(e);
+        EstadoTA e = it.next();
+        System.out.println(e);
         }*/
         Pruebas p = new Pruebas();
         Proposicion<EstadoTA> nofin = new Proposicion<EstadoTA>() {
 
             @Override
             public boolean esCierta(EstadoTA s) {
-                return s.actividades.getEstado("A2").equals(EstadoActividad.Waiting);
+                return true;//s.actividades.getEstado("A2").equals(EstadoActividad.Waiting);
             }
         };
         Proposicion<EstadoTA> fin = new Proposicion<EstadoTA>() {
 
             @Override
             public boolean esCierta(EstadoTA s) {
-                return s.actividades.getEstado("A2").equals(EstadoActividad.Executing);
+                return false;//s.actividades.getEstado("A2").equals(EstadoActividad.Finalized);
             }
         };
-        
+
         Formula haycamino = new EU(nofin, fin);
         Formula formula = new Not(haycamino);
-        
-        Launcher<EstadoTA> launcher = new Launcher<EstadoTA> (new Contexto(), p, formula);
-        
+
+        Launcher<EstadoTA> launcher = new Launcher<EstadoTA>(new Contexto(), p, formula);
+
         launcher.runCheck();
-        
+
         Drawer dw = new DrawerActividad();
         launcher.launchGrafico(dw);
-        
+
 
     }
 

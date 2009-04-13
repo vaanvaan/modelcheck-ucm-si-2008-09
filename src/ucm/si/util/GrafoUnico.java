@@ -65,10 +65,8 @@ public class GrafoUnico<S> extends GrafoCaminos<S> implements Comparable<GrafoUn
 
     @Override
     public Set<S> getHijos(S e) {
-        Set<S> s;        
-        if (this.camino.getHijo(e)!=null)
-            s = this.camino.getHijo(e);
-        else s = new TreeSet<S>();
+        Set<S> s = this.camino.getHijo(e);
+        if (s==null) s = new TreeSet<S>();
         return s;
     }
 
