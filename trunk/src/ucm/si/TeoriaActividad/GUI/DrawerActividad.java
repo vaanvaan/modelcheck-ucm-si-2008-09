@@ -10,6 +10,7 @@ import java.util.TreeMap;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import ucm.si.TeoriaActividad.actividad.ActividadGenerator;
+import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
 import ucm.si.TeoriaActividad.item.ItemGenerator;
 import ucm.si.animadorGUI.Drawer;
@@ -55,11 +56,11 @@ public class DrawerActividad extends Drawer<EstadoTA>{
         String[] actividades = ActividadGenerator.getReference().getConjunto().keySet()
                 .toArray(new String[0]);
         java.util.Arrays.sort(actividades);
-        mapeadoColores = new TreeMap<String,Color>();
         base = (int)Math.ceil(Math.pow((double)(actividades.length+1), (1/(double)3)));
         for (int i = 0; i < actividades.length; i++) {
             String a = actividades[i];
-            dlmActividades.addElement(new Object[]{a,s.getEstadoActividad(a)});
+            if (s.actividades.getEstado(a).equals(EstadoActividad.Executing))
+                dlmActividades.addElement(new Object[]{a,s});
             int ni = (i*(base*base*base-2))/(actividades.length);
             int r = ni/(base*base);
             int g = (ni - r*base*base)/base;
@@ -93,7 +94,8 @@ public class DrawerActividad extends Drawer<EstadoTA>{
         java.util.Arrays.sort(actividades);
         for (int i = 0; i < actividades.length; i++) {
             String a = actividades[i];
-            dlmActividades.addElement(new Object[]{a,s.getEstadoActividad(a)});
+            if (s.actividades.getEstado(a).equals(EstadoActividad.Executing))
+                dlmActividades.addElement(new Object[]{a,s});
         }
     }
 
