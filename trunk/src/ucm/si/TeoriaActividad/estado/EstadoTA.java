@@ -5,13 +5,11 @@
 
 package ucm.si.TeoriaActividad.estado;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import ucm.si.TeoriaActividad.Interprete.Pruebas;
-import ucm.si.TeoriaActividad.actividad.Actividad;
 import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.actividad.ListaEstadosActividades;
 import ucm.si.TeoriaActividad.item.EstadoItem;
@@ -27,6 +25,8 @@ public class EstadoTA implements IEstadoDrawable, Comparable<EstadoTA>
     public ListaEstadosItems items;
     public ListaEstadosActividades actividades;
     public TreeMap<String,Set<String>> propietarias;
+    private boolean numerado = false;
+    private int hash;
 
     public EstadoTA(ListaEstadosItems items, ListaEstadosActividades actividades, TreeMap<String,Set<String>> propietarias) {
         this.items = items;
@@ -128,19 +128,69 @@ public class EstadoTA implements IEstadoDrawable, Comparable<EstadoTA>
     }
 
     public int compareTo(EstadoTA arg0) {
-        for (Iterator<String> it = arg0.actividades.keySet().iterator(); it.hasNext();) {
-            String a = it.next();
-            int aux = arg0.actividades.getEstado(a).compareTo(this.actividades.getEstado(a));
-            if (aux!=0) return aux;
-        }
-        for (Iterator<String> it = arg0.items.keySet().iterator(); it.hasNext();) {
-            String item = it.next();
-            int aux = arg0.items.getEstado(item).compareTo(this.items.getEstado(item));
-            if (aux!=0) return aux;
-        }
-        return 0;
+        if (this==arg0) return 0;
+        if (this.hashCode()<arg0.hashCode()){
+            return -1;
+        } else if (this.hashCode()>arg0.hashCode()){
+            return 1;
+        } else return 0;
     }
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final EstadoTA other = (EstadoTA) obj;
+        return this.compareTo(other)==0;
+    }
+
+    @Override
+    public int hashCode() {
+        if (this.numerado){
+            return this.hash;
+        } else {
+            String[] s1 = this.actividades.keySet().toArray(new String[0]);
+            java.util.Arrays.sort(s1);
+            int na = 0;
+            int pow3 = 1;
+            TreeMap<String,String> propinversa = new TreeMap<String,String>();
+            for (int i = 0; i < s1.length; i++) {
+                na = na*3 + this.actividades.getEstado(s1[i]).ordinal();
+                pow3 = 3*pow3;
+                if (this.propietarias.containsKey(s1[i])){
+                    String[] s = this.propietarias.get(s1[i]).toArray(new String[0]);
+                    for (int j = 0; j < s.length; j++) {
+                        String item = s[j];
+                        propinversa.put(item, s1[i]);
+                    }
+                }
+            }
+            String[] s2 = this.items.keySet().toArray(new String[0]);
+            java.util.Arrays.sort(s2);
+            int nb = 0;
+            int nc = 0;
+            int pow5 = 1;
+            for (int i=0; i<s2.length;i++) {
+                nb = nb*5 + this.items.getEstado(s2[i]).ordinal();
+                nc = nc*(s1.length+1);
+                if (propinversa.containsKey(s2[i])){
+                  nc = nc + java.util.Arrays.binarySearch(s1, propinversa.get(s2[i])) + 1;
+                }
+                pow5 = pow5*5;
+            }
+            this.hash = nc*pow3*pow5 + (nb*pow3 + na);
+            this.numerado = true;
+            return hash;
+        }
+    }
+
+
+
+
     
     
 }
