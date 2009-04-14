@@ -19,17 +19,9 @@ import ucm.si.Checker.Interprete;
 import ucm.si.Checker.util.StateAndLabel;
 import ucm.si.Checker.util.StateLabeledList;
 import ucm.si.TeoriaActividad.GUI.DrawerActividad;
-import ucm.si.TeoriaActividad.actividad.Actividad;
-import ucm.si.TeoriaActividad.actividad.ActividadGenerator;
-import ucm.si.TeoriaActividad.actividad.Conditions;
-import ucm.si.TeoriaActividad.actividad.Contexto;
-import ucm.si.TeoriaActividad.actividad.EstadoActividad;
-import ucm.si.TeoriaActividad.actividad.ListaEstadosActividades;
+import ucm.si.TeoriaActividad.actividad.*;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
-import ucm.si.TeoriaActividad.item.EstadoItem;
-import ucm.si.TeoriaActividad.item.Item;
-import ucm.si.TeoriaActividad.item.ItemGenerator;
-import ucm.si.TeoriaActividad.item.ListaEstadosItems;
+import ucm.si.TeoriaActividad.item.*;
 import ucm.si.animadorGUI.Drawer;
 import ucm.si.animadorGUI.PanelInterface;
 import ucm.si.animadorGUI.util.Launcher;
@@ -188,23 +180,36 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         ArrayList<String> laux2 = new ArrayList<String>();
         for (Iterator<EstadoTA> it = laux.iterator(); it.hasNext();) {
             EstadoTA e = it.next();
-            laux2.add(e.toString());
+            laux2.add(nombreTransicion(state,e));
         }
         return new StateLabeledList<EstadoTA>(laux, laux2);
     }
 
     public List<String> dameTransiciones() {
         if (l == null) {
-            Queue<EstadoTA> q = new LinkedBlockingQueue<EstadoTA>();
+            Queue<EstadoTA[]> q = new LinkedBlockingQueue<EstadoTA[]>();
             TreeSet<EstadoTA> ts = new TreeSet<EstadoTA>();
-            q.addAll(this.iniciales());
+            for (EstadoTA e : this.iniciales()) {
+               q.add(new EstadoTA[]{null,e});
+            }
             l = new ArrayList<String>();
             while (!q.isEmpty()) {
-                EstadoTA e = q.poll();
-                if (!ts.contains(e)) {
-                    l.add(e.toString());
-                    ts.add(e);
-                    q.addAll(transitar(e));
+                EstadoTA[] arraye = q.poll();
+                EstadoTA epadre = arraye[0];
+                EstadoTA ehijo = arraye[1];
+                if (epadre==null){
+                    ts.add(ehijo);
+                    for (EstadoTA eaux : transitar(ehijo)) {
+                        q.add(new EstadoTA[]{ehijo,eaux});
+                    }
+                }else{
+                    if (!ts.contains(ehijo)) {
+                        l.add(nombreTransicion(epadre, ehijo));
+                        ts.add(ehijo);
+                        for (EstadoTA eaux : transitar(ehijo)) {
+                            q.add(new EstadoTA[]{ehijo,eaux});
+                        }
+                    }
                 }
             }
         }
@@ -336,5 +341,29 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
             laux.add(a.getNombre());
         }
         return laux.toArray(new String[0]);
+    }
+
+    private String nombreTransicion(EstadoTA eini, EstadoTA efin) {
+        StringBuffer strbuf = new StringBuffer();
+        StringBuffer strbuf2 = new StringBuffer();
+        for (int a = 0; a < actividades.length; a++) {
+            String s = actividades[a];
+            if (!eini.getEstadoActividad(s).equals(efin.getEstadoActividad(s))){
+                strbuf.append(s + "->" + efin.getEstadoActividad(s)
+                        .toString()+ ", ");
+            }
+            if ((eini.getItemsPoseidos(s)==null)||
+                (efin.getItemsPoseidos(s)==null)||
+                (!eini.getItemsPoseidos(s).equals(efin.getItemsPoseidos(s)))){
+                    String[] itemsp = efin.getItemsPoseidos(s);
+                    if (itemsp!=null){
+                      strbuf2.append(s + " posee ");
+                        for (int i = 0; i < itemsp.length; i++) {
+                            strbuf2.append(itemsp[i] + ", ");
+                        }  
+                    }
+            }
+        }
+        return strbuf.append(strbuf2).toString();
     }
 }

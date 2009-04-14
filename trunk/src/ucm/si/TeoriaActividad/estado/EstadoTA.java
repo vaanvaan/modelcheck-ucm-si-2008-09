@@ -124,7 +124,9 @@ public class EstadoTA implements IEstadoDrawable, Comparable<EstadoTA>
     }
 
     public String[] getItemsPoseidos(String actividad) {
-        return this.propietarias.get(actividad).toArray(new String[0]);
+        if (!this.propietarias.containsKey(actividad)){
+            return null;
+        } else return this.propietarias.get(actividad).toArray(new String[0]);
     }
 
     public int compareTo(EstadoTA arg0) {
