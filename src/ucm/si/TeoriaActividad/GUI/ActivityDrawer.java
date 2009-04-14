@@ -7,6 +7,7 @@ package ucm.si.TeoriaActividad.GUI;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
 import java.util.Set;
 import java.util.TreeMap;
 import javax.swing.DefaultListModel;
@@ -46,5 +47,12 @@ public class ActivityDrawer extends JPanel implements ListCellRenderer{
         this.add(new JLabel(this.texto));
         return this;
     }
+
+    @Override
+    protected void paintComponent(Graphics arg0) {
+        super.paintComponent(arg0);
+        arg0.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
+    }
+
 
 }

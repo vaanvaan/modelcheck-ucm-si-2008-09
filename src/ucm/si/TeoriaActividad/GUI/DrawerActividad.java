@@ -63,17 +63,20 @@ public class DrawerActividad extends Drawer<EstadoTA>{
             @Override
             protected void paintComponent(Graphics arg0) {
                 super.paintComponent(arg0);
-                arg0.copyArea(0, 0, this.getWidth(), this.getHeight(), 0, 14);
-                arg0.clearRect(0, 0, this.getWidth(), 14);
+                arg0.copyArea(0, 0, this.getWidth(), this.getHeight(), 0, 28);
+                arg0.clearRect(0, 0, this.getWidth(), 28);
                 arg0.setColor(Color.black);
-                arg0.drawString("Items", 1, 13);
+                arg0.setFont(arg0.getFont().deriveFont(2.0F*arg0.getFont().getSize()));
+                arg0.drawString("Items", 1, 26);
+                arg0.drawLine(0, 27, this.getWidth(), 27);
                 arg0.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
             }
 
             @Override
             public Dimension getPreferredSize() {
                 Dimension d = new Dimension(super.getPreferredSize());
-                d.height = d.height + 14;
+                d.height = d.height + 28;
+                d.width = Math.max(16*5, d.width);
                 return d;
             }
         };
@@ -105,17 +108,19 @@ public class DrawerActividad extends Drawer<EstadoTA>{
             @Override
             protected void paintComponent(Graphics arg0) {
                 super.paintComponent(arg0);
-                arg0.copyArea(0, 0, this.getWidth(), this.getHeight(), 0, 14);
-                arg0.clearRect(0, 0, this.getWidth(), 14);
+                arg0.copyArea(0, 0, this.getWidth(), this.getHeight(), 0, 28);
+                arg0.clearRect(0, 0, this.getWidth(), 28);
                 arg0.setColor(Color.black);
-                arg0.drawString("Actividades", 1, 13);
+                arg0.setFont(arg0.getFont().deriveFont(2.0F*arg0.getFont().getSize()));
+                arg0.drawString("Actividades", 1, 27);
                 arg0.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
             }
 
             @Override
             public Dimension getPreferredSize() {
                 Dimension d = new Dimension(super.getPreferredSize());
-                d.height = d.height + 14;
+                d.height = d.height + 28;
+                d.width = Math.max(16*11, d.width);
                 return d;
             }
         };
