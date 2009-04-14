@@ -6,9 +6,19 @@
 package ucm.si.TeoriaActividad.GUI;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.LayoutManager;
 import java.util.TreeMap;
 import javax.swing.DefaultListModel;
+import javax.swing.JInternalFrame;
 import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import ucm.si.TeoriaActividad.actividad.ActividadGenerator;
 import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
@@ -36,7 +46,7 @@ public class DrawerActividad extends Drawer<EstadoTA>{
         for (int i = 0; i < items.length; i++) {
             String e = items[i];
             dlmItems.addElement(new Object[]{e,s.getEstadoItem(e)});
-            int ni = (i*(base*base*base-2))/(items.length);
+            int ni = (i*(base*base*base-1))/(items.length);
             int r = ni/(base*base);
             int g = (ni - r*base*base)/base;
             int b = ni%base;
@@ -45,13 +55,30 @@ public class DrawerActividad extends Drawer<EstadoTA>{
                 g = (ni - r*base*base)/base;
                 b = (ni)%base;
             }
-            Color c = new Color(r*255/(base-1),b*255/(base-1),g*255/(base-1));
+            Color c = new Color(r*255/(base-1),g*255/(base-1),b*255/(base-1));
             mapeadoColores.put(e, c);
         }
-        jlItems = new JList(dlmItems);
+        jlItems = new JList(dlmItems){
+
+            @Override
+            protected void paintComponent(Graphics arg0) {
+                super.paintComponent(arg0);
+                arg0.copyArea(0, 0, this.getWidth(), this.getHeight(), 0, 14);
+                arg0.clearRect(0, 0, this.getWidth(), 14);
+                arg0.setColor(Color.black);
+                arg0.drawString("Items", 1, 13);
+                arg0.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
+            }
+
+            @Override
+            public Dimension getPreferredSize() {
+                Dimension d = new Dimension(super.getPreferredSize());
+                d.height = d.height + 14;
+                return d;
+            }
+        };
         jlItems.setCellRenderer(new ItemDrawer(mapeadoColores));
         pane.add(jlItems);
-
         dlmActividades = new DefaultListModel();
         String[] actividades = ActividadGenerator.getReference().getConjunto().keySet()
                 .toArray(new String[0]);
@@ -70,13 +97,30 @@ public class DrawerActividad extends Drawer<EstadoTA>{
                 g = (ni - r*base*base)/base;
                 b = (ni)%base;
             }
-            Color c = new Color(r*255/(base-1),b*255/(base-1),g*255/(base-1));
+            Color c = new Color(r*255/(base-1),g*255/(base-1),b*255/(base-1));
             mapeadoColores.put(a, c);
         }
-        jlActividades = new JList(dlmActividades);
+        jlActividades = new JList(dlmActividades){
+
+            @Override
+            protected void paintComponent(Graphics arg0) {
+                super.paintComponent(arg0);
+                arg0.copyArea(0, 0, this.getWidth(), this.getHeight(), 0, 14);
+                arg0.clearRect(0, 0, this.getWidth(), 14);
+                arg0.setColor(Color.black);
+                arg0.drawString("Actividades", 1, 13);
+                arg0.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
+            }
+
+            @Override
+            public Dimension getPreferredSize() {
+                Dimension d = new Dimension(super.getPreferredSize());
+                d.height = d.height + 14;
+                return d;
+            }
+        };
         jlActividades.setCellRenderer(new ActivityDrawer(mapeadoColores));
         pane.add(jlActividades);
-
     }
 
     @Override

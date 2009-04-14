@@ -58,12 +58,11 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         Item item4 = new Item("4");
         Item item5 = new Item("5");
         Item item6 = new Item("6");
-        Item item7 = new Item("7");
-        Item item8 = new Item("8");
+
         itemGen = ItemGenerator.getReference();
         Item[] listaItem1 = {item1, item2, item3};
         Item[] listaItem2 = {item1, item2, item4};
-        Item[] listaItem3 = {item1, item3, item5};
+        Item[] listaItem3 = {item3, item5};
 
         Actividad actividad1 = new Actividad("A1", listaItem1, new Item[0], new Item[0], new Conditions[0]);
         Actividad actividad2 = new Actividad("A2", listaItem2, new Item[]{item4}, new Item[0], new Conditions[0]);
@@ -76,8 +75,6 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
             itemGen.addItem(item4);
             itemGen.addItem(item5);
             itemGen.addItem(item6);
-            itemGen.addItem(item7);
-            itemGen.addItem(item8);
             activGen.addActividad(actividad1);
             activGen.addActividad(actividad2);
             activGen.addActividad(actividad3);

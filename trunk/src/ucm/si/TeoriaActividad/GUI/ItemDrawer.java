@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.util.TreeMap;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import ucm.si.TeoriaActividad.item.EstadoItem;
@@ -38,6 +39,7 @@ public class ItemDrawer extends Component implements ListCellRenderer{
     @Override
     public void paint(Graphics arg0) {
         super.paint(arg0);
+        arg0.clearRect(0, 0, this.getWidth(), this.getHeight());
         Rectangle2D rect = arg0.getFont().getStringBounds(texto, arg0.getFontMetrics().getFontRenderContext());
         Color c = mapeadoColores.get(texto);
         Color cxor = Color.RED;
