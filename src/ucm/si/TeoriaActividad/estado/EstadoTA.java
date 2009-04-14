@@ -61,7 +61,7 @@ public class EstadoTA implements IEstadoDrawable, Comparable<EstadoTA>
             int i=0;
             while (lanzar&&(i<itemsNecesarios.length)){
                 Item item = itemsNecesarios[i];
-                if (!item.getPropietaria().getNombre().equalsIgnoreCase(a)){
+                if ((item.getPropietaria()==null)||(!item.getPropietaria().getNombre().equalsIgnoreCase(a))){
                     lanzar=false;
                 }
                 i++;
