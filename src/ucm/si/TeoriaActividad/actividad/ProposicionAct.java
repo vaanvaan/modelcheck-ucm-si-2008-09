@@ -3,13 +3,15 @@
  */
 package ucm.si.TeoriaActividad.actividad;
 
+import ucm.si.TeoriaActividad2.actividad.ListaEstadosActividades;
+import ucm.si.TeoriaActividad2.estado.EstadoTA;
 import ucm.si.basico.ecuaciones.Proposicion;
 
 /**
  * @author Ivan
  *
  */
-public class ProposicionAct extends Proposicion<Actividad>{
+public abstract class ProposicionAct extends Proposicion<EstadoTA>{
 	
 	/*
 	 * (non-Javadoc)
@@ -45,11 +47,31 @@ public class ProposicionAct extends Proposicion<Actividad>{
 	 *  2º Lanzamos el cheker.
 	 *  
 	 *  
+	 *  
+	 *  Edit 2:
+	 *  
+	 *  No parece que sea posible parametrizar por actividad, pues a ver cómo lo hacemos
+	 *  
 	 */
 	@Override
-	public boolean esCierta(Actividad s) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean esCierta(EstadoTA state) {
+		Actividad activity = preparaActividad();
+		boolean res = esCierta(activity, state);
+		return res;
 	}
+
+	private boolean esCierta(Actividad activity, EstadoTA state) {
+		ListaEstadosActividades listaActividades = state.getActividades();
+		//deberíamos de buscar la actividad que queremos comparar.
+		return comparaActividad(listaActividades);
+	}
+
+	/**
+	 * Este método se encarga de definir por la actividad que vamos a preguntar
+	 * @return
+	 */
+	public abstract Actividad preparaActividad();
+	
+	public abstract boolean comparaActividad(ListaEstadosActividades lista);
 
 }

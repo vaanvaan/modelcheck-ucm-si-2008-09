@@ -40,6 +40,10 @@ public class ListaEstadosActividades implements Cloneable
         int indice = this.clavesActividad.indexOf(clave);
         return this.estado.get( indice );
     }
+    
+    public boolean isActivity(String clave){
+    	return clavesActividad.contains(clave);
+    }
 
     public void setEstado(String clave, EstadoActividad estado)
     {

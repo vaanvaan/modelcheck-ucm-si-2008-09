@@ -35,28 +35,30 @@ public class ListaEstadosItems implements  Cloneable
 
     public EstadoItem getEstado(String clave)
     {
-        int indice = this.clavesEstado.indexOf(clave);
-        return this.estado.get( indice );
+        int indice = clavesEstado.indexOf(clave);
+        return estado.get( indice );
     }
 
     public void setEstado(String clave, EstadoItem estado)
     {
-        int indice = this.clavesEstado.indexOf(clave);
+        int indice = clavesEstado.indexOf(clave);
         this.estado.set(indice, estado);
     }
 
     public void addEstado(String clave, EstadoItem estado)
     {
-        if(this.clavesEstado.contains(clave))
-            this.estado.set( this.clavesEstado.indexOf(clave)  , estado);
+        if(clavesEstado.contains(clave))
+            this.estado.set( clavesEstado.indexOf(clave)  , estado);
         else
         {
             this.estado.add(estado);
-            this.clavesEstado.add(clave);
+            clavesEstado.add(clave);
         }
     }
 
-
+    public boolean estaItem(String clave){
+    	return clavesEstado.contains(clave);
+    }
     
     @Override
     public boolean equals(Object obj) {
