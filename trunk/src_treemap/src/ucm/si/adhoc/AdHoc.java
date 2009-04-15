@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package ucm.si.adhoc;
+package src.ucm.si.adhoc;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
