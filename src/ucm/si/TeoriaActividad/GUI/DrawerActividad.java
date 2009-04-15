@@ -6,21 +6,12 @@
 package ucm.si.TeoriaActividad.GUI;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.LayoutManager;
 import java.util.TreeMap;
 import javax.swing.DefaultListModel;
-import javax.swing.JInternalFrame;
 import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import ucm.si.TeoriaActividad.actividad.ActividadGenerator;
-import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
 import ucm.si.TeoriaActividad.item.ItemGenerator;
 import ucm.si.animadorGUI.Drawer;
@@ -69,7 +60,7 @@ public class DrawerActividad extends Drawer<EstadoTA>{
                 arg0.setFont(arg0.getFont().deriveFont(2.0F*arg0.getFont().getSize()));
                 arg0.drawString("Items", 1, 26);
                 arg0.drawLine(0, 27, this.getWidth(), 27);
-                arg0.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
+                arg0.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1,30,30);
             }
 
             @Override
@@ -89,8 +80,7 @@ public class DrawerActividad extends Drawer<EstadoTA>{
         base = (int)Math.ceil(Math.pow((double)(actividades.length+1), (1/(double)3)));
         for (int i = 0; i < actividades.length; i++) {
             String a = actividades[i];
-            if (s.actividades.getEstado(a).equals(EstadoActividad.Executing))
-                dlmActividades.addElement(new Object[]{a,s});
+            dlmActividades.addElement(new Object[]{a,s});
             int ni = (i*(base*base*base-2))/(actividades.length);
             int r = ni/(base*base);
             int g = (ni - r*base*base)/base;
@@ -113,7 +103,7 @@ public class DrawerActividad extends Drawer<EstadoTA>{
                 arg0.setColor(Color.black);
                 arg0.setFont(arg0.getFont().deriveFont(2.0F*arg0.getFont().getSize()));
                 arg0.drawString("Actividades", 1, 27);
-                arg0.drawRect(0, 0, this.getWidth()-1, this.getHeight()-1);
+                arg0.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1,28,28);
             }
 
             @Override
@@ -143,8 +133,7 @@ public class DrawerActividad extends Drawer<EstadoTA>{
         java.util.Arrays.sort(actividades);
         for (int i = 0; i < actividades.length; i++) {
             String a = actividades[i];
-            if (s.actividades.getEstado(a).equals(EstadoActividad.Executing))
-                dlmActividades.addElement(new Object[]{a,s});
+            dlmActividades.addElement(new Object[]{a,s});
         }
     }
 

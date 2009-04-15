@@ -6,8 +6,7 @@ package ucm.si.TeoriaActividad.Interprete;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
@@ -16,18 +15,14 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.LinkedBlockingQueue;
 import ucm.si.Checker.Interprete;
-import ucm.si.Checker.util.StateAndLabel;
 import ucm.si.Checker.util.StateLabeledList;
 import ucm.si.TeoriaActividad.GUI.DrawerActividad;
 import ucm.si.TeoriaActividad.actividad.*;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
 import ucm.si.TeoriaActividad.item.*;
 import ucm.si.animadorGUI.Drawer;
-import ucm.si.animadorGUI.PanelInterface;
 import ucm.si.animadorGUI.util.Launcher;
 import ucm.si.basico.ecuaciones.*;
-import ucm.si.navegador.Navegador;
-import ucm.si.navegador.NavigatorInterface;
 
 /**
  *
@@ -54,7 +49,7 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         itemGen = ItemGenerator.getReference();
         Item[] listaItem1 = {item1, item2, item3};
         Item[] listaItem2 = {item1, item2, item4};
-        Item[] listaItem3 = {item3, item5};
+        Item[] listaItem3 = {item3, item4, item5};
 
         Actividad actividad1 = new Actividad("A1", listaItem1, new Item[0], new Item[0], new Conditions[0]);
         Actividad actividad2 = new Actividad("A2", listaItem2, new Item[]{item4}, new Item[0], new Conditions[0]);
@@ -172,7 +167,11 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
                 }
             }
         }
-        return backtracking(estadoini);
+       List<EstadoTA> laux = backtracking(estadoini);
+       if (laux.contains(state)){
+           laux.remove(state);
+       }
+       return laux;
     }
 
     public StateLabeledList<EstadoTA> transitarConEtiqueta(EstadoTA state) {
@@ -180,7 +179,7 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         ArrayList<String> laux2 = new ArrayList<String>();
         for (Iterator<EstadoTA> it = laux.iterator(); it.hasNext();) {
             EstadoTA e = it.next();
-            laux2.add(nombreTransicion(state,e));
+            laux2.add(nombreTransicion(state, e));
         }
         return new StateLabeledList<EstadoTA>(laux, laux2);
     }
@@ -188,26 +187,42 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
     public List<String> dameTransiciones() {
         if (l == null) {
             Queue<EstadoTA[]> q = new LinkedBlockingQueue<EstadoTA[]>();
-            TreeSet<EstadoTA> ts = new TreeSet<EstadoTA>();
+            TreeSet<EstadoTA[]> ts = new TreeSet<EstadoTA[]>(new Comparator() {
+
+                public int compare(Object arg0, Object arg1) {
+                    EstadoTA[] c1 = (EstadoTA[]) arg0;
+                    EstadoTA[] c2 = (EstadoTA[]) arg1;
+                    int a = c1[0].compareTo(c2[0]);
+                    if (a != 0) {
+                        return a;
+                    } else {
+                        return c1[1].compareTo(c2[1]);
+                    }
+                }
+            });
             for (EstadoTA e : this.iniciales()) {
-               q.add(new EstadoTA[]{null,e});
+                q.add(new EstadoTA[]{null, e});
             }
             l = new ArrayList<String>();
             while (!q.isEmpty()) {
                 EstadoTA[] arraye = q.poll();
                 EstadoTA epadre = arraye[0];
                 EstadoTA ehijo = arraye[1];
-                if (epadre==null){
-                    ts.add(ehijo);
+                if (epadre == null) {
+                    //ts.add(ehijo);
                     for (EstadoTA eaux : transitar(ehijo)) {
-                        q.add(new EstadoTA[]{ehijo,eaux});
+                        q.add(new EstadoTA[]{ehijo, eaux});
                     }
-                }else{
-                    if (!ts.contains(ehijo)) {
-                        l.add(nombreTransicion(epadre, ehijo));
-                        ts.add(ehijo);
+                } else {
+                    EstadoTA[] trans = new EstadoTA[]{epadre, ehijo};
+                    if (!ts.contains(trans)) {
+                        String s = nombreTransicion(epadre, ehijo);
+                        if (!l.contains(s)){
+                            l.add(s);
+                        }
+                        ts.add(trans);
                         for (EstadoTA eaux : transitar(ehijo)) {
-                            q.add(new EstadoTA[]{ehijo,eaux});
+                            q.add(new EstadoTA[]{ehijo, eaux});
                         }
                     }
                 }
@@ -228,8 +243,13 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
     private void backtracking2(EstadoTA eini, int i, TreeMap<String, Set<String>> propietarias,
             Integer[] conjItemsConflictivos, ArrayList<EstadoTA> laux) {
         Integer claveConj = conjItemsConflictivos[i];
-        String itemMuestra = conjuntosItems.get(claveConj).iterator().next();
-        if (eini.items.getEstado(itemMuestra).equals(EstadoItem.FREE)) {
+        boolean todosLibres = true;
+        for (String straux : conjuntosItems.get(claveConj)) {
+            if (!eini.items.getEstado(straux).equals(EstadoItem.FREE)) {
+                todosLibres = false;
+            }
+        }
+        if (todosLibres) {
             String[] conjActs = conjuntosActividades.get(claveConj).toArray(new String[0]);
             boolean adjudicado = false;
             for (int j = 0; j < conjActs.length; j++) {
@@ -348,22 +368,36 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         StringBuffer strbuf2 = new StringBuffer();
         for (int a = 0; a < actividades.length; a++) {
             String s = actividades[a];
-            if (!eini.getEstadoActividad(s).equals(efin.getEstadoActividad(s))){
-                strbuf.append(s + "->" + efin.getEstadoActividad(s)
-                        .toString()+ ", ");
+            if (!eini.getEstadoActividad(s).equals(efin.getEstadoActividad(s))) {
+                strbuf.append(s + "->" + efin.getEstadoActividad(s).toString() + ", ");
             }
-            if ((eini.getItemsPoseidos(s)==null)||
-                (efin.getItemsPoseidos(s)==null)||
-                (!eini.getItemsPoseidos(s).equals(efin.getItemsPoseidos(s)))){
-                    String[] itemsp = efin.getItemsPoseidos(s);
-                    if (itemsp!=null){
-                      strbuf2.append(s + " posee ");
+            if ((eini.getItemsPoseidos(s) == null) ||
+                    (efin.getItemsPoseidos(s) == null) ||
+                    (!Arrays.equals(eini.getItemsPoseidos(s), efin.getItemsPoseidos(s)))) {
+                String[] itemsp = efin.getItemsPoseidos(s);
+                if (itemsp != null) {
+                    java.util.Arrays.sort(itemsp);
+                    strbuf2.append(s + " posee ");
+                    for (int i = 0; i < itemsp.length; i++) {
+                        strbuf2.append(itemsp[i] + ", ");
+                    }
+                } else {
+                    itemsp = eini.getItemsPoseidos(s);
+                    if (itemsp != null) {
+                        java.util.Arrays.sort(itemsp);
+                        strbuf2.append(s + " suelta ");
                         for (int i = 0; i < itemsp.length; i++) {
                             strbuf2.append(itemsp[i] + ", ");
-                        }  
+                        }
                     }
+
+                }
             }
         }
-        return strbuf.append(strbuf2).toString();
+        if ((strbuf.length() == 0) && (strbuf2.length() == 0)) {
+            return efin.toString();
+        } else {
+            return strbuf.append(strbuf2).toString();
+        }
     }
 }
