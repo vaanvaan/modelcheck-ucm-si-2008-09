@@ -9,4 +9,4 @@ package ucm.si.TeoriaActividad.estado;
  *
  * @author nico
  */
-public enum ItemRole { Subject, Object, Objetive, Income, Tool, Outcome}
+public enum ItemRole { Subject, Object, Objetive, Tool, Outcome}
