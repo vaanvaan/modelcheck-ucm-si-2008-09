@@ -40,6 +40,7 @@ public class ActivityDrawer extends JPanel implements ListCellRenderer {
         String[] itemsObjetos = ei.getItemsPoseidos(this.texto);
         DefaultListModel dlmItems = new DefaultListModel();
         if (itemsObjetos != null) {
+            java.util.Arrays.sort(itemsObjetos);
             for (String s : itemsObjetos) {
                 if (activa) {
                     dlmItems.addElement(new Object[]{s, EstadoItem.FREE});
@@ -64,4 +65,5 @@ public class ActivityDrawer extends JPanel implements ListCellRenderer {
         super.paintComponent(arg0);
         arg0.drawLine(0, 0, this.getWidth() - 1, 0);
     }
+
 }

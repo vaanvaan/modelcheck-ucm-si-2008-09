@@ -54,8 +54,9 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
 
             @Override
             protected void paintComponent(Graphics arg0) {
+                arg0.translate(0, 28);
                 super.paintComponent(arg0);
-                arg0.copyArea(0, 0, this.getWidth(), this.getHeight(), 0, 28);
+                arg0.translate(0, -28);
                 arg0.clearRect(0, 0, this.getWidth(), 28);
                 arg0.setColor(Color.black);
                 arg0.setFont(arg0.getFont().deriveFont(2.0F*arg0.getFont().getSize()));
@@ -98,8 +99,9 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
 
             @Override
             protected void paintComponent(Graphics arg0) {
+                arg0.translate(0, 28);
                 super.paintComponent(arg0);
-                arg0.copyArea(0, 0, this.getWidth(), this.getHeight(), 0, 28);
+                arg0.translate(0, -28);
                 arg0.clearRect(0, 0, this.getWidth(), 28);
                 arg0.setColor(Color.black);
                 arg0.setFont(arg0.getFont().deriveFont(2.0F*arg0.getFont().getSize()));
