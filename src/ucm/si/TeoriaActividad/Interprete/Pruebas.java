@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -37,6 +39,7 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
     public String[] actividades;
     public String[] items;
     private ArrayList<String> l;
+    private LinkedList<String> actividadesOrdenadas; // ordenadas en pre-orden
 
     public Pruebas() {
         Item item1 = new Item("1");
@@ -54,6 +57,10 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         Actividad actividad1 = new Actividad("A1", listaItem1, new Item[0], new Item[0], new Conditions[0]);
         Actividad actividad2 = new Actividad("A2", listaItem2, new Item[]{item4}, new Item[0], new Conditions[0]);
         Actividad actividad3 = new Actividad("A3", listaItem3, new Item[0], new Item[0], new Conditions[0]);
+
+        // Aqui construir el arbol de actividades
+        actividad1.addActividadHija(actividad2);
+
         activGen = ActividadGenerator.getReference();
         try {
             itemGen.addItem(item1);
@@ -65,7 +72,28 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
             activGen.addActividad(actividad1);
             activGen.addActividad(actividad2);
             activGen.addActividad(actividad3);
+            actividades = activGen.getConjunto().keySet().toArray(new String[0]);
+            items = itemGen.getItems();
 
+            //Ahora creamos el recorrido preorden:
+            actividadesOrdenadas = new LinkedList<String>();
+            for (int i = 0; i < actividades.length; i++) {
+                Actividad a = activGen.getItem(actividades[i]);
+                if (a.getPadre() == null) {
+                    actividadesOrdenadas.add(a.getNombre());
+                }
+            }
+            int a = 0;
+            while (actividadesOrdenadas.size() < actividades.length) {
+                Actividad act = activGen.getItem(actividadesOrdenadas.get(a));
+                Set<Actividad> setaux = act.getActividadesHijas();
+                if (!setaux.isEmpty()) {
+                    for (Iterator<Actividad> it = setaux.iterator(); it.hasNext();) {
+                        actividadesOrdenadas.addLast(it.next().getNombre());
+                    }
+                }
+                a++;
+            }
 
             // Creamos la tabla para particionar los items en subconjuntos
             // por ahora hacemos para 32 actividades, pero es facil hacerlo generico
@@ -134,12 +162,10 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
 
     public List<EstadoTA> iniciales() {
         ListaEstadosActividades lEstAct = new ListaEstadosActividades();
-        actividades = activGen.getConjunto().keySet().toArray(new String[0]);
         for (int i = 0; i < actividades.length; i++) {
             lEstAct.addEstado(actividades[i], EstadoActividad.Waiting);
         }
         ListaEstadosItems lEstItems = new ListaEstadosItems();
-        items = itemGen.getItems();
         for (int i = 0; i < items.length; i++) {
             lEstItems.addEstado(items[i], EstadoItem.FREE);
         }
@@ -152,26 +178,31 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
     public List<EstadoTA> transitar(EstadoTA state) {
         EstadoTA estadoini = new EstadoTA(state);
         //terminamos actividades ejecutadas
-        for (Iterator<String> it = estadoini.actividades.keySet().iterator(); it.hasNext();) {
+        for (Iterator<String> it = actividadesOrdenadas.iterator(); it.hasNext();) {
             String a = it.next();
-            if (estadoini.actividades.getEstado(a).equals(EstadoActividad.Executing)) {
+            if (actividadEjecutada(a, estadoini)) {
                 estadoini.actividades.setEstado(a, EstadoActividad.Finalized);
                 for (Iterator<String> it2 = estadoini.propietarias.get(a).iterator(); it2.hasNext();) {
                     String item = it2.next();
-                    estadoini.items.setEstado(item, EstadoItem.FREE);
+                    if (!itemHeredado(a, item, estadoini)) {
+                        estadoini.items.setEstado(item, EstadoItem.FREE);
+                    }
                 }
                 estadoini.propietarias.remove(a);
                 Item[] itemsToDispose = activGen.getItem(a).getItemToDispose();
                 for (int i = 0; i < itemsToDispose.length; i++) {
-                    estadoini.items.setEstado(itemsToDispose[i].getClave(), EstadoItem.DISPOSED);
+                    String item = itemsToDispose[i].getClave();
+                    if (!itemHeredado(a, item, estadoini)) {
+                        estadoini.items.setEstado(item, EstadoItem.DISPOSED);
+                    }
                 }
             }
         }
-       List<EstadoTA> laux = backtracking(estadoini);
-       if (laux.contains(state)){
-           laux.remove(state);
-       }
-       return laux;
+        List<EstadoTA> laux = backtracking(estadoini);
+        if (laux.contains(state)) {
+            laux.remove(state);
+        }
+        return laux;
     }
 
     public StateLabeledList<EstadoTA> transitarConEtiqueta(EstadoTA state) {
@@ -217,7 +248,7 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
                     EstadoTA[] trans = new EstadoTA[]{epadre, ehijo};
                     if (!ts.contains(trans)) {
                         String s = nombreTransicion(epadre, ehijo);
-                        if (!l.contains(s)){
+                        if (!l.contains(s)) {
                             l.add(s);
                         }
                         ts.add(trans);
@@ -240,23 +271,49 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         return laux;
     }
 
+    private boolean actividadEjecutada(String a, EstadoTA estadoini) {
+        if (estadoini.actividades.getEstado(a).equals(EstadoActividad.Executing)) {
+            Set<Actividad> setaux = activGen.getItem(a).getActividadesHijas();
+            if (!setaux.isEmpty()) {
+                boolean finalizada = true;
+                Iterator<Actividad> it = setaux.iterator();
+                while (finalizada && it.hasNext()) {
+                    Actividad act = it.next();
+                    finalizada = estadoini.actividades.getEstado(act.getNombre()).equals(EstadoActividad.Finalized);
+                }
+                return finalizada;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
     private void backtracking2(EstadoTA eini, int i, TreeMap<String, Set<String>> propietarias,
             Integer[] conjItemsConflictivos, ArrayList<EstadoTA> laux) {
         Integer claveConj = conjItemsConflictivos[i];
-        boolean todosLibres = true;
+        boolean ningunoDisposed = true;
         for (String straux : conjuntosItems.get(claveConj)) {
-            if (!eini.items.getEstado(straux).equals(EstadoItem.FREE)) {
-                todosLibres = false;
+            if (eini.items.getEstado(straux).equals(EstadoItem.DISPOSED)) {
+                ningunoDisposed = false;
             }
         }
-        if (todosLibres) {
+        if (ningunoDisposed) {
             String[] conjActs = conjuntosActividades.get(claveConj).toArray(new String[0]);
             boolean adjudicado = false;
             for (int j = 0; j < conjActs.length; j++) {
                 String a = conjActs[j];
-                if (eini.actividades.getEstado(a).equals(EstadoActividad.Waiting)) {
-                    TreeSet<String> propaux = new TreeSet<String>(conjuntosItems.get(claveConj));
-
+                TreeSet<String> propaux = new TreeSet<String>(conjuntosItems.get(claveConj));
+                Actividad padre = activGen.getItem(a).getPadre();
+                boolean padreActivo = false;
+                if ((padre == null) ||
+                        (eini.getEstadoActividad(padre.getNombre()).equals(EstadoActividad.Executing))) {
+                    padreActivo = true;
+                }
+                if (padreActivo &&
+                        (eini.actividades.getEstado(a).equals(EstadoActividad.Waiting))
+                        &&puedeUsarlos(a, propaux, eini)) {
                     if (propietarias.containsKey(a)) {
                         propietarias.get(a).addAll(propaux);
                     } else {
@@ -399,5 +456,34 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         } else {
             return strbuf.append(strbuf2).toString();
         }
+    }
+
+    private boolean puedeUsarlos(String a, TreeSet<String> propaux, EstadoTA eini) {
+        boolean puede = true;
+        for (Iterator<String> it = propaux.iterator(); puede && it.hasNext();) {
+            String item = it.next();
+            if (eini.items.getEstado(item).equals(EstadoItem.BUSY)) {
+                puede = itemHeredado(a, item, eini); //lo tiene un padre
+            }
+        }
+        return puede;
+    }
+
+    private boolean itemHeredado(String a, String item, EstadoTA estadoini) {
+        Set<String> antecesores = activGen.getItem(a).getAntecesores();
+        if (!antecesores.isEmpty()) {
+            Iterator<String> it = antecesores.iterator();
+            boolean unica = true;
+            while (unica && it.hasNext()) {
+                String s = it.next();
+                if (estadoini.propietarias.containsKey(s)) {
+                    unica = !estadoini.propietarias.get(s).contains(item);
+                }
+            }
+            return !unica;
+        } else {
+            return false;
+        }
+
     }
 }
