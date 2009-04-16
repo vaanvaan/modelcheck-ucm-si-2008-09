@@ -52,15 +52,15 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         Item[] listaItem1 = {item1, item2, item3};
         Item[] listaItem2 = {item1, item2, item4};
         Item[] listaItem3 = {item3, item4, item5};
-        Item[] listaItem4 = {item1, item6};
+        Item[] listaItem4 = {item1, item6, item3};
 
         Actividad actividad1 = new Actividad("A1", listaItem1, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Conditions[0]);
         Actividad actividad2 = new Actividad("A2", listaItem2, new Item[0], new Item[0], new Item[0], new Item[0], new Item[]{item4}, new Item[0], new Conditions[0]);
         Actividad actividad3 = new Actividad("A3", listaItem3, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Conditions[0]);
         Actividad actividad4 = new Actividad("A4", listaItem4, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Conditions[0]);
         // Aqui construir el arbol de actividades
-        actividad1.addActividadHija(actividad3);
-        actividad1.addActividadHija(actividad4);
+        actividad2.addActividadHija(actividad3);
+        actividad2.addActividadHija(actividad4);
 
         activGen = ActividadGenerator.getReference();
         try {
