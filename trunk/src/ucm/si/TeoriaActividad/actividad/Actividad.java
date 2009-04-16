@@ -19,6 +19,7 @@ public class Actividad implements Comparable<Actividad>
     private Item[] itemToDispose;
     private Item[] itemToGenerate;
     private Conditions[] condiciones;
+    private Actividad padre = null;
     private TreeSet<Actividad> actividadesHijas = new TreeSet<Actividad>();
 
     private String nombre;
@@ -29,6 +30,17 @@ public class Actividad implements Comparable<Actividad>
         this.itemToGenerate = itemToGenerate;
         this.condiciones = condiciones;
         this.nombre = nombre;
+    }
+
+    public Set<String> getAntecesores() {
+        Set<String> saux;
+        if (padre==null){
+            saux = new TreeSet<String>();
+        } else {
+            saux = padre.getAntecesores();
+            saux.add(padre.getNombre());
+        }
+        return saux;
     }
 
     public Conditions[] getCondiciones() {
@@ -145,6 +157,11 @@ public class Actividad implements Comparable<Actividad>
 
     public void addActividadHija(Actividad actividad) {
         this.actividadesHijas.add(actividad);
+        actividad.padre = this;
+    }
+
+    public Actividad getPadre() {
+        return padre;
     }
 
     
