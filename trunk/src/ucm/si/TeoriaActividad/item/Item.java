@@ -11,7 +11,7 @@ import ucm.si.TeoriaActividad.actividad.Actividad;
  *
  * @author José Antonio
  */
-public class Item
+public class Item implements Comparable<Item>
 {
     private String clave;
     private Actividad propietaria;
@@ -34,6 +34,10 @@ public class Item
 
     public Actividad getPropietaria() {
         return propietaria;
+    }
+
+    public int compareTo(Item arg0) {
+        return this.clave.compareToIgnoreCase(arg0.clave);
     }
 
 

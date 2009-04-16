@@ -7,7 +7,6 @@ package ucm.si.TeoriaActividad.GUI;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
-import java.util.Set;
 import java.util.TreeMap;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -15,7 +14,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import ucm.si.TeoriaActividad.actividad.EstadoActividad;
-import ucm.si.TeoriaActividad.estado.EstadoTA;
+import ucm.si.TeoriaActividad.estado.IEstadoDrawable;
 import ucm.si.TeoriaActividad.item.EstadoItem;
 
 /**
@@ -36,16 +35,16 @@ public class ActivityDrawer extends JPanel implements ListCellRenderer {
         this.removeAll();
         Object[] e = (Object[]) arg1;
         this.texto = (String) e[0];
-        EstadoTA ei = (EstadoTA) e[1];
-        boolean activa = ei.actividades.getEstado(this.texto).equals(EstadoActividad.Executing);
-        Set<String> itemsObjetos = ei.propietarias.get(this.texto);
+        IEstadoDrawable ei = (IEstadoDrawable) e[1];
+        boolean activa = ei.getEstadoActividad(this.texto).equals(EstadoActividad.Executing);
+        String[] itemsObjetos = ei.getItemsPoseidos(this.texto);
         DefaultListModel dlmItems = new DefaultListModel();
         if (itemsObjetos != null) {
             for (String s : itemsObjetos) {
                 if (activa) {
                     dlmItems.addElement(new Object[]{s, EstadoItem.FREE});
                 } else {
-                    dlmItems.addElement(new Object[]{s, ei.items.getEstado(s)});
+                    dlmItems.addElement(new Object[]{s, ei.getEstadoItem(s)});
                 }
             }
         }

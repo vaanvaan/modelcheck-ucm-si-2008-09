@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ucm.si.TeoriaActividad.actividad;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 import ucm.si.TeoriaActividad.item.Item;
@@ -13,28 +13,56 @@ import ucm.si.TeoriaActividad.item.Item;
  *
  * @author José Antonio
  */
-public class Actividad implements Comparable<Actividad>
-{
-    private Item[] itemNecesarios;
-    private Item[] itemToDispose;
-    private Item[] itemToGenerate;
+public class Actividad implements Comparable<Actividad> {
+
+    private Item[] Subjects;
+    private Item[] Objects;
+    private Item[] Objetives;
+    private Item[] Tools;
+    private Item[] Outcomes;
     private Conditions[] condiciones;
     private Actividad padre = null;
     private TreeSet<Actividad> actividadesHijas = new TreeSet<Actividad>();
-
     private String nombre;
+    private Item[] itemNecesarios;
+    private Item[] itemToDispose;
+    private Item[] itemToGenerate;
 
-    public Actividad(String nombre, Item[] itemNecesarios, Item[] itemToDispose, Item[] itemToGenerate, Conditions[] condiciones) {
-        this.itemNecesarios = itemNecesarios;
-        this.itemToDispose = itemToDispose;
-        this.itemToGenerate = itemToGenerate;
+    public Actividad(String nombre,Item[] Subjects, Item[] Objects, Item[] Objetives, Item[] Tools, Item[] Outcomes, Item[] itemToDispose,Item[] itemToGenerate, Conditions[] condiciones) {
+        this.Subjects = Subjects;
+        this.Objects = Objects;
+        this.Objetives = Objetives;
+        this.Tools = Tools;
+        this.Outcomes = Outcomes;
         this.condiciones = condiciones;
         this.nombre = nombre;
+        this.itemToDispose = itemToDispose;
+        this.itemToGenerate = itemToGenerate;
+        Set<Item> setaux = new TreeSet<Item>();
+        for (int i = 0; i < Subjects.length; i++) {
+            Item item = Subjects[i];
+            setaux.add(item);
+        }
+        for (int i = 0; i < Objects.length; i++) {
+            Item item = Objects[i];
+            setaux.add(item);
+        }
+        for (int i = 0; i < Tools.length; i++) {
+            Item item = Tools[i];
+            setaux.add(item);
+        }
+        for (int i = 0; i < itemToDispose.length; i++) {
+            Item item = itemToDispose[i];
+            setaux.add(item);
+        }
+        this.itemNecesarios = setaux.toArray(new Item[0]);
     }
+
+
 
     public Set<String> getAntecesores() {
         Set<String> saux;
-        if (padre==null){
+        if (padre == null) {
             saux = new TreeSet<String>();
         } else {
             saux = padre.getAntecesores();
@@ -47,14 +75,12 @@ public class Actividad implements Comparable<Actividad>
         return condiciones;
     }
 
-    public boolean CondicionesSatisfy(Contexto contx)
-    {
+    public boolean CondicionesSatisfy(Contexto contx) {
         boolean b = true;
         int cont = 0;
         int max = this.condiciones.length;
         Conditions c;
-        while (b && (cont < max) )
-        {
+        while (b && (cont < max)) {
             c = this.condiciones[cont];
             b = b && c.Cumple(contx);
             cont++;
@@ -68,10 +94,6 @@ public class Actividad implements Comparable<Actividad>
 
     public Item[] getItemNecesarios() {
         return itemNecesarios;
-    }
-
-    public void setItemNecesarios(Item[] itemNecesarios) {
-        this.itemNecesarios = itemNecesarios;
     }
 
     public Item[] getItemToDispose() {
@@ -98,10 +120,10 @@ public class Actividad implements Comparable<Actividad>
         this.nombre = nombre;
     }
 
-    public boolean necesita(Item item){
-        int i=0;
+    public boolean necesita(Item item) {
+        int i = 0;
         boolean encontrado = false;
-        while ((i<itemNecesarios.length)&&(!encontrado)){
+        while ((i < itemNecesarios.length) && (!encontrado)) {
             encontrado = itemNecesarios[i].equals(item);
             i++;
         }
@@ -117,20 +139,43 @@ public class Actividad implements Comparable<Actividad>
             return false;
         }
         final Actividad other = (Actividad) obj;
-        if (this.itemNecesarios != other.itemNecesarios && (this.itemNecesarios == null || !this.itemNecesarios.equals(other.itemNecesarios))) {
+        if (this.Subjects != other.Subjects && (this.Subjects == null || !Arrays.equals(this.Subjects,other.Subjects))) {
             return false;
         }
-        if (this.itemToDispose != other.itemToDispose && (this.itemToDispose == null || !this.itemToDispose.equals(other.itemToDispose))) {
+        if (this.Objects != other.Objects && (this.Objects == null || !Arrays.equals(this.Objects,other.Objects))) {
             return false;
         }
-        if (this.itemToGenerate != other.itemToGenerate && (this.itemToGenerate == null || !this.itemToGenerate.equals(other.itemToGenerate))) {
+        if (this.Objetives != other.Objetives && (this.Objetives == null || !Arrays.equals(this.Objetives,other.Objetives))) {
             return false;
         }
-        if (this.condiciones != other.condiciones && (this.condiciones == null || !this.condiciones.equals(other.condiciones))) {
+        if (this.Tools != other.Tools && (this.Tools == null || !Arrays.equals(this.Tools,other.Tools))) {
+            return false;
+        }
+        if (this.Outcomes != other.Outcomes && (this.Outcomes == null || !Arrays.equals(this.Outcomes,other.Outcomes))) {
+            return false;
+        }
+        if (this.condiciones != other.condiciones && (this.condiciones == null || !Arrays.equals(this.condiciones,other.condiciones))) {
+            return false;
+        }
+        if (this.padre != other.padre && (this.padre == null || !this.padre.equals(other.padre))) {
+            return false;
+        }
+        if ((this.nombre == null) ? (other.nombre != null) : !this.nombre.equals(other.nombre)) {
+            return false;
+        }
+        if (this.itemNecesarios != other.itemNecesarios && (this.itemNecesarios == null || !Arrays.equals(this.itemNecesarios,other.itemNecesarios))) {
+            return false;
+        }
+        if (this.itemToDispose != other.itemToDispose && (this.itemToDispose == null || !Arrays.equals(this.itemToDispose,other.itemToDispose))) {
+            return false;
+        }
+        if (this.itemToGenerate != other.itemToGenerate && (this.itemToGenerate == null || !Arrays.equals(this.itemToGenerate,other.itemToGenerate))) {
             return false;
         }
         return true;
     }
+
+  
 
     @Override
     public int hashCode() {
@@ -164,7 +209,23 @@ public class Actividad implements Comparable<Actividad>
         return padre;
     }
 
-    
+    public Item[] getObjects() {
+        return Objects;
+    }
 
+    public Item[] getObjetives() {
+        return Objetives;
+    }
 
+    public Item[] getOutcomes() {
+        return Outcomes;
+    }
+
+    public Item[] getSubjects() {
+        return Subjects;
+    }
+
+    public Item[] getTools() {
+        return Tools;
+    }
 }

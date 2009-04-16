@@ -13,6 +13,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import ucm.si.TeoriaActividad.actividad.ActividadGenerator;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
+import ucm.si.TeoriaActividad.estado.IEstadoDrawable;
 import ucm.si.TeoriaActividad.item.ItemGenerator;
 import ucm.si.animadorGUI.Drawer;
 import ucm.si.animadorGUI.PanelInterface;
@@ -21,14 +22,14 @@ import ucm.si.animadorGUI.PanelInterface;
  *
  * @author nico
  */
-public class DrawerActividad extends Drawer<EstadoTA>{
+public class DrawerActividad extends Drawer<IEstadoDrawable>{
     private JList jlItems;
     private DefaultListModel dlmItems;
     private JList jlActividades;
     private DefaultListModel dlmActividades;
 
     @Override
-    public void pintaEstado(EstadoTA s, PanelInterface<EstadoTA> pane) {
+    public void pintaEstado(IEstadoDrawable s, PanelInterface<IEstadoDrawable> pane) {
         dlmItems = new DefaultListModel();
         String[] items = ItemGenerator.getReference().getItems();
         java.util.Arrays.sort(items);
@@ -119,7 +120,7 @@ public class DrawerActividad extends Drawer<EstadoTA>{
     }
 
     @Override
-    public void rePinta(EstadoTA s, PanelInterface<EstadoTA> pane) {
+    public void rePinta(IEstadoDrawable s, PanelInterface<IEstadoDrawable> pane) {
         dlmItems.removeAllElements();
         String[] items = ItemGenerator.getReference().getItems();
         java.util.Arrays.sort(items);
