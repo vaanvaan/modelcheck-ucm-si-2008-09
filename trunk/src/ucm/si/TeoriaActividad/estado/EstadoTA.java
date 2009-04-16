@@ -26,11 +26,22 @@ public class EstadoTA implements IEstadoDrawable, Comparable<EstadoTA> {
     public TreeMap<String, Set<String>> propietarias;
     private boolean numerado = false;
     private int hash;
+    private TreeMap<String, Set<ItemRole>> historiaRoles;
 
-    public EstadoTA(ListaEstadosItems items, ListaEstadosActividades actividades, TreeMap<String, Set<String>> propietarias) {
+    public EstadoTA(ListaEstadosItems items, ListaEstadosActividades actividades,
+            TreeMap<String, Set<String>> propietarias) {
         this.items = items;
         this.actividades = actividades;
         this.propietarias = propietarias;
+        this.historiaRoles = new TreeMap<String, Set<ItemRole>>();
+        for (Iterator<String> it = this.items.keySet().iterator(); it.hasNext();) {
+            String item = it.next();
+            this.historiaRoles.put(item,new TreeSet<ItemRole>());
+        }
+        for (Iterator<String> it = this.actividades.keySet().iterator(); it.hasNext();) {
+            String actividad = it.next();
+            this.historiaRoles.put(actividad,new TreeSet<ItemRole>());
+        }
     }
 
     public EstadoTA(EstadoTA eini) {
@@ -40,6 +51,11 @@ public class EstadoTA implements IEstadoDrawable, Comparable<EstadoTA> {
         for (Iterator<String> it = eini.propietarias.keySet().iterator(); it.hasNext();) {
             String s = it.next();
             this.propietarias.put(s, new TreeSet<String>(eini.propietarias.get(s)));
+        }
+        this.historiaRoles = new TreeMap<String, Set<ItemRole>>();
+        for (Iterator<String> it = eini.historiaRoles.keySet().iterator(); it.hasNext();) {
+            String s = it.next();
+            this.historiaRoles.put(s, new TreeSet<ItemRole>(eini.historiaRoles.get(s)));
         }
     }
 
@@ -59,21 +75,21 @@ public class EstadoTA implements IEstadoDrawable, Comparable<EstadoTA> {
             String a = it.next();
             //Ahora, las q se estan ejecutando no importan
             if (!this.getEstadoActividad(a).equals(EstadoActividad.Executing)) {
-            Item[] itemsNecesarios = p.activGen.getItem(a).getItemNecesarios();
-            boolean lanzar = true;
-            int i = 0;
-            while (lanzar && (i < itemsNecesarios.length)) {
-                Item item = itemsNecesarios[i];
-                if ((item.getPropietaria() == null) || (!item.getPropietaria().getNombre().equalsIgnoreCase(a))) {
-                    lanzar = false;
+                Item[] itemsNecesarios = p.activGen.getItem(a).getItemNecesarios();
+                boolean lanzar = true;
+                int i = 0;
+                while (lanzar && (i < itemsNecesarios.length)) {
+                    Item item = itemsNecesarios[i];
+                    if ((item.getPropietaria() == null) || (!item.getPropietaria().getNombre().equalsIgnoreCase(a))) {
+                        lanzar = false;
+                    }
+                    i++;
                 }
-                i++;
-            }
-            if (lanzar) {
-                this.actividades.setEstado(a, EstadoActividad.Executing);
-            } else {
-                this.actividades.setEstado(a, EstadoActividad.Waiting);
-            }
+                if (lanzar) {
+                    this.actividades.setEstado(a, EstadoActividad.Executing);
+                } else {
+                    this.actividades.setEstado(a, EstadoActividad.Waiting);
+                }
             }
         }
         for (Iterator<String> it = this.propietarias.keySet().iterator(); it.hasNext();) {
@@ -198,5 +214,17 @@ public class EstadoTA implements IEstadoDrawable, Comparable<EstadoTA> {
             this.numerado = true;
             return hash;
         }
+    }
+
+    public Set<ItemRole> getRoles(String item) {
+        return historiaRoles.get(item);
+    }
+
+    public void addRole(String item, ItemRole role) {
+        this.historiaRoles.get(item).add(role);
+    }
+
+    public boolean was(String item, ItemRole role){
+        return this.historiaRoles.get(item).contains(role);
     }
 }
