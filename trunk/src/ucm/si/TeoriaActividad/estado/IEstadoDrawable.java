@@ -16,6 +16,5 @@ public interface IEstadoDrawable {
     
     public EstadoItem getEstadoItem(String item);
     public EstadoActividad getEstadoActividad(String actividad);
-    public String[] getItemsPoseidos(String actividad);
     
 }

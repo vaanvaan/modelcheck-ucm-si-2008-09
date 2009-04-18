@@ -24,9 +24,11 @@ public class ItemDrawer extends Component implements ListCellRenderer{
     private String texto;
     private TreeMap<String, Color> mapeadoColores;
     private EstadoItem ei;
+    private boolean activado;
 
-    ItemDrawer(TreeMap<String, Color> mapeadoColores) {
+    ItemDrawer(TreeMap<String, Color> mapeadoColores,boolean activado) {
         this.mapeadoColores = mapeadoColores;
+        this.activado = activado;
     }
 
     public Component getListCellRendererComponent(JList arg0, Object arg1, int arg2, boolean arg3, boolean arg4) {
@@ -43,6 +45,10 @@ public class ItemDrawer extends Component implements ListCellRenderer{
         Rectangle2D rect = arg0.getFont().getStringBounds(texto, arg0.getFontMetrics().getFontRenderContext());
         Color c = mapeadoColores.get(texto);
         Color cxor = Color.RED;
+        if (!this.activado){
+            c = escalaGrises(c);
+            cxor = escalaGrises(cxor);
+        }
         int lado = 2*(int)rect.getHeight() - 4;
         if (ei.equals(EstadoItem.FREE)){
             arg0.setColor(c);
@@ -80,6 +86,11 @@ public class ItemDrawer extends Component implements ListCellRenderer{
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(2*(14 + 8*texto.length()), 2*14);
+    }
+
+    private Color escalaGrises(Color c) {
+        int media = (c.getRed() + c.getGreen() + c.getBlue())/3;
+        return new Color(media,media,media);
     }
 
 
