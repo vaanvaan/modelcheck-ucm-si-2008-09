@@ -183,14 +183,19 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         for (Iterator<String> it = actividadesOrdenadas.iterator(); it.hasNext();) {
             String a = it.next();
             if (actividadEjecutada(a, estadoini)) {
+                // si una actividad esta ejecutada la ponemos a Finalized
+                // y ponemos sus items a Free
                 estadoini.actividades.setEstado(a, EstadoActividad.Finalized);
-                for (Iterator<String> it2 = estadoini.propietarias.get(a).iterator(); it2.hasNext();) {
-                    String item = it2.next();
-                    if (!itemHeredado(a, item, estadoini)) {
-                        estadoini.items.setEstado(item, EstadoItem.FREE);
+                if (estadoini.propietarias.containsKey(a)){
+                    for (Iterator<String> it2 = estadoini.propietarias.get(a).iterator(); it2.hasNext();) {
+                        String item = it2.next();
+                        if (!itemHeredado(a, item, estadoini)) {
+                            estadoini.items.setEstado(item, EstadoItem.FREE);
+                        }
                     }
+                    // le quitamos los items
+                    estadoini.propietarias.remove(a);
                 }
-                estadoini.propietarias.remove(a);
                 Item[] itemsToDispose = activGen.getItem(a).getItemToDispose();
                 for (int i = 0; i < itemsToDispose.length; i++) {
                     String item = itemsToDispose[i].getClave();
@@ -389,7 +394,7 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
 
         launcher.runCheck();
 
-        Drawer dw = new DrawerActividad();
+        Drawer dw = new DrawerActividad(p);
         launcher.launchGrafico(dw);
 
 

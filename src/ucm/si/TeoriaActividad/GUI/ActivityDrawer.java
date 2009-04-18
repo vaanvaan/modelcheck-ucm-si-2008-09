@@ -13,9 +13,11 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+import ucm.si.TeoriaActividad.Interprete.Pruebas;
 import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.estado.IEstadoDrawable;
 import ucm.si.TeoriaActividad.item.EstadoItem;
+import ucm.si.TeoriaActividad.item.Item;
 
 /**
  *
@@ -26,9 +28,12 @@ public class ActivityDrawer extends JPanel implements ListCellRenderer {
     private String texto;
     private TreeMap<String, Color> mapeadoColores;
     private JList jlitemsObjetos;
+    private Pruebas p;
+    private JList jlitemsGenerados;
 
-    ActivityDrawer(TreeMap<String, Color> mapeadoColores) {
+    ActivityDrawer(TreeMap<String, Color> mapeadoColores,Pruebas p) {
         this.mapeadoColores = mapeadoColores;
+        this.p = p;
     }
 
     public Component getListCellRendererComponent(JList arg0, Object arg1, int arg2, boolean arg3, boolean arg4) {
@@ -37,7 +42,11 @@ public class ActivityDrawer extends JPanel implements ListCellRenderer {
         this.texto = (String) e[0];
         IEstadoDrawable ei = (IEstadoDrawable) e[1];
         boolean activa = ei.getEstadoActividad(this.texto).equals(EstadoActividad.Executing);
-        String[] itemsObjetos = ei.getItemsPoseidos(this.texto);
+        Item[] itemsNecesarios = p.activGen.getItem(this.texto).getItemNecesarios();
+        String[] itemsObjetos = new String[itemsNecesarios.length];
+        for (int i = 0; i < itemsObjetos.length; i++) {
+            itemsObjetos[i] = itemsNecesarios[i].getClave();
+        }
         DefaultListModel dlmItems = new DefaultListModel();
         if (itemsObjetos != null) {
             java.util.Arrays.sort(itemsObjetos);
@@ -50,13 +59,34 @@ public class ActivityDrawer extends JPanel implements ListCellRenderer {
             }
         }
         this.jlitemsObjetos = new JList(dlmItems);
-        this.jlitemsObjetos.setCellRenderer(new ItemDrawer(mapeadoColores));
+        this.jlitemsObjetos.setCellRenderer(new ItemDrawer(mapeadoColores,activa));
+        if (!activa) this.jlitemsObjetos.setEnabled(false);
         this.add(this.jlitemsObjetos);
         JLabel jlabel = new JLabel(this.texto);
         if (!activa) {
             jlabel.setEnabled(false);
         }
         this.add(jlabel);
+        Item[] itemsToGenerate = p.activGen.getItem(this.texto).getItemToGenerate();
+        String[] itemsGenerados = new String[itemsToGenerate.length];
+        for (int i = 0; i < itemsGenerados.length; i++) {
+            itemsGenerados[i] = itemsToGenerate[i].getClave();
+        }
+        DefaultListModel dlmItemsGenerados = new DefaultListModel();
+        if (itemsGenerados != null) {
+            java.util.Arrays.sort(itemsGenerados);
+            for (String s : itemsGenerados) {
+                if (activa) {
+                    dlmItemsGenerados.addElement(new Object[]{s, EstadoItem.FREE});
+                } else {
+                    dlmItemsGenerados.addElement(new Object[]{s, ei.getEstadoItem(s)});
+                }
+            }
+        }
+        this.jlitemsGenerados = new JList(dlmItemsGenerados);
+        if (!activa) this.jlitemsGenerados.setEnabled(false);
+        this.jlitemsGenerados.setCellRenderer(new ItemDrawer(mapeadoColores,activa));
+        this.add(this.jlitemsGenerados);
         return this;
     }
 

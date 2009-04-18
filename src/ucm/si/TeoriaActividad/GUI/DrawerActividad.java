@@ -11,6 +11,7 @@ import java.awt.Graphics;
 import java.util.TreeMap;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import ucm.si.TeoriaActividad.Interprete.Pruebas;
 import ucm.si.TeoriaActividad.actividad.ActividadGenerator;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
 import ucm.si.TeoriaActividad.estado.IEstadoDrawable;
@@ -27,6 +28,11 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
     private DefaultListModel dlmItems;
     private JList jlActividades;
     private DefaultListModel dlmActividades;
+    private Pruebas p;
+
+    public DrawerActividad(Pruebas p){
+        this.p = p;
+    }
 
     @Override
     public void pintaEstado(IEstadoDrawable s, PanelInterface<IEstadoDrawable> pane) {
@@ -73,7 +79,7 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
                 return d;
             }
         };
-        jlItems.setCellRenderer(new ItemDrawer(mapeadoColores));
+        jlItems.setCellRenderer(new ItemDrawer(mapeadoColores,true));
         pane.add(jlItems);
         dlmActividades = new DefaultListModel();
         String[] actividades = ActividadGenerator.getReference().getConjunto().keySet()
@@ -117,7 +123,7 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
                 return d;
             }
         };
-        jlActividades.setCellRenderer(new ActivityDrawer(mapeadoColores));
+        jlActividades.setCellRenderer(new ActivityDrawer(mapeadoColores,p));
         pane.add(jlActividades);
     }
 

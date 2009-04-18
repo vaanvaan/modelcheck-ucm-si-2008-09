@@ -5,10 +5,12 @@
 package ucm.si.TeoriaActividad.estado;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import ucm.si.TeoriaActividad.Interprete.Pruebas;
+import ucm.si.TeoriaActividad.actividad.Actividad;
 import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.actividad.ListaEstadosActividades;
 import ucm.si.TeoriaActividad.item.EstadoItem;
@@ -25,8 +27,8 @@ public class EstadoTA implements IEstadoDrawable, Comparable<EstadoTA> {
     public ListaEstadosActividades actividades;
     public TreeMap<String, Set<String>> propietarias;
     private boolean numerado = false;
-    private int hash;
     private TreeMap<String, Set<ItemRole>> historiaRoles;
+    private LinkedList<Integer> nums;
 
     public EstadoTA(ListaEstadosItems items, ListaEstadosActividades actividades,
             TreeMap<String, Set<String>> propietarias) {
@@ -36,11 +38,11 @@ public class EstadoTA implements IEstadoDrawable, Comparable<EstadoTA> {
         this.historiaRoles = new TreeMap<String, Set<ItemRole>>();
         for (Iterator<String> it = this.items.keySet().iterator(); it.hasNext();) {
             String item = it.next();
-            this.historiaRoles.put(item,new TreeSet<ItemRole>());
+            this.historiaRoles.put(item, new TreeSet<ItemRole>());
         }
         for (Iterator<String> it = this.actividades.keySet().iterator(); it.hasNext();) {
             String actividad = it.next();
-            this.historiaRoles.put(actividad,new TreeSet<ItemRole>());
+            this.historiaRoles.put(actividad, new TreeSet<ItemRole>());
         }
     }
 
@@ -87,6 +89,7 @@ public class EstadoTA implements IEstadoDrawable, Comparable<EstadoTA> {
                 }
                 if (lanzar) {
                     this.actividades.setEstado(a, EstadoActividad.Executing);
+                    this.marcarRoles(p.activGen.getItem(a));
                 } else {
                     this.actividades.setEstado(a, EstadoActividad.Waiting);
                 }
@@ -155,13 +158,27 @@ public class EstadoTA implements IEstadoDrawable, Comparable<EstadoTA> {
         if (this == arg0) {
             return 0;
         }
-        if (this.hashCode() < arg0.hashCode()) {
+        if (!this.numerado) this.numerar();
+        if (!arg0.numerado) arg0.numerar();
+        int a = this.nums.size();
+        int b = arg0.nums.size();
+        if (a < b) {
             return -1;
-        } else if (this.hashCode() > arg0.hashCode()) {
-            return 1;
-        } else {
-            return 0;
         }
+        if (a > b) {
+            return 1;
+        }
+        for (int i = 0; i < a; i++) {
+            Integer nthis = this.nums.get(i);
+            Integer nother = arg0.nums.get(i);
+            if (nthis<nother){
+                return -1;
+            }
+            if (nthis>nother){
+                return 1;
+            }
+        }
+        return 0;
     }
 
     @Override
@@ -176,44 +193,51 @@ public class EstadoTA implements IEstadoDrawable, Comparable<EstadoTA> {
         return this.compareTo(other) == 0;
     }
 
-    @Override
-    public int hashCode() {
-        if (this.numerado) {
-            return this.hash;
-        } else {
-            String[] s1 = this.actividades.keySet().toArray(new String[0]);
-            java.util.Arrays.sort(s1);
-            int na = 0;
-            int pow3 = 1;
-            TreeMap<String, String> propinversa = new TreeMap<String, String>();
-            for (int i = 0; i < s1.length; i++) {
-                na = na * 3 + this.actividades.getEstado(s1[i]).ordinal();
-                pow3 = 3 * pow3;
-                if (this.propietarias.containsKey(s1[i])) {
-                    String[] s = this.propietarias.get(s1[i]).toArray(new String[0]);
-                    for (int j = 0; j < s.length; j++) {
-                        String item = s[j];
-                        propinversa.put(item, s1[i]);
-                    }
-                }
+    private void numerar() {
+        String[] s1 = this.actividades.keySet().toArray(new String[0]);
+        java.util.Arrays.sort(s1);
+        int na = 0;
+        this.nums = new LinkedList<Integer>();
+        int pow3 = 1;
+        //TreeMap<String, String> propinversa = new TreeMap<String, String>();
+        for (int i = 0; i < s1.length; i++) {
+            na = na * 3 + this.actividades.getEstado(s1[i]).ordinal();
+            pow3 = 3 * pow3;
+            /*if (this.propietarias.containsKey(s1[i])) {
+            String[] s = this.propietarias.get(s1[i]).toArray(new String[0]);
+            for (int j = 0; j < s.length; j++) {
+            String item = s[j];
+            propinversa.put(item, s1[i]);
             }
-            String[] s2 = this.items.keySet().toArray(new String[0]);
-            java.util.Arrays.sort(s2);
-            int nb = 0;
-            int nc = 0;
-            int pow5 = 1;
-            for (int i = 0; i < s2.length; i++) {
-                nb = nb * 5 + this.items.getEstado(s2[i]).ordinal();
-                nc = nc * (s1.length + 1);
-                if (propinversa.containsKey(s2[i])) {
-                    nc = nc + java.util.Arrays.binarySearch(s1, propinversa.get(s2[i])) + 1;
-                }
-                pow5 = pow5 * 5;
+            }*/
+            if (pow3 >= Integer.MAX_VALUE / 3) {
+                this.nums.add(new Integer(na));
+                pow3 = 1;
+                na = 0;
             }
-            this.hash = nc * pow3 * pow5 + (nb * pow3 + na);
-            this.numerado = true;
-            return hash;
         }
+        if (pow3>1){
+            this.nums.add(new Integer(na));
+            pow3 = 1;
+            na = 0;
+        }
+        String[] s2 = this.items.keySet().toArray(new String[0]);
+        java.util.Arrays.sort(s2);
+        for (int i = 0; i < s2.length; i++) {
+            na = na * 3 + this.items.getEstado(s2[i]).ordinal();
+            pow3 = pow3 * 3;
+            if (pow3 >= Integer.MAX_VALUE / 3) {
+                this.nums.add(new Integer(na));
+                pow3 = 1;
+                na = 0;
+            }
+        }
+        if (pow3>1){
+            this.nums.add(new Integer(na));
+            pow3 = 1;
+            na = 0;
+        }
+        this.numerado = true;
     }
 
     public Set<ItemRole> getRoles(String item) {
@@ -224,7 +248,30 @@ public class EstadoTA implements IEstadoDrawable, Comparable<EstadoTA> {
         this.historiaRoles.get(item).add(role);
     }
 
-    public boolean was(String item, ItemRole role){
+    public boolean was(String item, ItemRole role) {
         return this.historiaRoles.get(item).contains(role);
+    }
+
+    private void marcarRoles(Actividad a) {
+        for (int i = 0; i < a.getSubjects().length; i++) {
+            String item = a.getSubjects()[i].getClave();
+            this.addRole(item, ItemRole.Subject);
+        }
+        for (int i = 0; i < a.getObjects().length; i++) {
+            String item = a.getObjects()[i].getClave();
+            this.addRole(item, ItemRole.Object);
+        }
+        for (int i = 0; i < a.getTools().length; i++) {
+            String item = a.getTools()[i].getClave();
+            this.addRole(item, ItemRole.Tool);
+        }
+        for (int i = 0; i < a.getObjetives().length; i++) {
+            String item = a.getObjetives()[i].getClave();
+            this.addRole(item, ItemRole.Objetive);
+        }
+        for (int i = 0; i < a.getOutcomes().length; i++) {
+            String item = a.getOutcomes()[i].getClave();
+            this.addRole(item, ItemRole.Outcome);
+        }
     }
 }
