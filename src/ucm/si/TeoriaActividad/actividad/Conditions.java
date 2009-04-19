@@ -5,12 +5,14 @@
 
 package ucm.si.TeoriaActividad.actividad;
 
+import ucm.si.TeoriaActividad.estado.EstadoTA;
+
 /**
  *
  * @author José Antonio
  */
 public interface Conditions
 {
-    public boolean Cumple(Contexto contx);
+    public boolean Cumple(EstadoTA contx);
 
 }

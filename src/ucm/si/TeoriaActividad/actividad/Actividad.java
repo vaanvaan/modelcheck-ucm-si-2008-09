@@ -7,6 +7,7 @@ package ucm.si.TeoriaActividad.actividad;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
+import ucm.si.TeoriaActividad.estado.EstadoTA;
 import ucm.si.TeoriaActividad.item.Item;
 
 /**
@@ -75,7 +76,7 @@ public class Actividad implements Comparable<Actividad> {
         return condiciones;
     }
 
-    public boolean CondicionesSatisfy(Contexto contx) {
+    public boolean CondicionesSatisfy(EstadoTA contx) {
         boolean b = true;
         int cont = 0;
         int max = this.condiciones.length;
@@ -86,6 +87,10 @@ public class Actividad implements Comparable<Actividad> {
             cont++;
         }
         return b;
+    }
+
+    public boolean parienteDe(Actividad a2) {
+        return (this.getAntecesores().contains(a2.getNombre())) || (a2.getAntecesores().contains(this.getNombre()));
     }
 
     public void setCondiciones(Conditions[] condiciones) {
