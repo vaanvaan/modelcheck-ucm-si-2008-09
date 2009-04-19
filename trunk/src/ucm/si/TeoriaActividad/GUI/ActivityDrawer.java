@@ -9,6 +9,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.util.TreeMap;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -63,8 +64,12 @@ public class ActivityDrawer extends JPanel implements ListCellRenderer {
         if (!activa) this.jlitemsObjetos.setEnabled(false);
         this.add(this.jlitemsObjetos);
         JLabel jlabel = new JLabel(this.texto);
-        if (!activa) {
+        if (ei.getEstadoActividad(this.texto).equals(EstadoActividad.Finalized)) {
             jlabel.setEnabled(false);
+        } else if (!activa){
+            ImageIcon espera = new ImageIcon("src/ucm/si/TeoriaActividad/GUI/Waiting32.png");
+            jlabel.setIcon(espera);
+            jlabel.setForeground(Color.RED.darker());
         }
         this.add(jlabel);
         Item[] itemsToGenerate = p.activGen.getItem(this.texto).getItemToGenerate();
