@@ -25,12 +25,12 @@ public class ProposicionItem extends ProposicionTA{
 	public boolean comparaActividad(EstadoTA estado) {
 		boolean resultado = false;
 		ListaEstadosItems listaitems = estado.getItems();
-		if(listaitems.estaItem(nomItem)){
+		if(listaitems.containsItem(nomItem)){
 			if(listaitems.getEstado(nomItem).equals(estadoItem)){
 				resultado = true;
 			}
 		}else
-			System.out.println("Atención: Item no encontrado!");
+			System.out.println("Atencion: Item no encontrado!");
 		return resultado;
 	}
 

@@ -4,6 +4,7 @@
  */
 package ucm.si.TeoriaActividad2.estado;
 
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ucm.si.TeoriaActividad2.actividad.Actividad;
@@ -19,10 +20,12 @@ import ucm.si.TeoriaActividad2.item.ListaEstadosItems;
  *
  * @author José Antonio
  */
-public class EstadoTA implements Cloneable {
+public class EstadoTA implements Cloneable, Comparable<EstadoTA> {
 
     private ListaEstadosItems items;
     private ListaEstadosActividades actividades;
+    private boolean numerado = false;
+    private LinkedList<Integer> nums;
 
     public EstadoTA() {
         this.items = new ListaEstadosItems();
@@ -83,6 +86,81 @@ public class EstadoTA implements Cloneable {
 
     public void setItems(ListaEstadosItems items) {
         this.items = items;
+    }
+
+    @Override
+    public int compareTo(EstadoTA arg0) {
+        if (this == arg0) {
+            return 0;
+        }
+        if (!this.numerado) this.numerar();
+        if (!arg0.numerado) arg0.numerar();
+        int a = this.nums.size();
+        int b = arg0.nums.size();
+        if (a < b) {
+            return -1;
+        }
+        if (a > b) {
+            return 1;
+        }
+        for (int i = 0; i < a; i++) {
+            Integer nthis = this.nums.get(i);
+            Integer nother = arg0.nums.get(i);
+            if (nthis<nother){
+                return -1;
+            }
+            if (nthis>nother){
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    private void numerar() {
+        String[] s1 = this.actividades.keySet().toArray(new String[0]);
+        java.util.Arrays.sort(s1);
+        int na = 0;
+        this.nums = new LinkedList<Integer>();
+        int pow3 = 1;
+        //TreeMap<String, String> propinversa = new TreeMap<String, String>();
+        for (int i = 0; i < s1.length; i++) {
+            na = na * 3 + this.actividades.getEstado(s1[i]).ordinal();
+            pow3 = 3 * pow3;
+            /*if (this.propietarias.containsKey(s1[i])) {
+            String[] s = this.propietarias.get(s1[i]).toArray(new String[0]);
+            for (int j = 0; j < s.length; j++) {
+            String item = s[j];
+            propinversa.put(item, s1[i]);
+            }
+            }*/
+            if (pow3 >= Integer.MAX_VALUE / 3) {
+                this.nums.add(new Integer(na));
+                pow3 = 1;
+                na = 0;
+            }
+        }
+        if (pow3>1){
+            this.nums.add(new Integer(na));
+            pow3 = 1;
+            na = 0;
+        }
+        String[] s2 = this.items.keySet().toArray(new String[0]);
+        java.util.Arrays.sort(s2);
+        for (int i = 0; i < s2.length; i++) {
+            na = na * 3 + this.items.getEstado(s2[i]).ordinal();
+            pow3 = pow3 * 3;
+            if (pow3 >= Integer.MAX_VALUE / 3) {
+                this.nums.add(new Integer(na));
+                pow3 = 1;
+                na = 0;
+            }
+        }
+        if (pow3>1){
+            this.nums.add(new Integer(na));
+            pow3 = 1;
+            na = 0;
+        }
+        this.numerado = true;
     }
 
     @Override

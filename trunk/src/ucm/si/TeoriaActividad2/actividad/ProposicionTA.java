@@ -61,12 +61,12 @@ public abstract class ProposicionTA extends Proposicion<EstadoTA>{
 
 //	private boolean esCierta(Actividad activity, EstadoTA state) {
 //		ListaEstadosActividades listaActividades = state.getActividades();
-//		//deberíamos de buscar la actividad que queremos comparar.
+//		//deberiamos de buscar la actividad que queremos comparar.
 //		return comparaActividad(listaActividades);
 //	}
 
 	/**
-	 * Este método se encarga de definir por la actividad que vamos a preguntar
+	 * Este metodo se encarga de definir por la actividad que vamos a preguntar
 	 * @return
 	 */
 //	public abstract Actividad preparaActividad();
