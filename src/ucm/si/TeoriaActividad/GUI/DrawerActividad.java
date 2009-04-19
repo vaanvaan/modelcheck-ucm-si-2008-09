@@ -13,6 +13,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import ucm.si.TeoriaActividad.Interprete.Pruebas;
 import ucm.si.TeoriaActividad.actividad.ActividadGenerator;
+import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
 import ucm.si.TeoriaActividad.estado.IEstadoDrawable;
 import ucm.si.TeoriaActividad.item.ItemGenerator;
@@ -66,7 +67,7 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
                 arg0.clearRect(0, 0, this.getWidth(), 28);
                 arg0.setColor(Color.black);
                 arg0.setFont(arg0.getFont().deriveFont(2.0F*arg0.getFont().getSize()));
-                arg0.drawString("Items", 1, 26);
+                arg0.drawString("Items", 16, 26);
                 arg0.drawLine(0, 27, this.getWidth(), 27);
                 arg0.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1,30,30);
             }
@@ -75,7 +76,7 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
             public Dimension getPreferredSize() {
                 Dimension d = new Dimension(super.getPreferredSize());
                 d.height = d.height + 28;
-                d.width = Math.max(16*5, d.width);
+                d.width = Math.max(16*6, d.width);
                 return d;
             }
         };
@@ -111,7 +112,7 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
                 arg0.clearRect(0, 0, this.getWidth(), 28);
                 arg0.setColor(Color.black);
                 arg0.setFont(arg0.getFont().deriveFont(2.0F*arg0.getFont().getSize()));
-                arg0.drawString("Actividades", 1, 27);
+                arg0.drawString("Actividades", 16, 27);
                 arg0.drawRoundRect(0, 0, this.getWidth()-1, this.getHeight()-1,28,28);
             }
 
@@ -119,7 +120,7 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
             public Dimension getPreferredSize() {
                 Dimension d = new Dimension(super.getPreferredSize());
                 d.height = d.height + 28;
-                d.width = Math.max(16*11, d.width);
+                d.width = Math.max(16*12, d.width);
                 return d;
             }
         };
@@ -142,7 +143,7 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
         java.util.Arrays.sort(actividades);
         for (int i = 0; i < actividades.length; i++) {
             String a = actividades[i];
-            dlmActividades.addElement(new Object[]{a,s});
+                dlmActividades.addElement(new Object[]{a,s});
         }
     }
 
