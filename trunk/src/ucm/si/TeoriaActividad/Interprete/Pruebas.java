@@ -33,12 +33,11 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
 
     public ItemGenerator itemGen;
     public ActividadGenerator activGen;
-    public TreeMap<Integer, Set<String>> conjuntosItems;
-    public TreeMap<Integer, Set<String>> conjuntosActividades;
     public String[] actividades;
     public String[] items;
     private ArrayList<String> l;
     private LinkedList<String> actividadesOrdenadas; // ordenadas en pre-orden
+    private TreeMap<String, Set<String>> tabla;
 
     public Pruebas() {
         Item item1 = new Item("1");
@@ -49,18 +48,18 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         Item item6 = new Item("6");
 
         itemGen = ItemGenerator.getReference();
-        Item[] listaItem1 = {item1, item2, item3};
-        Item[] listaItem2 = {item1, item2, item4};
-        Item[] listaItem3 = {item3, item4, item5};
-        Item[] listaItem4 = {item1, item6, item3};
+        Item[] listaItem1 = {item1, item2};
+        Item[] listaItem2 = {item2, item4};
+        Item[] listaItem3 = {item3, item5};
+        Item[] listaItem4 = {item3, item4};
 
-        Actividad actividad1 = new Actividad("A1", listaItem1, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Conditions[0]);
+        Actividad actividad1 = new Actividad("A1", listaItem1, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[]{item4}, new Conditions[0]);
         Actividad actividad2 = new Actividad("A2", listaItem2, new Item[0], new Item[0], new Item[0], new Item[0], new Item[]{item4}, new Item[0], new Conditions[0]);
         Actividad actividad3 = new Actividad("A3", listaItem3, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Conditions[0]);
         Actividad actividad4 = new Actividad("A4", listaItem4, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Conditions[0]);
         // Aqui construir el arbol de actividades
-        actividad2.addActividadHija(actividad3);
-        actividad2.addActividadHija(actividad4);
+        actividad1.addActividadHija(actividad2);
+        actividad3.addActividadHija(actividad4);
 
         activGen = ActividadGenerator.getReference();
         try {
@@ -97,65 +96,43 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
                 a++;
             }
 
-            // Creamos la tabla para particionar los items en subconjuntos
-            // por ahora hacemos para 32 actividades, pero es facil hacerlo generico
-
-            String[] lItems = itemGen.getItems();
-            int[] lClaves = new int[lItems.length];
-            Actividad[] lacts = activGen.getConjunto().values().
-                    toArray(new Actividad[0]);
-            for (int j = 0; j < lItems.length; j++) {
-                if (lacts[0].necesita(itemGen.getItem(lItems[j]))) {
-                    lClaves[j] = 1;
-                } else {
-                    lClaves[j] = 0;
-                }
-            }
-            int pot2 = 2;
-            for (int i = 1; i < lacts.length; i++) {
-                for (int j = 0; j < lItems.length; j++) {
-                    if (lacts[i].necesita(itemGen.getItem(lItems[j]))) {
-                        lClaves[j] = lClaves[j] + pot2;
-                    }
-                }
-                pot2 = pot2 << 1;
-            }
-            conjuntosItems = new TreeMap<Integer, Set<String>>();
-            for (int i = 0; i < lClaves.length; i++) {
-                if (!conjuntosItems.containsKey(new Integer(lClaves[i]))) {
-                    TreeSet<String> saux = new TreeSet<String>();
-                    saux.add(lItems[i]);
-                    conjuntosItems.put(new Integer(lClaves[i]), saux);
-                } else {
-                    conjuntosItems.get(lClaves[i]).add(lItems[i]);
-                }
-            }
-
-            // Ahora nos quedamos solo con los conjuntos conflictivos
-            if (conjuntosItems.containsKey(new Integer(0))) {
-                conjuntosItems.remove(new Integer(0));
-            }
-
-            // Ahora generamos, para cada conjunto conflictivo, el conjunto 
-            // de actividades que lo necesitan.
-            conjuntosActividades = new TreeMap<Integer, Set<String>>();
-            for (Iterator<Integer> it = conjuntosItems.keySet().iterator(); it.hasNext();) {
-                Integer i = it.next();
-                //String[] lString = conjuntosItems.get(i).toArray(new String[0]);            
-                pot2 = 1;
-                for (int j = 1; j <= lacts.length; j++) {
-                    if ((pot2 & i) >= 1) {
-                        if (!conjuntosActividades.containsKey(i)) {
-                            TreeSet<String> hashaux = new TreeSet<String>();
-                            hashaux.add(lacts[j - 1].getNombre());
-                            conjuntosActividades.put(i, hashaux);
+            // Creamos una tabla de compatibilidad de actividades
+            int numact = actividadesOrdenadas.size();
+            /*tabla = new boolean[numact - 1][];
+            for (int i = 0; i < tabla.length; i++) {
+            tabla[i] = new boolean[numact - 1 - i];
+            }*/
+            tabla = new TreeMap<String, Set<String>>();
+            for (int i = 0; i < numact; i++) {
+                Actividad a1 = activGen.getItem(actividadesOrdenadas.get(i));
+                Item[] s1 = a1.getItemNecesarios();
+                TreeSet<String> conjComp = new TreeSet<String>();
+                for (int j = 0; j < numact; j++) {
+                    if (i != j) {
+                        Actividad a2 = activGen.getItem(actividadesOrdenadas.get(j));
+                        if (!a1.parienteDe(a2)) {
+                            Item[] s2 = a2.getItemNecesarios();
+                            boolean incompatibles = false;
+                            for (int k = 0; !incompatibles && k < s1.length; k++) {
+                                Item e1 = s1[k];
+                                for (int m = 0; !incompatibles && m < s2.length; m++) {
+                                    Item e2 = s2[m];
+                                    if (e1.compareTo(e2) == 0) {
+                                        incompatibles = true;
+                                    }
+                                }
+                            }
+                            if (!incompatibles) {
+                                conjComp.add(a2.getNombre());
+                            }
                         } else {
-                            conjuntosActividades.get(i).add(lacts[j - 1].getNombre());
+                            conjComp.add(a2.getNombre());
                         }
                     }
-                    pot2 = pot2 << 1;
                 }
+                tabla.put(a1.getNombre(), conjComp);
             }
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -183,10 +160,10 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         for (Iterator<String> it = actividadesOrdenadas.iterator(); it.hasNext();) {
             String a = it.next();
             if (actividadEjecutada(a, estadoini)) {
-                // si una actividad esta ejecutada la ponemos a Finalized
+                // si una actividad esta ejecutada, la ponemos a Finalized
                 // y ponemos sus items a Free
                 estadoini.actividades.setEstado(a, EstadoActividad.Finalized);
-                if (estadoini.propietarias.containsKey(a)){
+                if (estadoini.propietarias.containsKey(a)) {
                     for (Iterator<String> it2 = estadoini.propietarias.get(a).iterator(); it2.hasNext();) {
                         String item = it2.next();
                         if (!itemHeredado(a, item, estadoini)) {
@@ -202,6 +179,11 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
                     if (!itemHeredado(a, item, estadoini)) {
                         estadoini.items.setEstado(item, EstadoItem.DISPOSED);
                     }
+                }
+                Item[] itemsToGenerate = activGen.getItem(a).getItemToGenerate();
+                for (int i = 0; i < itemsToGenerate.length; i++) {
+                    String item = itemsToGenerate[i].getClave();
+                    estadoini.items.setEstado(item, EstadoItem.FREE);
                 }
             }
         }
@@ -271,10 +253,12 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
 
     public List<EstadoTA> backtracking(EstadoTA estado) {
         TreeMap<String, Set<String>> propietarias = copiaPropietarias(estado.propietarias);
-        Integer[] conjItemsConflictivos =
-                conjuntosItems.keySet().toArray(new Integer[0]);
         ArrayList<EstadoTA> laux = new ArrayList<EstadoTA>();
-        backtracking2(estado, 0, propietarias, conjItemsConflictivos, laux);
+        TreeSet<String> conjIni = new TreeSet<String>();
+        for (int i = 0; i < actividadesOrdenadas.size(); i++) {
+            conjIni.add(actividadesOrdenadas.get(i));
+        }
+        backtracking2(estado, conjIni, new TreeSet<String>(), propietarias, laux);
         return laux;
     }
 
@@ -297,80 +281,62 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         }
     }
 
-    private void backtracking2(EstadoTA eini, int i, TreeMap<String, Set<String>> propietarias,
-            Integer[] conjItemsConflictivos, ArrayList<EstadoTA> laux) {
-        Integer claveConj = conjItemsConflictivos[i];
-        boolean ningunoDisposed = true;
-        for (String straux : conjuntosItems.get(claveConj)) {
-            if (eini.items.getEstado(straux).equals(EstadoItem.DISPOSED)) {
-                ningunoDisposed = false;
-            }
-        }
-        if (ningunoDisposed) {
-            String[] conjActs = conjuntosActividades.get(claveConj).toArray(new String[0]);
-            boolean adjudicado = false;
-            for (int j = 0; j < conjActs.length; j++) {
-                String a = conjActs[j];
-                TreeSet<String> propaux = new TreeSet<String>(conjuntosItems.get(claveConj));
-                Actividad padre = activGen.getItem(a).getPadre();
+    private void backtracking2(EstadoTA eini, TreeSet<String> conjIni, TreeSet<String> conjHechos, TreeMap<String, Set<String>> propietarias,
+            ArrayList<EstadoTA> laux) {
+        boolean algunaLanza = false;
+        for (Iterator<String> it = conjIni.iterator(); it.hasNext();) {
+            String act = it.next();
+            if (!conjHechos.contains(act)) {
+                TreeSet<String> propaux = new TreeSet<String>();
+                Item[] itemsNecesarios = activGen.getItem(act).getItemNecesarios();
+                for (int i = 0; i < itemsNecesarios.length; i++) {
+                    propaux.add(itemsNecesarios[i].getClave());
+                }
+                Actividad padre = activGen.getItem(act).getPadre();
                 boolean padreActivo = false;
                 if ((padre == null) ||
                         (eini.getEstadoActividad(padre.getNombre()).equals(EstadoActividad.Executing))) {
                     padreActivo = true;
                 }
                 if (padreActivo &&
-                        (eini.actividades.getEstado(a).equals(EstadoActividad.Waiting))
-                        &&puedeUsarlos(a, propaux, eini)) {
-                    if (propietarias.containsKey(a)) {
-                        propietarias.get(a).addAll(propaux);
+                        (eini.actividades.getEstado(act).equals(EstadoActividad.Waiting)) && 
+                        puedeUsarlos(act, propaux, eini) && activGen.getItem(act).CondicionesSatisfy(eini)) {
+                    propietarias.put(act, propaux);
+                    TreeSet<String> conjIni2 = new TreeSet<String>(conjIni);
+                    conjIni2.remove(act);
+                    Set<String> conjCompat = tabla.get(act);
+                    if (conjCompat != null) {
+                        conjIni2.retainAll(tabla.get(act));
+                        if (conjIni2.size() == 0) { // ya hemos asignado el ultimo
+                            EstadoTA estadoaux = new EstadoTA(eini);
+                            estadoaux.propietarias = copiaPropietarias(propietarias);
+                            estadoaux.lanzarPosibles(this);
+                            laux.add(estadoaux);
+                        } else {
+                            TreeSet<String> conjHechos2 = new TreeSet<String>(conjHechos);
+                            conjHechos2.add(act);
+                            backtracking2(eini, conjIni2, conjHechos2, propietarias, laux);
+                        }
                     } else {
-                        propietarias.put(a, propaux);
-                    }
-                    if (i == conjItemsConflictivos.length - 1) { // ya hemos asignado el ultimo
                         EstadoTA estadoaux = new EstadoTA(eini);
                         estadoaux.propietarias = copiaPropietarias(propietarias);
                         estadoaux.lanzarPosibles(this);
                         laux.add(estadoaux);
-                    } else {
-                        backtracking2(eini, i + 1, propietarias, conjItemsConflictivos, laux);
                     }
-                    propietarias.get(a).removeAll(propaux);
-                    if (propietarias.get(a).isEmpty()) {
-                        propietarias.remove(a);
-                    }
-                    adjudicado = true;
+                    propietarias.remove(act);
+                    algunaLanza = true;
                 }
             }
-            if (!adjudicado) {
-                //este conjunto ya no es conflictivo porque nadie lo necesita
-                if (i == conjItemsConflictivos.length - 1) { // ya hemos asignado el ultimo
-                    EstadoTA estadoaux = new EstadoTA(eini);
-                    estadoaux.propietarias = copiaPropietarias(propietarias);
-                    estadoaux.lanzarPosibles(this);
-                    laux.add(estadoaux);
-                } else {
-                    backtracking2(eini, i + 1, propietarias, conjItemsConflictivos, laux);
-                }
-            }
-        } else {
-            if (i == conjItemsConflictivos.length - 1) { // ya hemos asignado el ultimo
-                EstadoTA estadoaux = new EstadoTA(eini);
-                estadoaux.propietarias = copiaPropietarias(propietarias);
-                estadoaux.lanzarPosibles(this);
-                laux.add(estadoaux);
-            } else {
-                backtracking2(eini, i + 1, propietarias, conjItemsConflictivos, laux);
-            }
+        }
+        if (!algunaLanza) { // Las actividades no se han podido lanzar
+            EstadoTA estadoaux = new EstadoTA(eini);
+            estadoaux.propietarias = copiaPropietarias(propietarias);
+            estadoaux.lanzarPosibles(this);
+            laux.add(estadoaux);
         }
     }
 
     public static void main(String[] args) {
-        /*Pruebas p = new Pruebas();
-        List<EstadoTA> l = p.transitar(p.iniciales().iterator().next());
-        for (Iterator<EstadoTA> it = l.iterator(); it.hasNext();) {
-        EstadoTA e = it.next();
-        System.out.println(e);
-        }*/
         Pruebas p = new Pruebas();
         Proposicion<EstadoTA> nofin = new Proposicion<EstadoTA>() {
 
@@ -471,6 +437,8 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
             String item = it.next();
             if (eini.items.getEstado(item).equals(EstadoItem.BUSY)) {
                 puede = itemHeredado(a, item, eini); //lo tiene un padre
+            } else if (eini.items.getEstado(item).equals(EstadoItem.DISPOSED)) {
+                puede = false;
             }
         }
         return puede;
