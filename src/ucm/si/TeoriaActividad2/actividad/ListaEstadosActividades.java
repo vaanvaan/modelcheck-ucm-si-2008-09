@@ -6,7 +6,9 @@
 package ucm.si.TeoriaActividad2.actividad;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -16,50 +18,47 @@ import java.util.List;
  */
 public class ListaEstadosActividades implements Cloneable
 {
-    ArrayList<EstadoActividad> estado;
-    ArrayList<String> clavesActividad;
-
-    public ListaEstadosActividades(ArrayList<EstadoActividad> estado, ArrayList<String> clavesEstado) {
-        this.estado = estado;
-        this.clavesActividad = clavesEstado;
-    }
+    HashMap <String, EstadoActividad> map;
 
     public ListaEstadosActividades() {
         int capacidad = ActividadGenerator.getReference().Elements();
-        this.estado = new ArrayList<EstadoActividad>(capacidad);
-        this.clavesActividad = new ArrayList<String>(capacidad);
+        this.map = new HashMap<String, EstadoActividad>(capacidad);
     }
 
     public int size()
     {
-        return this.estado.size();
+
+        return this.map.size();
     }
 
     public EstadoActividad getEstado(String clave)
     {
-        int indice = this.clavesActividad.indexOf(clave);
-        return this.estado.get( indice );
+        return this.map.get(clave);
     }
     
     public boolean isActivity(String clave){
-    	return clavesActividad.contains(clave);
+    	return map.containsKey(clave);
     }
 
     public void setEstado(String clave, EstadoActividad estado)
     {
-        int indice = this.clavesActividad.indexOf(clave);
-        this.estado.set(indice, estado);
+        this.map.remove(clave);
+        this.map.put(clave, estado);
     }
 
     public void addEstado(String clave, EstadoActividad estado)
     {
-        if(this.clavesActividad.contains(clave))
-            this.estado.set( this.clavesActividad.indexOf(clave)  , estado);
+        if(this.map.containsKey(clave))
+            this.setEstado(clave, estado);
         else
         {
-            this.estado.add(estado);
-            this.clavesActividad.add(clave);
+            this.map.put(clave, estado);
         }
+    }
+
+    public Set<String> keySet()
+    {
+        return this.map.keySet();
     }
 
     @Override
@@ -68,13 +67,9 @@ public class ListaEstadosActividades implements Cloneable
         Object clone = null;
         clone = super.clone();
         ListaEstadosActividades l = (ListaEstadosActividades) clone;
-        this.clavesActividad = (ArrayList<String>) l.clavesActividad.clone();
-        this.estado = (ArrayList<EstadoActividad>) l.estado.clone();
+        this.map = (HashMap<String, EstadoActividad>) l.map.clone();
         return l;
     }
-
-
-
 
     @Override
     public boolean equals(Object obj) {
@@ -85,10 +80,7 @@ public class ListaEstadosActividades implements Cloneable
             return false;
         }
         final ListaEstadosActividades other = (ListaEstadosActividades) obj;
-        if (this.estado != other.estado && (this.estado == null || !this.estado.equals(other.estado))) {
-            return false;
-        }
-        if (this.clavesActividad != other.clavesActividad && (this.clavesActividad == null || !this.clavesActividad.equals(other.clavesActividad))) {
+        if (this.map != other.map && (this.map == null || !this.map.equals(other.map))) {
             return false;
         }
         return true;
@@ -97,10 +89,15 @@ public class ListaEstadosActividades implements Cloneable
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 73 * hash + (this.estado != null ? this.estado.hashCode() : 0);
-        hash = 73 * hash + (this.clavesActividad != null ? this.clavesActividad.hashCode() : 0);
+        hash = 31 * hash + (this.map != null ? this.map.hashCode() : 0);
         return hash;
     }
+
+
+
+
+
+
 
 
 

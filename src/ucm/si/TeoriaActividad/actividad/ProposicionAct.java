@@ -17,40 +17,40 @@ public abstract class ProposicionAct extends Proposicion<EstadoTA>{
 	 * (non-Javadoc)
 	 * @see ucm.si.basico.ecuaciones.Proposicion#esCierta(java.lang.Object)
 	 * 
-	 * Estoy pensando... Así preguntaría una acividad (lo más fácil por ahora)
+	 * Estoy pensando... Asi preguntar una acividad (lo mas facil por ahora)
 	 * 
-	 *  1º definimos el estado de la actividad que queremos verificar en el cheker
+	 *  1Âº definimos el estado de la actividad que queremos verificar en el cheker
 	 *  
 	 *  		Actividad A = new Actividad(...);
 	 *  Esto da bastante juego, pues podemos definir las condiciones exactas de una
-	 *  actividad, es decir, sus items y su estado. (Y más cosas si añadimos)
+	 *  actividad, es decir, sus items y su estado. (Y mas cosas si aÃ±adimos)
 	 *  
 	 *  Podemos hacerlo de tal forma que si por ejemplo items va a null (en nuestra pregunta)
 	 *  significa que no nos importa el estado de los items, con que se cumpla el resto,
 	 *  nos vale.
 	 *  
-	 *  2º preguntamos al estado si tiene una actividad en el estado A, si la tiene,
-	 *  entonces la proposición se cumple >_<
+	 *  2Âº preguntamos al estado si tiene una actividad en el estado A, si la tiene,
+	 *  entonces la proposicion se cumple >_<
 	 *  	  esCierta(A)= true.
 	 *  
-	 *  Sería como un ecuals, jejeje
+	 *  Seria como un ecuals, jejeje
 	 *  
 	 *  Por si no queda claro el proceso:
 	 * 
-	 *  1º generamos la pregunta:
+	 *  1Âº generamos la pregunta:
 	 *  	Creamos un objeto Actividad. Le damos los atributos que nos interesa chekear.
-	 *  	Ejemplo de lo que sería un Not:
+	 *  	Ejemplo de lo que seria un Not:
 	 *  				Actividad activity = new Actividad(..);
 	 *  				ProposicionAct propAct = new  ProposicionAct();
 	 *  				propAct.setActividad(activity); 
 	 *  				Formula formula = new Not(propAct);
-	 *  2º Lanzamos el cheker.
+	 *  2Âº Lanzamos el cheker.
 	 *  
 	 *  
 	 *  
 	 *  Edit 2:
 	 *  
-	 *  No parece que sea posible parametrizar por actividad, pues a ver cómo lo hacemos
+	 *  No parece que sea posible parametrizar por actividad, pues a ver como lo hacemos
 	 *  
 	 */
 	@Override
@@ -62,12 +62,12 @@ public abstract class ProposicionAct extends Proposicion<EstadoTA>{
 
 	private boolean esCierta(Actividad activity, EstadoTA state) {
 		ListaEstadosActividades listaActividades = state.getActividades();
-		//deberíamos de buscar la actividad que queremos comparar.
+		//deberiamos de buscar la actividad que queremos comparar.
 		return comparaActividad(listaActividades);
 	}
 
 	/**
-	 * Este método se encarga de definir por la actividad que vamos a preguntar
+	 * Este metodo se encarga de definir por la actividad que vamos a preguntar
 	 * @return
 	 */
 	public abstract Actividad preparaActividad();

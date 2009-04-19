@@ -13,7 +13,7 @@ import ucm.si.TeoriaActividad2.estado.EstadoTA;
 /**
  * @author Ivan
  *
- *OJO: ¿qué hago si la clave por la que se pregunta no está en la lista de actividades?
+ *OJO: Aqui hago si la clave por la que se pregunta no esta en la lista de actividades?
  * de momento es un sysout y return false.
  */
 public class ProposicionActividad extends ProposicionTA{

@@ -7,9 +7,11 @@ package ucm.si.TeoriaActividad2.item;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,47 +21,51 @@ import java.util.logging.Logger;
  */
 public class ListaEstadosItems implements  Cloneable
 {
-    ArrayList<EstadoItem> estado;
-    ArrayList<String> clavesEstado;
+    HashMap<String,EstadoItem> map;
 
-    public ListaEstadosItems(ArrayList<EstadoItem> estado, ArrayList<String> clavesEstado) {
-        this.estado = estado;
-        this.clavesEstado = clavesEstado;
-    }
 
     public ListaEstadosItems() {
         int capacidad = ItemGenerator.getReference().Elements();
-        this.estado = new ArrayList<EstadoItem>(capacidad);
-        this.clavesEstado = new ArrayList<String>(capacidad);
+        this.map = new HashMap<String, EstadoItem>(capacidad);
     }
 
     public EstadoItem getEstado(String clave)
     {
-        int indice = clavesEstado.indexOf(clave);
-        return estado.get( indice );
+        return this.map.get(clave);
     }
 
     public void setEstado(String clave, EstadoItem estado)
     {
-        int indice = clavesEstado.indexOf(clave);
-        this.estado.set(indice, estado);
+        this.map.remove(clave);
+        this.map.put(clave, estado);
     }
 
     public void addEstado(String clave, EstadoItem estado)
     {
-        if(clavesEstado.contains(clave))
-            this.estado.set( clavesEstado.indexOf(clave)  , estado);
+        if(this.map.containsKey(clave))
+            this.setEstado(clave, estado);
+            
         else
         {
-            this.estado.add(estado);
-            clavesEstado.add(clave);
+            this.map.put(clave, estado);
         }
     }
 
-    public boolean estaItem(String clave){
-    	return clavesEstado.contains(clave);
+    public boolean containsItem(Item item)
+    {
+        return this.map.containsKey(item.getClave());
     }
-    
+
+    public boolean containsItem(String claveItem)
+    {
+        return this.map.containsKey(claveItem);
+    }
+
+    public Set<String> keySet() {
+        return this.map.keySet();
+    }
+
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -69,10 +75,7 @@ public class ListaEstadosItems implements  Cloneable
             return false;
         }
         final ListaEstadosItems other = (ListaEstadosItems) obj;
-        if (this.estado != other.estado && (this.estado == null || !this.estado.equals(other.estado))) {
-            return false;
-        }
-        if (this.clavesEstado != other.clavesEstado && (this.clavesEstado == null || !this.clavesEstado.equals(other.clavesEstado))) {
+        if (this.map != other.map && (this.map == null || !this.map.equals(other.map))) {
             return false;
         }
         return true;
@@ -81,10 +84,10 @@ public class ListaEstadosItems implements  Cloneable
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 67 * hash + (this.estado != null ? this.estado.hashCode() : 0);
-        hash = 67 * hash + (this.clavesEstado != null ? this.clavesEstado.hashCode() : 0);
+        hash = 53 * hash + (this.map != null ? this.map.hashCode() : 0);
         return hash;
     }
+
 
     @Override
     public Object clone() {
@@ -93,8 +96,9 @@ public class ListaEstadosItems implements  Cloneable
         try {
             clone = super.clone();
             ListaEstadosItems l = (ListaEstadosItems) clone;
-            l.clavesEstado = (ArrayList<String>) this.clavesEstado.clone();
-            l.estado = (ArrayList<EstadoItem>) this.estado.clone();
+            l.map = (HashMap<String, EstadoItem>) this.map.clone();
+            //l.clavesEstado = (ArrayList<String>) this.clavesEstado.clone();
+            //l.estado = (ArrayList<EstadoItem>) this.estado.clone();
         } catch (CloneNotSupportedException ex) {
             Logger.getLogger(ListaEstadosItems.class.getName()).log(Level.SEVERE, null, ex);
         }

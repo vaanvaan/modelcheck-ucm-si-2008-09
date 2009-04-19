@@ -14,8 +14,10 @@ import java.util.concurrent.ArrayBlockingQueue;
 //import sun.io.Converters;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ucm.si.TeoriaActividad2.GUI.DrawerActividad;
 import ucm.si.TeoriaActividad2.actividad.Actividad;
 import ucm.si.TeoriaActividad2.actividad.ActividadGenerator;
+//import ucm.si.TeoriaActividad2.actividad.Contexto;
 import ucm.si.TeoriaActividad2.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad2.actividad.ListaEstadosActividades;
 import ucm.si.TeoriaActividad2.estado.EstadoTA;
@@ -23,6 +25,13 @@ import ucm.si.TeoriaActividad2.item.EstadoItem;
 import ucm.si.TeoriaActividad2.item.Item;
 import ucm.si.TeoriaActividad2.item.ItemGenerator;
 import ucm.si.TeoriaActividad2.item.ListaEstadosItems;
+import ucm.si.animadorGUI.Drawer;
+import ucm.si.animadorGUI.util.Launcher;
+import ucm.si.basico.ecuaciones.EU;
+import ucm.si.basico.ecuaciones.Formula;
+import ucm.si.basico.ecuaciones.Not;
+import ucm.si.basico.ecuaciones.Proposicion;
+import ucm.si.util.Contexto;
 
 /**
  *
@@ -39,6 +48,40 @@ public class Pruebas2
         l2.isEmpty();
         System.out.print("Holaaaaa");
 
+
+        /*Pruebas p = new Pruebas();
+        List<EstadoTA> l = p.transitar(p.iniciales().iterator().next());
+        for (Iterator<EstadoTA> it = l.iterator(); it.hasNext();) {
+        EstadoTA e = it.next();
+        System.out.println(e);
+        }*/
+        InterpreteTA interprete = new InterpreteTA();
+        Proposicion<EstadoTA> nofin = new Proposicion<EstadoTA>() {
+
+            @Override
+            public boolean esCierta(EstadoTA s) {
+                return true;//s.actividades.getEstado("A2").equals(EstadoActividad.Waiting);
+            }
+        };
+        Proposicion<EstadoTA> fin = new Proposicion<EstadoTA>() {
+
+            @Override
+            public boolean esCierta(EstadoTA s) {
+                return false;//s.actividades.getEstado("A2").equals(EstadoActividad.Finalized);
+            }
+        };
+
+        Formula haycamino = new EU(nofin, fin);
+        Formula formula = new Not(haycamino);
+
+        Launcher<EstadoTA> launcher = new Launcher<EstadoTA>(new Contexto() {}, interprete, formula);
+
+        launcher.runCheck();
+
+        Drawer dw = new ucm.si.TeoriaActividad2.GUI.DrawerActividad(interprete);
+        launcher.launchGrafico(dw);
+
+    }
         /*Item item1 = new Item("1");
         Item item2 = new Item("2");
         Item item3 = new Item("3");
@@ -70,7 +113,7 @@ public class Pruebas2
 
 
 
-    }
+    
 
     /*
      * Ejemplo de uso de lanzalbe para saber cuales son

@@ -16,7 +16,7 @@ public class ProposicionItem extends Proposicion<Item>{
 	 * (non-Javadoc)
 	 * @see ucm.si.basico.ecuaciones.Proposicion#esCierta(java.lang.Object)
 	 * 
-	 * Simplemente sería comprobar el estado del item en el estado que esté desarrollando
+	 * Simplemente seria comprobar el estado del item en el estado que esta desarrollando
 	 * el cheker. Me imagino, que podemos hacerlo como lo de la Actividad.
 	 * Pues si metemos roles, si rol = null, no nos importa el rol que haya tenido
 	 * pero puede que necesitemos algo como, item = destroyed, owner = ActividadPepe,
