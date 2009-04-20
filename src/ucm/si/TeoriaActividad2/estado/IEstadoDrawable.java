@@ -5,7 +5,6 @@
 
 package ucm.si.TeoriaActividad2.estado;
 
-import ucm.si.TeoriaActividad2.estado.*;
 import ucm.si.TeoriaActividad2.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad2.item.EstadoItem;
 

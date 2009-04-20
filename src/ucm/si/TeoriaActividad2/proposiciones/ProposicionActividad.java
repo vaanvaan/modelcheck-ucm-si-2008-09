@@ -3,8 +3,6 @@
  */
 package ucm.si.TeoriaActividad2.proposiciones;
 
-import java.util.ArrayList;
-
 import ucm.si.TeoriaActividad2.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad2.actividad.ListaEstadosActividades;
 import ucm.si.TeoriaActividad2.actividad.ProposicionTA;
@@ -43,7 +41,7 @@ public class ProposicionActividad extends ProposicionTA{
 		EstadoActividad actState = null;
 		 if (lista.isActivity(claveActiv)){
 			 actState = lista.getEstado(claveActiv);
-			 if(actState.equals(estado)){
+			 if(actState.equals(this.estado)){
 				 resultado=true;
 			 }
 		 }else{
