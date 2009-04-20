@@ -7,6 +7,8 @@ package ucm.si.TeoriaActividad2.estado;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import ucm.si.TeoriaActividad2.estado.IEstadoDrawable;
 import ucm.si.TeoriaActividad2.actividad.Actividad;
 import ucm.si.TeoriaActividad2.actividad.ActividadGenerator;
 import ucm.si.TeoriaActividad2.actividad.EstadoActividad;
@@ -20,7 +22,7 @@ import ucm.si.TeoriaActividad2.item.ListaEstadosItems;
  *
  * @author José Antonio
  */
-public class EstadoTA implements Cloneable, Comparable<EstadoTA> {
+public class EstadoTA implements IEstadoDrawable, Cloneable, Comparable<EstadoTA> {
 
     private ListaEstadosItems items;
     private ListaEstadosActividades actividades;

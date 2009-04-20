@@ -3,7 +3,6 @@
  */
 package ucm.si.TeoriaActividad2.actividad;
 
-import ucm.si.TeoriaActividad2.actividad.Actividad;
 import ucm.si.TeoriaActividad2.estado.EstadoTA;
 import ucm.si.basico.ecuaciones.Proposicion;
 
