@@ -74,7 +74,10 @@ public class ActivityDrawer extends JPanel implements ListCellRenderer {
         } else if (!activa) {
             ImageIcon espera = new ImageIcon("src/ucm/si/TeoriaActividad/GUI/Waiting32.png");
             jlabel.setIcon(espera);
-            jlabel.setForeground(Color.RED.darker());
+            jlabel.setForeground(Color.RED);
+        } else {
+            ImageIcon espera = new ImageIcon("src/ucm/si/TeoriaActividad/GUI/Executing32.png");
+            jlabel.setIcon(espera);
         }
         this.add(jlabel);
         if (activa) {

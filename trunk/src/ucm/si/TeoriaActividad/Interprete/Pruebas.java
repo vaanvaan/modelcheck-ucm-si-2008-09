@@ -20,6 +20,7 @@ import ucm.si.Checker.util.StateLabeledList;
 import ucm.si.TeoriaActividad.GUI.DrawerActividad;
 import ucm.si.TeoriaActividad.actividad.*;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
+import ucm.si.TeoriaActividad.estado.ItemRole;
 import ucm.si.TeoriaActividad.item.*;
 import ucm.si.animadorGUI.Drawer;
 import ucm.si.animadorGUI.util.Launcher;
@@ -48,17 +49,23 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         Item item6 = new Item("6");
 
         itemGen = ItemGenerator.getReference();
-        Item[] listaItem1 = {item1, item2};
-        Item[] listaItem2 = {item2, item4};
-        Item[] listaItem3 = {item3, item5};
-        Item[] listaItem4 = {item3, item4};
-
-        Actividad actividad1 = new Actividad("A1", listaItem1, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[]{item4}, new Conditions[0]);
-        Actividad actividad2 = new Actividad("A2", listaItem2, new Item[0], new Item[0], new Item[0], new Item[0], new Item[]{item4}, new Item[0], new Conditions[0]);
-        Actividad actividad3 = new Actividad("A3", listaItem3, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Conditions[0]);
-        Actividad actividad4 = new Actividad("A4", listaItem4, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Conditions[0]);
+        Item[] listaSujetos1 = {item1, item2};
+        Item[] listaObjetos1 = {item6};
+        Actividad actividad1 = new Actividad("A1", listaSujetos1, listaObjetos1, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Conditions[0]);
+        Item[] listaSujetos2 = {item2};
+        Item[] listaObjetos2 = {item4};
+        Actividad actividad2 = new Actividad("A2", listaSujetos2, listaObjetos2, new Item[0], new Item[0], new Item[0], new Item[]{item4}, new Item[0], new Conditions[0]);
+        Item[] listaSujetos5 = {item2};
+        //Item[] listaObjetos5 = {item4};
+        Actividad actividad5 = new Actividad("A5", listaSujetos5, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Conditions[0]);
+        Item[] listaSujetos3 = {item3};
+        Item[] listaObjetos3 = {item5};
+        Actividad actividad3 = new Actividad("A3", listaSujetos3, listaObjetos3, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Conditions[0]);
+        Item[] listaSujetos4 = {item3, item4};
+        Actividad actividad4 = new Actividad("A4", listaSujetos4, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Conditions[0]);
         // Aqui construir el arbol de actividades
         actividad1.addActividadHija(actividad2);
+        actividad1.addActividadHija(actividad5);
         actividad3.addActividadHija(actividad4);
 
         activGen = ActividadGenerator.getReference();
@@ -73,6 +80,7 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
             activGen.addActividad(actividad2);
             activGen.addActividad(actividad3);
             activGen.addActividad(actividad4);
+            activGen.addActividad(actividad5);
             actividades = activGen.getConjunto().keySet().toArray(new String[0]);
             items = itemGen.getItems();
 
@@ -342,21 +350,22 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
 
             @Override
             public boolean esCierta(EstadoTA s) {
-                return true;//s.actividades.getEstado("A2").equals(EstadoActividad.Waiting);
+                return s.actividades.getEstado("A4").equals(EstadoActividad.Waiting)
+                       || s.actividades.getEstado("A4").equals(EstadoActividad.Executing);
             }
         };
         Proposicion<EstadoTA> fin = new Proposicion<EstadoTA>() {
 
             @Override
             public boolean esCierta(EstadoTA s) {
-                return false;//s.actividades.getEstado("A2").equals(EstadoActividad.Finalized);
+                return s.actividades.getEstado("A4").equals(EstadoActividad.Finalized);
             }
         };
 
-        Formula haycamino = new EU(nofin, fin);
-        Formula formula = new Not(haycamino);
+        Formula haycamino = new AU(nofin, fin);
+        //Formula formula = new Not(haycamino);
 
-        Launcher<EstadoTA> launcher = new Launcher<EstadoTA>(new Contexto(), p, formula);
+        Launcher<EstadoTA> launcher = new Launcher<EstadoTA>(new Contexto(), p, haycamino);
 
         launcher.runCheck();
 

@@ -64,42 +64,13 @@ public class EstadoTA implements IEstadoDrawable, Comparable<EstadoTA> {
     public void lanzarPosibles(Pruebas p) {
         for (Iterator<String> it = this.propietarias.keySet().iterator(); it.hasNext();) {
             String a = it.next();
-            //Ahora, las q se estan ejecutando no importan
-            if (!this.getEstadoActividad(a).equals(EstadoActividad.Executing)) {
+            if (this.getEstadoActividad(a).equals(EstadoActividad.Waiting)) {
                 for (Iterator<String> it2 = this.propietarias.get(a).iterator(); it2.hasNext();) {
                     String itemaux = it2.next();
                     this.items.setEstado(itemaux, EstadoItem.BUSY);
-                    p.itemGen.getItem(itemaux).setPropietaria(p.activGen.getItem(a));
                 }
-            }
-        }
-        for (Iterator<String> it = this.propietarias.keySet().iterator(); it.hasNext();) {
-            String a = it.next();
-            //Ahora, las q se estan ejecutando no importan
-            if (!this.getEstadoActividad(a).equals(EstadoActividad.Executing)) {
-                Item[] itemsNecesarios = p.activGen.getItem(a).getItemNecesarios();
-                boolean lanzar = true;
-                int i = 0;
-                while (lanzar && (i < itemsNecesarios.length)) {
-                    Item item = itemsNecesarios[i];
-                    if ((item.getPropietaria() == null) || (!item.getPropietaria().getNombre().equalsIgnoreCase(a))) {
-                        lanzar = false;
-                    }
-                    i++;
-                }
-                if (lanzar) {
-                    this.actividades.setEstado(a, EstadoActividad.Executing);
-                    this.marcarRoles(p.activGen.getItem(a));
-                } else {
-                    this.actividades.setEstado(a, EstadoActividad.Waiting);
-                }
-            }
-        }
-        for (Iterator<String> it = this.propietarias.keySet().iterator(); it.hasNext();) {
-            String a = it.next();
-            for (Iterator<String> it2 = this.propietarias.get(a).iterator(); it2.hasNext();) {
-                String itemaux = it2.next();
-                p.itemGen.getItem(itemaux).setPropietaria(null);
+                this.actividades.setEstado(a, EstadoActividad.Executing);
+                this.marcarRoles(p.activGen.getItem(a));
             }
         }
     }
