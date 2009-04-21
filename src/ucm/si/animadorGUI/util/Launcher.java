@@ -10,6 +10,8 @@ import ucm.si.animadorGUI.Drawer;
 import ucm.si.util.Contexto;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import ucm.si.Checker.DefaultModelChecker;
 import ucm.si.Checker.Interprete;
 import ucm.si.Checker.ModelChecker;
@@ -86,10 +88,12 @@ public class Launcher<S>
         if(res.equals(Resultado.COD_TRUE) || res.equals(Resultado.COD_MAYBET) )
         {
             camino = this.resultado.getEjemplo();
+            JOptionPane.showMessageDialog(new JFrame(), "La formula es "+ res);
         }
         else if(res.equals(Resultado.COD_FALSE) || res.equals(Resultado.COD_MAYBEF) )
         {
             camino = this.resultado.getContraejemplo();
+            JOptionPane.showMessageDialog(new JFrame(), "La formula es falsa");
         }
         else
         {
@@ -98,6 +102,7 @@ public class Launcher<S>
         
         Roseta<S> roseta = this.checker.getRoseta();
         this.navegador = new Navegador<S>(camino, roseta,interprete.dameTransiciones());
+
     }
     
     public void launchGrafico(Drawer<S> dw )
