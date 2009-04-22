@@ -470,4 +470,10 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
         }
 
     }
+
+
+    public LinkedList<String> getActividadesOrdenadas() {
+        return actividadesOrdenadas;
+    }
+    
 }
