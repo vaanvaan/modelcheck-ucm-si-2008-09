@@ -50,28 +50,36 @@ public class AnimadorGrafico<S> extends AnimadorInterface<S>
         
 	
 	public void manejaAccion(Avanza<S> accion) {
-		
+
+        S estadoViejo = estadoactual;
 		estadoactual = accion.getEstado();
 		//this.printRecorrido();
-		frame.setEstadoactual(estadoactual);
-		frame.rePinta();
+        frame.realizaAccion(FrameAnimador.Accion.Avance, estadoViejo ,estadoactual);
+		/*frame.setEstadoactual(estadoactual);
+		frame.rePinta();*/
 	}
 
 	
 	public void manejaAccion(GoToEstado<S> accion) {
-		
+		 S estadoViejo = estadoactual;
 		estadoactual = accion.getEstado();
+        frame.realizaAccion(FrameAnimador.Accion.GoTo, estadoViejo, estadoactual);
 		//this.printRecorrido();
 	}
 
 	
 	public void manejaAccion(Retrocede<S> accion) {
-		
+
+        S estadoViejo = null;
 		if(accion.getEstado()!=null)
-		estadoactual = accion.getEstado();
-		//this.printRecorrido();
-		frame.setEstadoactual(estadoactual);
-		frame.rePinta();
+        {
+            estadoViejo = estadoactual;
+            estadoactual = accion.getEstado();
+
+        }//this.printRecorrido();
+        frame.realizaAccion(FrameAnimador.Accion.Return, estadoViejo, estadoactual);
+		/*frame.setEstadoactual(estadoactual);
+		frame.rePinta();*/
 	}
 	
 	public void printRecorrido() {

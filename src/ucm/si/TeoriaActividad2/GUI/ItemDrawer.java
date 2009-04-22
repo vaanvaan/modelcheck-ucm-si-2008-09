@@ -14,7 +14,7 @@ import java.util.TreeMap;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
-import ucm.si.TeoriaActividad.item.EstadoItem;
+import ucm.si.TeoriaActividad2.item.EstadoItem;
 
 /**
  *
@@ -45,6 +45,10 @@ public class ItemDrawer extends Component implements ListCellRenderer{
         Rectangle2D rect = arg0.getFont().getStringBounds(texto, arg0.getFontMetrics().getFontRenderContext());
         Color c = mapeadoColores.get(texto);
         Color cxor = Color.RED;
+        if(c==null)
+        {
+            System.out.println();
+        }
         if (!this.activado){
             c = escalaGrises(c);
             cxor = escalaGrises(cxor);

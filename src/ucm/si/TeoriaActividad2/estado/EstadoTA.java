@@ -22,7 +22,8 @@ import ucm.si.TeoriaActividad2.item.ListaEstadosItems;
  *
  * @author José Antonio
  */
-public class EstadoTA implements IEstadoDrawable, Cloneable, Comparable<EstadoTA> {
+
+public class EstadoTA implements IEstadoDrawable ,Cloneable, Comparable<EstadoTA> {
 
     private ListaEstadosItems items;
     private ListaEstadosActividades actividades;

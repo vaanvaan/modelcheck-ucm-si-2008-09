@@ -1,18 +1,28 @@
 package ucm.si.animadorGUI;
 
+import java.awt.Dialog.ModalityType;
+import java.awt.event.ItemEvent;
 import ucm.si.util.Contexto;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -22,6 +32,8 @@ import ucm.si.Checker.util.StateAndLabel;
 import ucm.si.navegador.Navegador;
 
 public class FrameAnimador<S> extends JFrame {
+
+    public static enum Accion {Avance, GoTo, Return};
 
     /**
      * 
@@ -38,6 +50,56 @@ public class FrameAnimador<S> extends JFrame {
     private PanelInterface<S> lienzo;
     private S estadoactual;
     Vector<JButton> botonesAcciones;
+    private GrafoNavegation<S> grafJUNG;
+    private JMenuBar mbar;
+
+    private void InicializaMenus()
+    {
+        this.mbar = new JMenuBar();
+        JMenu m = new JMenu("Navegacion");
+        JMenuItem grafoJUNG = new JCheckBoxMenuItem("Usar Grafo de Navegacion", true);
+        grafoJUNG.addItemListener(new ItemListener() {
+
+            public void itemStateChanged(ItemEvent e) {
+                AbstractButton button = (AbstractButton) e.getItem();
+                if(button.isSelected())
+                {
+                    launchGrafoNevegacion(true);
+                }
+                else
+                {
+                    launchGrafoNevegacion(false);
+                }
+            }
+        });
+        m.add(grafoJUNG);
+        this.mbar.add(m);
+        this.mbar.setVisible(true);
+    }
+
+    public void setCheckGrafoNavegacion(boolean check)
+    {
+        JCheckBoxMenuItem ch = (JCheckBoxMenuItem) this.mbar.getMenu(0).getItem(0);
+        ch.setState(false);
+        
+    }
+
+    private void launchGrafoNevegacion(boolean lanzar)
+    {
+        this.grafJUNG.setVisible(lanzar);
+    }
+
+    private void actualizaGrafoNavegacion()
+    {
+        try {
+            List<S> l =this.nav.dameRecorrido();
+            this.nav.damePosibles();
+        } catch (Exception ex) {
+            Logger.getLogger(FrameAnimador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
 
     public S getEstadoactual() {
         return estadoactual;
@@ -46,6 +108,7 @@ public class FrameAnimador<S> extends JFrame {
     public void setEstadoactual(S estadoactual) {
         this.estadoactual = estadoactual;
         this.actualizaBotonera();
+        //this.actualizaGrafoNavegacion();
 
     }
 
@@ -91,7 +154,13 @@ public class FrameAnimador<S> extends JFrame {
          * Botones inferiores y sus caracteristicas
          */
         JPanel pane = new JPanel();
+        
+        this.InicializaMenus();
+        
+        this.setJMenuBar(mbar);
+        //this.grafJUNG.;
         pane.setLayout(new GridLayout(1, 2,5,5));
+        
         this.creaBotonesAccion(actionListenerAvanzar);
         this.actualizaBotonera();
         JPanel botoneraAcciones = new JPanel();
@@ -108,6 +177,7 @@ public class FrameAnimador<S> extends JFrame {
 
         pane.add(botoneraAcciones);
         pane.add(boton3);
+
         /*
          * Secci�n de tratamiento del panel cuyo objetivo es ser el marco
          * donde se va a pintar el estado. 
@@ -115,10 +185,22 @@ public class FrameAnimador<S> extends JFrame {
         lienzo = new PanelJPane<S>(cntxt);
         lienzo.setContexto(cntxt);
         lienzo.setDrawer(dw);
+        //Image image = lienzo.createImage(lienzo.getSize().width, lienzo.getSize().height);
+
+
+        //JImagePainter imagep;
 
 
         lienzo.pintaEstado(estadoactual);
-        
+
+        /*
+         * Seccion donde se lanza y configura el Visulizador por Grafo
+         */
+        this.grafJUNG = new GrafoNavegation<S>(this,"Grafo Navegacion",ModalityType.MODELESS, true, this.getNav(), this);
+        this.grafJUNG.inicializa();
+        this.launchGrafoNevegacion(true);
+
+
         /*
          * Configuraci�n del contenedor.(del propio frame)
          */
@@ -132,6 +214,33 @@ public class FrameAnimador<S> extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
         this.pack();
+
+    }
+
+    public void realizaAccion(FrameAnimador.Accion accion, S estadoViejo , S estadoNuevo )
+    {
+        try {
+            
+            this.setEstadoactual(estadoNuevo);
+            List<StateAndLabel<S>> l = this.nav.damePosibles();
+            switch (accion) {
+                case GoTo:
+                    break;
+                case Avance:
+                    this.grafJUNG.transicionAvance( estadoViejo, estadoNuevo, l);
+                    break;
+                case Return:
+                    this.grafJUNG.transicionRetrocede(estadoNuevo);
+                    break;
+            }
+            this.rePinta();
+            this.grafJUNG.repaint();
+
+
+        } catch (Exception ex) {
+            Logger.getLogger(FrameAnimador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
 
     }
 
@@ -170,6 +279,7 @@ public class FrameAnimador<S> extends JFrame {
     public void rePinta() {
         this.lienzo.rePinta(estadoactual);
         //this.combo.repaint();
+        //this.grafJUNG.rePintnado(this.nav.dameRecorrido());
         this.repaint();
 
 
@@ -180,6 +290,7 @@ public class FrameAnimador<S> extends JFrame {
     public void setDrawer(Drawer<S> dw) {
         this.lienzo.setDrawer(dw);
     }
+
 
     private StateAndLabel<S> pulsadaAccion(Object o) {
         int numAccion = this.botonesAcciones.indexOf(o);
