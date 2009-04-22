@@ -37,7 +37,7 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
     @Override
     public void pintaEstado(IEstadoDrawable s, PanelInterface<IEstadoDrawable> pane) {
         dlmItems = new DefaultListModel();
-        String[] items = ItemGenerator.getReference().getConjunto().values().toArray(new String[0]);
+        String[] items = ItemGenerator.getReference().getConjunto().keySet().toArray(new String[0]);
         java.util.Arrays.sort(items);
         TreeMap<String,Color> mapeadoColores = new TreeMap<String,Color>();
         int base = (int)Math.ceil(Math.pow((double)(items.length+1), (1/(double)3)));
@@ -130,7 +130,7 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
     @Override
     public void rePinta(IEstadoDrawable s, PanelInterface<IEstadoDrawable> pane) {
         dlmItems.removeAllElements();
-        String[] items = ItemGenerator.getReference().getConjunto().values().toArray(new String[0]);
+        String[] items = ItemGenerator.getReference().getConjunto().keySet().toArray(new String[0]);
         java.util.Arrays.sort(items);
         for (int i = 0; i < items.length; i++) {
             String e = items[i];
