@@ -7,11 +7,21 @@ package ucm.si.TeoriaActividad.GUI;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.util.Enumeration;
+import java.util.LinkedList;
 import java.util.TreeMap;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import ucm.si.TeoriaActividad.Interprete.Pruebas;
+import ucm.si.TeoriaActividad.actividad.Actividad;
 import ucm.si.TeoriaActividad.actividad.ActividadGenerator;
 import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
@@ -27,9 +37,8 @@ import ucm.si.animadorGUI.PanelInterface;
 public class DrawerActividad extends Drawer<IEstadoDrawable>{
     private JList jlItems;
     private DefaultListModel dlmItems;
-    private JList jlActividades;
-    private DefaultListModel dlmActividades;
     private Pruebas p;
+    private LinkedList<DefaultMutableTreeNode> dmtNodes;
 
     public DrawerActividad(Pruebas p){
         this.p = p;
@@ -82,27 +91,26 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
         };
         jlItems.setCellRenderer(new ItemDrawer(mapeadoColores,true));
         pane.add(jlItems);
-        dlmActividades = new DefaultListModel();
-        String[] actividades = ActividadGenerator.getReference().getConjunto().keySet()
-                .toArray(new String[0]);
-        java.util.Arrays.sort(actividades);
-        base = (int)Math.ceil(Math.pow((double)(actividades.length+1), (1/(double)3)));
-        for (int i = 0; i < actividades.length; i++) {
-            String a = actividades[i];
-            dlmActividades.addElement(new Object[]{a,s});
-            int ni = (i*(base*base*base-2))/(actividades.length);
-            int r = ni/(base*base);
-            int g = (ni - r*base*base)/base;
-            int b = ni%base;
-            if (r==base-1){
-                ni = ((i+1)*(base*base*base-1))/(actividades.length);
-                g = (ni - r*base*base)/base;
-                b = (ni)%base;
+        LinkedList<String> actividades = p.getActividadesOrdenadas();
+        dmtNodes = new LinkedList<DefaultMutableTreeNode>();
+        LinkedList<DefaultMutableTreeNode> listaNodosRaiz = new LinkedList<DefaultMutableTreeNode>();
+        int j = 0;
+        for (int i = 0; i < actividades.size(); i++) {
+            String a = actividades.get(i);
+            DefaultMutableTreeNode dmtnAct = new DefaultMutableTreeNode(new Object[]{a,s});
+            Actividad padre = p.activGen.getItem(a).getPadre();
+            if (padre!=null){
+                while (!actividades.get(j).equals(padre.getNombre())){
+                    j++;
+                }
+                dmtNodes.get(j).add(dmtnAct);
+            } else{
+                listaNodosRaiz.add(dmtnAct);
             }
-            Color c = new Color(r*255/(base-1),g*255/(base-1),b*255/(base-1));
-            mapeadoColores.put(a, c);
+            dmtNodes.add(dmtnAct);
         }
-        jlActividades = new JList(dlmActividades){
+        JPanel panelActividades2 = new JPanel();
+        JPanel panelActividades = new JPanel(){
 
             @Override
             protected void paintComponent(Graphics arg0) {
@@ -124,8 +132,15 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
                 return d;
             }
         };
-        jlActividades.setCellRenderer(new ActivityDrawer(mapeadoColores,p));
-        pane.add(jlActividades);
+        panelActividades2.add(panelActividades);
+        panelActividades2.setLayout(new BoxLayout(panelActividades2,BoxLayout.Y_AXIS));
+        for (int i = 0; i < listaNodosRaiz.size(); i++) {
+            DefaultMutableTreeNode a = listaNodosRaiz.get(i);
+            JTree jtActividades = new JTree(a);
+            jtActividades.setCellRenderer(new ActivityDrawer(mapeadoColores,p));
+            panelActividades2.add(jtActividades);
+        }
+        pane.add(panelActividades2);
     }
 
     @Override
@@ -137,13 +152,8 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
             String e = items[i];
             dlmItems.addElement(new Object[]{e,s.getEstadoItem(e)});
         }
-        dlmActividades.removeAllElements();
-        String[] actividades = ActividadGenerator.getReference().getConjunto().keySet()
-                .toArray(new String[0]);
-        java.util.Arrays.sort(actividades);
-        for (int i = 0; i < actividades.length; i++) {
-            String a = actividades[i];
-                dlmActividades.addElement(new Object[]{a,s});
+        for (int i = 0; i < dmtNodes.size(); i++) {
+            ((Object[])dmtNodes.get(i).getUserObject())[1] = s;
         }
     }
 

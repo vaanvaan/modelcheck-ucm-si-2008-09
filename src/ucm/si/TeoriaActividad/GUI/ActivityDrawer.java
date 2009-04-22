@@ -13,7 +13,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.ListCellRenderer;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeCellRenderer;
 import ucm.si.TeoriaActividad.Interprete.Pruebas;
 import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.estado.IEstadoDrawable;
@@ -24,7 +26,7 @@ import ucm.si.TeoriaActividad.item.Item;
  *
  * @author nico
  */
-public class ActivityDrawer extends JPanel implements ListCellRenderer {
+public class ActivityDrawer extends JPanel implements TreeCellRenderer {
 
     private String texto;
     private TreeMap<String, Color> mapeadoColores;
@@ -37,9 +39,10 @@ public class ActivityDrawer extends JPanel implements ListCellRenderer {
         this.p = p;
     }
 
-    public Component getListCellRendererComponent(JList arg0, Object arg1, int arg2, boolean arg3, boolean arg4) {
+    public Component getTreeCellRendererComponent(JTree arg0, Object arg1, boolean arg2, boolean arg3, boolean arg4, int arg5, boolean arg6) {
         this.removeAll();
-        Object[] e = (Object[]) arg1;
+        DefaultMutableTreeNode dmtn = (DefaultMutableTreeNode)arg1;
+        Object[] e = (Object[])dmtn.getUserObject();
         this.texto = (String) e[0];
         IEstadoDrawable ei = (IEstadoDrawable) e[1];
         boolean activa = ei.getEstadoActividad(this.texto).equals(EstadoActividad.Executing);
@@ -110,6 +113,6 @@ public class ActivityDrawer extends JPanel implements ListCellRenderer {
     @Override
     protected void paintComponent(Graphics arg0) {
         super.paintComponent(arg0);
-        arg0.drawLine(0, 0, this.getWidth() - 1, 0);
+        arg0.drawRoundRect(0, 0, this.getWidth() - 1, this.getHeight()-1,6,6);
     }
 }
