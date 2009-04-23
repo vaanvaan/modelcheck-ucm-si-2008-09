@@ -45,28 +45,26 @@ public class VisitantePorDefectoAnd<S> extends ModuloVisitante implements Visita
         try {
             boolean part1 = Boolean.parseBoolean(resIzq.getResultado());
             boolean part2 = Boolean.parseBoolean(resDer.getResultado());
-            part1 = part1 && part2;
-            resAND = new Resultado(String.valueOf(part1));
-            if (part1) {
+            boolean andTotal = part1 && part2;
+            resAND = new Resultado(String.valueOf(andTotal));
+            if (andTotal) {
                 resAND.setEjemplo(GrafoCaminos.CreateGrafo(
                         resIzq.getEjemplo(), resDer.getEjemplo()));
             } else if (part2) {
                 resAND.setContraejemplo(GrafoCaminos.CreateGrafo(
                         resIzq.getContraejemplo(), resDer.getEjemplo()));
+            } else if (part1){
+                resAND.setContraejemplo(GrafoCaminos.CreateGrafo(
+                        resIzq.getEjemplo(), resDer.getContraejemplo()));
             } else {
                 resAND.setContraejemplo(GrafoCaminos.CreateGrafo(
                         resIzq.getContraejemplo(), resDer.getContraejemplo()));
             }
+            this.resParcial = resAND;
         } catch (Exception e) {
-            if ((resIzq.getResultado().equals(Resultado.COD_FALSE)) ||
-                    (resDer.getResultado().equals(Resultado.COD_FALSE))) {
-                resAND = new Resultado(Resultado.COD_FALSE);
-            } else {
-                resAND = new Resultado(Resultado.COD_MAYBEF);
-            }
+            System.out.println("Error en And:");
+            e.printStackTrace();
         }
-        resParcial = resAND;
-        this.conector.setResParcial(this.resParcial);
     }
 
 }
