@@ -6,17 +6,19 @@ package ucm.si.TeoriaActividad;
 import java.util.Iterator;
 import java.util.List;
 
-import ucm.si.TeoriaActividad2.GUI.DrawerActividad;
-import ucm.si.TeoriaActividad2.Interprete.InterpreteTA;
-import ucm.si.TeoriaActividad2.actividad.EstadoActividad;
-import ucm.si.TeoriaActividad2.actividad.ListaEstadosActividades;
-import ucm.si.TeoriaActividad2.estado.EstadoTA;
-import ucm.si.TeoriaActividad2.proposiciones.ProposicionActividad;
+import ucm.si.Checker.Interprete;
+import ucm.si.TeoriaActividad.GUI.DrawerActividad;
+import ucm.si.TeoriaActividad.Interprete.Pruebas;
+import ucm.si.TeoriaActividad.actividad.EstadoActividad;
+import ucm.si.TeoriaActividad.actividad.ListaEstadosActividades;
+import ucm.si.TeoriaActividad.estado.EstadoTA;
+import ucm.si.TeoriaActividad.proposiciones.ProposicionActividad;
 import ucm.si.animadorGUI.Drawer;
 import ucm.si.animadorGUI.util.Launcher;
 import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.EU;
 import ucm.si.basico.ecuaciones.Formula;
+import ucm.si.basico.ecuaciones.Not;
 import ucm.si.util.Contexto;
 
 /**
@@ -29,23 +31,32 @@ public class DemoTActividad {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		InterpreteTA interprete = new InterpreteTA();
+		Pruebas interprete = new Pruebas();
 		List<EstadoTA> listaIniciales=interprete.iniciales();
 		Iterator it = listaIniciales.iterator();
 		// mostrar por consola las actividades.
 		while (it.hasNext()){
 			System.out.println("Conj de actividades");
 			EstadoTA stat = (EstadoTA) it.next();
-			ListaEstadosActividades listaActiv = stat.getActividades();
+			ListaEstadosActividades listaActiv = stat.actividades;
 			System.out.println(listaActiv.keySet());
 		}
 		// preparamos las proposiciones
 		// la primera es que A1 finalice
-		ProposicionActividad propA1= new ProposicionActividad("A1",EstadoActividad.Finalized);
-		ProposicionActividad propA1ini= new ProposicionActividad("A1",EstadoActividad.Idle);
-		ProposicionActividad propA2= new ProposicionActividad("A2",EstadoActividad.Finalized);
-//		Formula formula = new And (propA2, new EU(propA1ini, propA1));
-		Formula formula = new EU(propA1ini, propA1);
+		Formula propA1= new ProposicionActividad("A1",EstadoActividad.Finalized);
+		Formula propA1ini= new Not(propA1);
+		Formula propA2= new ProposicionActividad("A2",EstadoActividad.Finalized);
+        Formula propA2ini= new Not(propA2);
+		Formula propA3= new ProposicionActividad("A3",EstadoActividad.Finalized);
+        Formula propA3ini= new Not(propA3);
+        Formula propA4= new ProposicionActividad("A4",EstadoActividad.Finalized);
+        Formula propA4ini= new Not(propA4);
+
+        Formula temp12 = new And(propA1ini,propA2ini);
+        Formula temp3 = new And(propA3ini, temp12);
+        Formula temp4 = new And(propA4ini, temp3);
+        Formula fin = new And (propA2, propA3);
+		Formula formula = new EU(temp4, fin); // finalizan a la vez A2 y A3?
 		Launcher<EstadoTA> launcher = new Launcher<EstadoTA>(new Contexto() {}, interprete, formula);
 		launcher.runCheck();
 		Drawer drw = new DrawerActividad(interprete);
