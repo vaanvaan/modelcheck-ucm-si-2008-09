@@ -1,0 +1,45 @@
+Estructura Alto Nivel Checker:
+
+El ModelChecker tiene los siguientes componentes:
+
+- Modelo.
+- Intérprete del modelo.
+- Motor de chequeo.
+- Visualizador de resultados.
+
+El proceso de trabajo con este framework consistiría:
+
+Usuario define un modelo y un intérprete para este modelo.
+El intérprete se encarga de suministrar la información al motor de chequeo.
+El usuario puede usar los visualizadores que suministramos o definir uno.
+
+Tener en cuenta que el visualizador se puede adaptar a la parte gráfica del
+programa que se intenta testear, esto sería reutilización del código del
+usuario.
+
+--------------------------------------------------------------------------------
+Interacción general entre el modelo y el intérprete:
+
+Para que la herramienta funcione el Modelo debe definir claramente un sistema
+de estados finito. Para ello el usuario debe definir los aspectos relevantes
+del modelo en los estados. Así como reglas de transición. Con ellas debe indicar
+la transición entre estados.
+
+--------------------------------------------------------------------------------
+Interacción entre intérprete y el motor de chequeo:
+
+El motor de chequeo, genera un espacio de búsqueda definido por la información
+obtenida del intérprete. Los estados de partida, las transiciones que se pueden
+realizar en cada estado, así como identificar los estados objetivos.
+
+--------------------------------------------------------------------------------
+
+Interacción Motor de chequeo y el visualizador:
+
+El motor de chequeo siempre finaliza con 3 posibles resultados:
+
+	- cumplimiento de las propiedades de chequeo, proporcionando un ejemplo.
+	- demostrando su falsedad con un contraejemplo.
+	- inderminación por alguna fuente de error.
+	
+--------------------------------------------------------------------------------
