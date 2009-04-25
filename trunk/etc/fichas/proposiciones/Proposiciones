@@ -1,4 +1,15 @@
 Las PROPOSICIONES
 
+[IG]: No sé cómo introducir el concepto
 
+Las proposiciones mantienen su concepto lógico. (o igual que la lógica)
+Se pesonalizan, y siempre deben responder a la prgunta ¿se cumple? en cualquier
+estado del sistema.
 
+El usuario debe definirlas en relación a su modelo.
+Sin embargo se pueden proponer definiciones que por lo general es fácil de 
+definir. Una técnica para definirlas es basándose en el estado. Se define cada
+proposición como un estado concreto. Así la pregunta ¿se cumple? sería tan fácil
+como comprobar su igualdad. Desde luego este aspecto se puede explotar, 
+encadenando estados y especificando métodos de igualdad peculiares.
+ 

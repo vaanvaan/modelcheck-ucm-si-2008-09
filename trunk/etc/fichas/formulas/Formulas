@@ -1,12 +1,18 @@
 Las FORMULAS
 
+
+[IG:]Intro, please a ver cómo ponerlo
+
+
 El modelcheker necesita operar con fórmulas para poder desarrollar CTL.
 
-Hay que destacar que proveemos un conjunto básico de operaciones y que es exten-
-sible por el usuario.
-
-Listado de las operaciones básicas simples:
-
-NOT
-AND
-OR
+Proponemos un conjunto de fórmulas básicas.
+Con las fórmulas básicas, cubrimos la composición necesaria para CTL.
+Las fórmulas son:
+Not: negación
+And: conjunción
+Or: disyunción
+AX: para todo
+EX: existe
+AU: paratodo hasta (all until)
+EU: existe hasta (eventually until)
