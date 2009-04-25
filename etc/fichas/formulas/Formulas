@@ -1,0 +1,12 @@
+Las FORMULAS
+
+El modelcheker necesita operar con fórmulas para poder desarrollar CTL.
+
+Hay que destacar que proveemos un conjunto básico de operaciones y que es exten-
+sible por el usuario.
+
+Listado de las operaciones básicas simples:
+
+NOT
+AND
+OR
