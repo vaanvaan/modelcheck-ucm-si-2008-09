@@ -1,0 +1,16 @@
+Intérprete Laberinto
+
+El intérprete es el encargado de suministrar los datos al motor para la consulta
+de chequeo.
+Implementa las transiciones entre estados. Estas transiciones son sencillas.
+El laberinto es de 2 dimensiones, el estado se rige por la posición del sujeto,
+las transiciones son el producto de las posiciones a las que puede acceder el
+sujeto. Las transiciones se han catalogado según los puntos cardinales: norte, 
+sur, este, oeste.
+
+El estado del laberinto consta únicamente de la posición en la que se encuentra 
+el sujeto. El intérprete dispone de información para verificar las fórmulas de 
+chequeo.
+[,
+que principalmete consisten en si es posible que llegue a la salida el sujeto,
+pasando o sin pasar por ciertas posiciones.]

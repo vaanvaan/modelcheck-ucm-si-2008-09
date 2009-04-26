@@ -8,3 +8,7 @@ Propósito:
 	
 [IG]: Explicar los otros cheker cómo están.
 
+¿Porqué esta arquitectura?
+
+La necesidad de este tipo de arquitectura nace de las especificaciones algorítmi
+cas y del carecter de extensibilidad que queremos que tenga.

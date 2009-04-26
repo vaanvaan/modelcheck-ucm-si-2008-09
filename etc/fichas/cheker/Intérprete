@@ -9,3 +9,9 @@ Las funciones que debe tener son:
 - Las transiciones deben de tener un identificador (nombre) para facilitar la
 labor de visualización de resultados, con el fin de poder indicar las transicio-
 nes seguidas.
+
+[
+*Los requisitos anteriormente descritos son necesarios para cualquier sistema de
+*de estados finitos cuyo propósito será el de modelchecking.
+*Esta información la necestamos para poder aplicar la algoritmia.
+..vaya basura...]

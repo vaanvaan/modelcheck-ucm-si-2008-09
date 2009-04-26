@@ -1,0 +1,21 @@
+Laberinto Modelo
+
+Para comenzar el estudio del modelchecking hemos utilizado un modelo simple.
+Nuestro propósito es el de familiarizarse con el algoritmo de modelchecking y 
+decidimos que modelar problemas tipo laberinto es una buena opción para empezar.
+ 
+Las características del laberinto son:
+
+	- Posee una posición de partida.
+	- Hay una o varias posiciones de salida.
+	- El resto de posiciones que forman el laberinto poseen las propiedades de
+	transitables o intransitables.
+	- Tanto las posiciones de comienzo como las de salida son transitables.
+	- Es de 2 dimensiones.
+
+Desde el punto de vista algoritmico, el estado de este modelo se define por la
+posición del sujeto. Dado que el laberinto no es mutable a lo largo de la ejecu-
+ción, no guardamos ningún dato del mismo en los estados.
+Las transiciones se corresponden con los movimientos disponibles del sujeto.
+
+[IG]:¿las transiciones se definenen el modelo o en el intérprete?
