@@ -26,12 +26,25 @@ import ucm.si.navegador.events.Avanza;
 import ucm.si.navegador.events.GoToEstado;
 import ucm.si.navegador.events.Retrocede;
 
+/**
+ * Es una clase que se encarga de escuchar las operaciones que realiza el navegador
+ * y de ahi controlar las acciones del FrameAnimador.
+ * Ya que FrameAnimador es el encargado de mostrar la parte grafica.
+ * @author José Antonio
+ * @param <S> Tipo del estado sobre el cual se va a parametrizar el objeto.
+ */
 public class AnimadorGrafico<S> extends AnimadorInterface<S> 
 {
 	private S estadoactual;
 	private static Laberinto lab;
 	FrameAnimador<S> frame;
-	
+
+    /**
+     * Constructor por defecto requiere de un navegador, un drawer y opcionalmente de un contexto
+     * @param n
+     * @param dw
+     * @param cntxt
+     */
         public AnimadorGrafico(Navegador<S> n, Drawer<S> dw, Contexto cntxt) 
         {
         	super(n); 
@@ -42,13 +55,19 @@ public class AnimadorGrafico<S> extends AnimadorInterface<S>
 	}
 
 	
-
+        /**
+        * Invoca la operacion para modificar el drawer asignado para dibujar(representar) un estado
+        * @param dw
+        */
         public void setDrawer(Drawer<S> dw)
         {
             this.frame.setDrawer(dw);
         }
         
-	
+	/**
+     * Maneja una accion del tipo avanza notificada por el Navegador
+     * @param accion
+     */
 	public void manejaAccion(Avanza<S> accion) {
 
         S estadoViejo = estadoactual;
@@ -59,7 +78,10 @@ public class AnimadorGrafico<S> extends AnimadorInterface<S>
 		frame.rePinta();*/
 	}
 
-	
+	/**
+     * Maneja una accion del tipo Go TO (ir a..) notificada por el Navegador
+     * @param accion
+     */
 	public void manejaAccion(GoToEstado<S> accion) {
 		 S estadoViejo = estadoactual;
 		estadoactual = accion.getEstado();
@@ -67,7 +89,10 @@ public class AnimadorGrafico<S> extends AnimadorInterface<S>
 		//this.printRecorrido();
 	}
 
-	
+	/**
+     * Maneja una accion del tipo Retrocede notificada por el Navegador
+     * @param accion
+     */
 	public void manejaAccion(Retrocede<S> accion) {
 
         S estadoViejo = null;
@@ -81,7 +106,10 @@ public class AnimadorGrafico<S> extends AnimadorInterface<S>
 		/*frame.setEstadoactual(estadoactual);
 		frame.rePinta();*/
 	}
-	
+
+    /**
+     * Escribe por consola el recorrido que se ha hecho hasta ahora
+     */
 	public void printRecorrido() {
         List<S> l = this.navigator.dameRecorrido();
 
