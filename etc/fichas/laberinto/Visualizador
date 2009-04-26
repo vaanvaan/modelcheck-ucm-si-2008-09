@@ -1,0 +1,18 @@
+Visualizador del Laberinto
+
+El framework propone una estructura de visualización básica que se compone de
+un lienzo para representar el estado y un conjunto de botones etiquetados con
+las transiciones posibles, dirigidas por el resultado.
+
+Dado que el modelo es un laberinto bidimensional, se ha implementado su visuali-
+zación como un tablero de casillas. Para las casillas transitables se ha usado
+un icono de color verde.(hierba) Para aquellas no transitables se utiliza un
+icono de color azul.(agua) La casilla en la que se encuentre el sujeto lleva un
+icono con el imagen de un caballero.
+
+El otro componente del visualizador básico, como ya comentamos, consiste en una
+lista de botones etiquetados con las transiciones disponibles. Estarán activos
+aquellos botones que permitan movimiento del sujeto.
+Además de los botones de transición, se dispone de un botón para retroceder 
+sobre el grafo de resultados, para poder explorar, en caso de que los haya, los 
+multiplos caminos de solución.(ver resultados obtenidos del motor** ficha Motor)
