@@ -1,0 +1,9 @@
+Proposiciones
+
+La aplicación de lógica temporal necesita de la definición de proposiciones capa
+ces de evaluarse lógicamente. 
+
+Proponemos una interfaz de proposiciones con las consultas que realiza el motor
+sobre el modelo y el intérprete.
+
+Dichas consultas deben devolver los valores lógicos básicos: verdadero o falso.

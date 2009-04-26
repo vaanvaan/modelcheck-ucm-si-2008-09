@@ -1,0 +1,23 @@
+Los resultados del chequeo
+
+El resultado del proceso de chequeo se clasifica en:
+	
+	- Ejemplo.
+	- Contraejemplo.
+	- Error.
+
+El resultado de un chequeo es un grafo sino se produce error. La categorización
+de ejemplo o contraejemplo se realiza por el rol que desempeña el resultado.
+Si resulta que la fórmula se cumple en el espacio de estados, entonces el resul-
+tado será una muestra de su cumplimiento, al que denominamos ejemplo.
+
+Si la formula no se cumple en el espacio de estados, el resultado mostrará que
+efectivamente, por las transiciones posibles no se alcanza un estado de éxito.
+
+[IG: ¿lo pongo? ¿tiene sentido?
+La estructura de la fórmula y su significado influyen en el tamaño de los resul-
+tados. Un ejemplo de esto es, si ¿para todos los estados se cumple que la casi-
+lla {1,1} es de inicio? La respuesta será true, y el ejemplo todo el espacio de
+estados.
+En conclusión hay que tener inteligencia sobre lo que se pregunta.
+] 
