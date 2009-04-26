@@ -1,0 +1,33 @@
+El motor de chequeo
+
+El motor es el que implementa toda la lógica computacional del algoritmo de
+modelchecking.
+
+La implementación del algoritmo consiste básicamente en la realización de
+visitas sobre los estados expandidos.
+Los pasos son sencillos:
+1º Nuestro objetivo es el estado inicial.
+2º Comprobamos si el estado objetivo es solución o contraejemplo.
+3º Expandimos ese estado con las transiciones permitidas.
+4º Según la estrategia seguida (configurable), decidiremos el nuevo objetivo.
+5º Repetimos los pasos 2,3 y 4 hasta conseguir un ejemplo o contraejemplo.
+
+Estado objetivo es ejemplo.
+
+El estado objetivo decimos que es ejemplo, cuando encontramos un estado que
+verifica la fórmula que chequeamos. El ejemplo es el resultado que se mostrará
+al usuario, que consistiría en el conjunto de estados y transiciones por las que
+ha pasado el motor hasta pararse.
+
+Estado objetivo es contraejemplo.
+
+Decimos que es contraejemplo cuando se ha explorado la totalidad de los posibles
+estados sin haberse cumplido la formula. El resultado es el conjunto entero de
+estados expandidos y evaluados.
+
+Tanto en el ejemplo, como en el contraejemplo, el tamaño del resultado depende
+de la sintaxis de la fórmula y de las condiciones en la evaluación de los
+estados.
+
+[IG]: ¿Hablo más de los resultados? tamaño y esas cosas, o mejor dejarlo para la
+ficha de resultado...

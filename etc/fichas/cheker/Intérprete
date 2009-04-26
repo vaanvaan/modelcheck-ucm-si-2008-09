@@ -1,0 +1,11 @@
+El Intérprete
+
+Es una interfaz que define las operaciones mínimas necesarias para que el 
+motor de chequeo pueda trabajar con el modelo.
+Las funciones que debe tener son:
+
+- Indicar el conjunto inicial de estados
+- Definir las transciones entre estados.
+- Las transiciones deben de tener un identificador (nombre) para facilitar la
+labor de visualización de resultados, con el fin de poder indicar las transicio-
+nes seguidas.

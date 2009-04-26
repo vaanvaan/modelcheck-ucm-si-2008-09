@@ -1,0 +1,38 @@
+Visualizador de resultados
+
+En el caso de que al usuario le interese algo más que una simple respuesta de
+cierto o no, hay un visualizador básico de los resultados.
+
+El visualizador básico:
+
+Consiste en una pantalla Swing. La pantalla se divide básicamente en 2 secciones
+
+	- Panel de visionado: es un panel sobre el que se visualiza la información
+	del estado por el que estamos navegando.
+	- Panel de botones con las posibles transiciones a partir del estado que se
+	visualiza en el panel anterior.
+	
+Dado que el resultado es un conjunto de estados, ya sea ejemplo o contraejemplo,
+está definido un componente de navegación que facilita el seguimiento de las
+transiciones entre ese conjunto.
+
+Todo resultado acaba siendo un grafo de estados y transiciones. El componente de
+navegación simplemente recorre este grafo. El navegador es el encargado de
+interactuar con el intérprete para conseguir pares de transiciones-etiquetas.
+Llamamos pares transiciones-etiquetas a la forma de identificar transiciones, es
+puramente para mejorar la comprensión de los cambios que pasan por el sistema.
+La forma de navegar consiste en avanzar o retrocedor. La opción de avanzar se 
+determina por la transición seleccionada desde el panel de transiciones.
+Tenemos la opción de retroceder para permitir al usuario total exploración sobre
+el grafo resultado.
+
+
+[IG]:¿que mas pongo?
+
+El panel de visionado
+Este panel es donde se pinta una representación del estado sobre el que se 
+navega. El usuario debe de definir las funciones de pintar y refresco.
+
+El panel de botones
+Este panel se actualiza automáticamente con las opciones de las transiciones
+a siguientes estados.
