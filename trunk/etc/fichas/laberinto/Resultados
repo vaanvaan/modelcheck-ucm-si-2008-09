@@ -1,0 +1,19 @@
+Resultados laberinto.
+
+El resultado obtenido del motor es un grafo de posiciones sobre los que ha tran-
+sitado el sujeto.
+Las transiciones estan delimitadas por aquellas que el chequeo ha definido como
+resultado.
+[IG: ¿ejemplo?
+Si preguntamos si siempre se llega a la salida del laberinto, la respuesta
+dependerá de las transiciones definidas entre estados.
+Si se disponen de los 4 movimientos: norte, sur, este, oeste, la resuesta indica
+que no llegará al final, pues puede aplicar reglas de transición que le lleven a
+un bucle: norte-> sur || sur -> norte, y así indefinidamente.
+En navegación por el visualizador de resultados sólo nos permitirá los movimien-
+tes de "ir la sur" desde la casilla inicial, y después sólo "ir al norte".
+Una forma de evitar este bucle es incluyendo proposiciones para chequear si se
+visitó esa posición anteriormente y descartarla como movimiento, o elimiar la
+definición de transiciones que puedan generar bucles, es decir, permitiendo
+sólo las transiciones al este y al sur.
+]
