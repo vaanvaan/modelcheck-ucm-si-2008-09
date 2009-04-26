@@ -13,7 +13,8 @@ import java.util.Observer;
 import ucm.si.navegador.Listener.AccionListener;
 
 /**
- *
+ * Esta calse sirve de interfaz para definir los objetos Animador que son los encargados de informar a los navegadores.
+ * Asi como de funcionar como oyentes de las acciones de un navegador en concreto.
  * @author Pilar
  */
 public abstract class AnimadorInterface<S> implements AccionListener<S>

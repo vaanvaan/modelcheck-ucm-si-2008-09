@@ -11,7 +11,7 @@ import ucm.si.navegador.events.GoToEstado;
 import ucm.si.navegador.events.Retrocede;
 
 /**
- *
+ * Interfaz que define un tipo de EventListenr en concreto para las acciones de un Navegador (ucm.si.navegador.NavigatorInterface)
  * @author Pilar
  */
 public interface  AccionListener<S> extends EventListener

@@ -2,7 +2,11 @@ package ucm.si.animadorGUI;
 
 import ucm.si.util.Contexto;
 
-
+/**
+ * Implementacion de la clase interfaz PanelInterface
+ * @author José Antonio
+ * @param <S>
+ */
 public class PanelJPane<S> extends PanelInterface<S>{
 	
         
