@@ -10,7 +10,31 @@ sur, este, oeste.
 
 El estado del laberinto consta únicamente de la posición en la que se encuentra 
 el sujeto. El intérprete dispone de información para verificar las fórmulas de 
-chequeo.
-[,
+chequeo [**]. Esta información consiste en comprobar si el estado descrito por 
+la fórmula se cumple en el laberinto o no [*]. 
+
+[*es decir, que dice si se ha pasado por una casilla, o si se está en la casilla
+de salida, o si no se hubiera opasado...bufff]
+
+[,**
 que principalmete consisten en si es posible que llegue a la salida el sujeto,
 pasando o sin pasar por ciertas posiciones.]
+
+Las funciones que lleva a cabo este intérprete son:
+
+Indicar los estados iniciales: en este caso es el que proporciona la posición de
+partida del sujeto en el laberinto.
+
+Indicar las transiciones posibles: desde la posición actual del sujeto, indica
+los movimientos posibles: norte, sur, este, oeste.
+
+Una posición puede ser transitable, pero las transiciones siempre están disponi-
+bles. Así, si eliminamos las transiciones de norte y este, el sujeto sólo podrá
+avanzar al sur y oeste. Si resulta que las casillas son intransitables, el suje-
+to no avanzará.
+
+2 conceptos:
+- transiciones: los movimientos que puede hacer. (por ejemplo diagonales no)
+- movimientos: si hay una transición aplicable y la posición es transitable, es
+cuando se dice que el sujeto avanza y se mueve.
+
