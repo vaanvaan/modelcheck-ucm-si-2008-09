@@ -5,26 +5,9 @@
 
 package ucm.si.TeoriaActividad2.Interprete;
 
-import java.util.AbstractCollection;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
-//import sun.io.Converters;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import ucm.si.TeoriaActividad2.GUI.DrawerActividad;
-import ucm.si.TeoriaActividad2.actividad.Actividad;
-import ucm.si.TeoriaActividad2.actividad.ActividadGenerator;
-//import ucm.si.TeoriaActividad2.actividad.Contexto;
-import ucm.si.TeoriaActividad2.actividad.EstadoActividad;
-import ucm.si.TeoriaActividad2.actividad.ListaEstadosActividades;
+
 import ucm.si.TeoriaActividad2.estado.EstadoTA;
-import ucm.si.TeoriaActividad2.item.EstadoItem;
-import ucm.si.TeoriaActividad2.item.Item;
-import ucm.si.TeoriaActividad2.item.ItemGenerator;
-import ucm.si.TeoriaActividad2.item.ListaEstadosItems;
 import ucm.si.animadorGUI.Drawer;
 import ucm.si.animadorGUI.util.Launcher;
 import ucm.si.basico.ecuaciones.EU;

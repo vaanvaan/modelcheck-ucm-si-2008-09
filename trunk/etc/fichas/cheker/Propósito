@@ -11,8 +11,17 @@ Propósito:
 
 ¿Porqué esta arquitectura?
 
-Esta arquitectura está organizada de tal manera que el modelo que defina el programador esté lo más desacoplado posible del módulo de checkeo. A diferencia de otros modelcheckers, esto da libertad al usuario para poder definir su modelo en cualquier lenguaje.
+Esta arquitectura está organizada de tal manera que el modelo que defina el pro-
+gramador esté lo más desacoplado posible del módulo de checkeo. A diferencia de 
+otros modelcheckers, esto da libertad al usuario para poder definir su modelo en
+cualquier lenguaje.
 
-Usando esta idea en la respuesta del checker, se deja libertad en cómo visualizar los resultados para facilitar su estudio. Para ello el usuario no necesita conocer ningún detalle propio del sistema de checkeo, únicamente debe conocer los estados de su propio modelo.
+Usando esta idea en la respuesta del checker, se deja libertad en cómo visuali-
+zar los resultados para facilitar su estudio. Para ello el usuario no necesita 
+conocer ningún detalle propio del sistema de checkeo, únicamente debe conocer 
+los estados de su propio modelo.
 
-Por último se puede optimizar el algoritmo de checkeo de forma independiente. Está modularizado a nivel de Checker y como ejemplo se proporciona un Checker modularizado a nivel de algoritmo por fórmula, de tal manera que se puede utilizar un algoritmo híbrido.
+Por último se puede optimizar el algoritmo de checkeo de forma independiente. 
+Está modularizado a nivel de Checker y como ejemplo se proporciona un Checker 
+modularizado a nivel de algoritmo por fórmula, de tal manera que se puede utili-
+zar un algoritmo híbrido.

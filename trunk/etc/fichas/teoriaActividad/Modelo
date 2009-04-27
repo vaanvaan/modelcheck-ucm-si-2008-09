@@ -1,0 +1,50 @@
+Modelo Teoría de Actividad
+
+Para avanzar en el análisis de la utilidad del modelchecking y convencernos que
+nuestro producto se puede aplicar con facilidad a diversos entramados, decidimos
+modelar un sistema de actividades.
+El proposito de este sistema es el de poner a prueba, la funcionalidad del motor
+de chequeo.
+El sistema de actividades que modelamos posee las siguientes características:
+
+	- El sistema está formado por una o más actividades.
+	- Una actividad puede necesitar de entidades para poder ser ejecutada con
+	éxito.
+	- Una actividad puede originar nuevas entidades, así como destruir existentes
+	- Una actividad puede delegar en otras actividades así como provenir de otra
+	actividad. A esto lo podemos denominar cadena de actividades, y podemos
+	establecer una jerarquía entre ellas.
+	- Las entidades pueden desempeñar diferentes roles en la ejecución de las
+	actividades.
+	
+	
+Planteamiento del concepto de actividad usado:
+
+Una actividad puede nacer de otra actividad o de por sí existir en el sistema.
+No pueden generarse nuevas actividades que no estén definidas en el sistema.
+Entendiendo la existencia de una jerarquía patriarcal, una actividad puede eje-
+cutarse únicamente cuando su padre está en ejecución y que las entidades que
+necesita estén disponibles.
+
+Planteamiento del concepto de entidad usado:
+Una entidad puede encontrarse en 2 estados, disponible o no disponible.
+La falta de disponibilidad de una entidad puede ser por 2 motivos. El primero es
+que la entidad esté ocupada por una actividad, o que esté en estado "destruido"
+en el sistema.
+Las actividades construyen, usan y destruyen las entidades.
+Las entidades pueden tener etiquetados roles de intervención. Pues pueden ser
+utilizados de varias maneras, sujetos, objetos, herramientas...
+
+Como máquina de estados, el estado del sistema viene definido por:
+
+	- El estado de las actividades.
+	
+En el momento en que se encuentre conflicto entre actividades es cuando conside-
+ramos el paranigma del indeterminismo para bifurcar en el espacio de búsqueda.
+Cuando hablamos de colisión entre actividades nos referimos al hecho de que haya
+más de una actividad dispuesta de ejecutarse en el sistema, con la peculiaridad
+de que tienen que competir por las entidades necesarias para iniciar la ejecución
+El sistema expande el espacio de busqueda para cada posible actividad ganadora 
+de tal competición.
+
+[IG]:(igual lo de la expansión va en la parte del motor)
