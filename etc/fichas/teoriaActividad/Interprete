@@ -1,0 +1,38 @@
+El intérprete Teoria de Actividad
+
+Interpretación del modelo:
+
+El intérprete se encarga de proporcionar toda la información sobre el sistema de
+actividades. Para poder procesar el sistema definimos el conjunto de entidades
+y actividades con sus estados correspondientes.
+
+Las actividades contempladas en nuestro estudio poseen 3 estados:
+
+	- Idle: la actividad se encuentra pendiente de acceder a su ejecución.
+	- Executing: la actividad se encuentra en ejecución. Esto incluye la espera 
+	de la terminación de las subactividades correspondientes.
+	- Finalized: la actividad finaliza su ejecución, en este estado se alteran
+	las entidades implicadas.
+	
+Las entidades, o artefactos, poseen 3 estados posibles:
+
+	- Free: el artefacto está constituido y disponible para ser usado.
+	- Used: el artefacto se encuentra en uso por alguna actividad.
+	- Disposed: el artefacto se encuentra en estado destruido. (No disponible
+	para ser usado)
+
+
+La construcción del sistema sigue el siguiente proceso:
+
+	- Declaración de las entidades existentes en nuestro sistema.
+	- Declaración del conjunto total de actividades del sistema.
+	- Configuración de entidades y actividades.
+	
+La configuración consta de la definición de las relaciones entre entidades y 
+actividades, y el establecimiento de la estructura jerárquica entre actividades.
+
+El enlace de todos estos elementos constituye el estado del sistema de activi-
+dades. Como ya mencionamos anteriormente el intérprete se encarga de proporcio-
+nar los estados inciales. Para este caso de estudio, el estado inicial consisti-
+ría en la creación del Sistema de Actividades. Las transiciones se corresponden 
+con los conjuntos de actividades susceptibles de ejecución.

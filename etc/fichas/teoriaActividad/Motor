@@ -1,0 +1,35 @@
+El motor y la Teosría de Actividades
+
+
+Nicolas: bueno, a un nivel que no me gusta mucho: Finaliza las actividades que estan en ejecución, y genera el conjunto de posibles estados siguientes usando backtracking.
+9:56 PM me: jeje, esto es para el resumen ;)
+  xD si lo ponemos así no sacamos ni 15 paginas
+ Nicolas: :) ok
+9:57 PM bueno pues entonces te cuento como está hecho:
+ me: ok
+ Nicolas: Idea principal: Se hace un grafo de compatibilidad.
+  Cada nodo es una actividad.
+9:58 PM Cada arista significa que dos actividades son compatibles, es decir se pueden ejecutar a la vez
+9:59 PM me: ahá
+10:00 PM Nicolas: dos actividades son compatibles si son parientes (una es padre o abuelo o bisabuelo... etc de la otra)
+10:01 PM y si no son parientes, son compatibles si no comparten ningun item
+  ok?
+ me: ok
+10:02 PM cuando tengas que ir a cenar avisame, que a mi me llaman tb para cenar, pero acabemos esto, no?
+ Nicolas: ok
+10:03 PM entonces teniendo para cada actividad, sus actividades compatibles, y el conjunto de actividades compatibles
+  perdon
+  el conjunto total de actividades..
+10:04 PM me: si
+ Nicolas: Hacemos backtracking
+  en cada paso elegimos una actividad para ejecutar
+ me: acitividad+ compatibles / conj total -> backtracking
+10:05 PM Nicolas: a ver, en cada paso elegimos una del conjunto de actividades posibles a ejecutar
+  empezamos por todas
+10:06 PM en cada iteracion elegimos la siguiente
+10:07 PM pero en cada anidamiento recursivo, quitamos del conjunto de posibles la actividad elegida para ejecutar y filtramos ese conjunto dejando sólo las que son compatibles con la actividad elegida
+ me: si
+10:08 PM Nicolas: y ya está, cuando no nos quedan activiades en ese conjunto, entonces hemos creamos el estado, lanzamos las que se pueden etc
+10:09 PM pero todo esto no funciona asi. Hay detalles como saltarse las actividades a las que un item que necesitan esta Disposed
+10:10 PM y otros detalles que no me acuerdo pero que estan en el codigo...
+  pero bueno, eso te ayudara bastante.
