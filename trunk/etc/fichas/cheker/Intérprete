@@ -5,7 +5,7 @@ motor de chequeo pueda trabajar con el modelo.
 Las funciones que debe tener son:
 
 - Indicar el conjunto inicial de estados
-- Definir las transciones entre estados.
+- Definir las transiciones entre estados.
 - Las transiciones deben de tener un identificador (nombre) para facilitar la
 labor de visualización de resultados, con el fin de poder indicar las transicio-
 nes seguidas.
@@ -14,4 +14,5 @@ nes seguidas.
 *Los requisitos anteriormente descritos son necesarios para cualquier sistema de
 *de estados finitos cuyo propósito será el de modelchecking.
 *Esta información la necestamos para poder aplicar la algoritmia.
-..vaya basura...]
+..vaya basura...
+*No creo que sea una basura, la ventaja de esto es que el modelo no depende en absoluto del modelchecker, sólo depende de lo mínimo para que pueda ser checkeado]
