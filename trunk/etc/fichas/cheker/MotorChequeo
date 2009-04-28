@@ -2,9 +2,9 @@ El motor de chequeo
 
 El motor es el que implementa toda la lógica computacional del algoritmo de modelchecking. Como entrada tiene un estado inicial, una fórmula de lógica CTL y el intérprete. Este motor verifica la fórmula en el estado inicial y devuelve un objeto Resultado que contiene la respuesta y un ejemplo o contraejemplo que respalda la respuesta.
 
-Este motor está modularizado de tal manera que se pueda elegir el algoritmo de verificación a utilizar. Por defecto se proporciona un algoritmo cuya arquitectura permite elegir qué algoritmo utilizar a nivel de fórmula ya que es común en los algoritmos de modelchecking especificar una estrategia distinta para cada tipo de fórmula. El patrón Visitor es la estrategia más natural para implementar el algoritmo.
+Este motor está modularizado de tal manera que se pueda elegir el algoritmo de verificación a utilizar. Por defecto se proporciona un algoritmo cuya arquitectura permite elegir qué algoritmo utilizar a nivel de fórmula, ya que es común en los algoritmos de modelchecking especificar una estrategia distinta para cada tipo de fórmula. El patrón Visitor es la estrategia más natural de implementar cualquier algoritmo de este estilo.
 
-El algoritmo de modelchecking que hemos desarrollado comienza en el estado inicial, computa el valor lógico de la fórmula en ese estado, y detiene la verificación en cuanto dispone de un subgrafo ejemplo(contraejemplo) mínimo donde la fórmula es cierta (falsa) y seguirá con el mismo valor si se sigue computando todo el grafo.
+El algoritmo de modelchecking que hemos desarrollado comienza en el estado inicial, computa el valor lógico de la fórmula en ese estado, y detiene la verificación en cuanto dispone de un subgrafo ejemplo(contraejemplo) mínimo donde la fórmula es cierta (falsa).
 
 En general:
   - El cómputo de una fórmula atómica verificará la fórmula en ese estado.
@@ -13,10 +13,19 @@ En general:
 
 En particular vamos a explicar por ejemplo el checkeo de una fórmula E(f1 U f2)(véase apéndice de lógica CTL):
   - Partimos del estado inicial. Si en este estado se cumple f2(o no se cumple f1) devolvemos cierto(falso) y el ejemplo (contraejemplo) será este estado inicial.
-  - En el caso de que se cumpla f1 y no se cumpla f2 procesamos sus hijos. Para todos los hijos que cumplan f1 y no cumplan f2 tendrán que ser explorados sus hijos. El algoritmo para cuando se encuentra un estado que cumple f2  --> respuesta cierto y ejemplo sus camino hasta la raiz (estado inicial).
+  - En el caso de que se cumpla f1 y no se cumpla f2 procesamos sus hijos. Para todos los hijos que cumplan f1 y no cumplan f2 tendrán que ser explorados sus hijos. El algoritmo se detiene cuando:
+     a) se encuentra un estado que cumple f2  --> respuesta cierto y ejemplo sus camino hasta la raiz (estado inicial).
+	 b) se le acaban los caminos a explorar --> respuesta falso y como contraejemplo se devuelve todo el subgrafo explorado.
   - Para los estados que no cumplen ni f1 ni f2, hemos de guardarlos para el contraejemplo pero no tenemos que explorar sus hijos. 
-  - Para las transiciones que vuelven a un estado anterior, sólo hay que anotar la transición en el contraejemplo, ya que si esta transición hubiese sido un ejemplo, el cómputo habría parado antes, y si no lo es, los caminos a partir de este estado estarían repetidos --> con computar el más corto es suficiente para probar la fórmula. Esto supone una gran optimizacion ya que para todas las ramificaciones hay que guardar todo el camino seguido, porque será el ejemplo. En este caso se unen dos "arboles" en uno.
-  - Si no se ha encontrado un estado que le de un valor verdadero a la fórmula, se devuelve todo el grafo explorado como contraejemplo y se devuelve falso.
-
-   Este algoritmo se ha implementado usando la idea de búsqueda en anchura para poder explorar máquinas de estados infinitos. Para contraejemplo se usa un grafo global, que en caso de ser falsa la fórmula será todo el subgrafo a partir del estado inicial. Para los posibles ejemplos que se están computando, necesitamos guardar para cada estado explorado todo su camino hasta la raíz.
+  - Para las transiciones que vuelven a un estado anterior, sólo hay que anotar la transición en el contraejemplo, ya que:
+      a) si esta transición formara parte de un ejemplo:
+	     a.1) si el estado siguiente es un estado que cumple f2, el cómputo habría parado antes (en el momento en que el estado fue visitado por primera vez).
+		 a.2) si en el estado siguiente comienza un camino donde se cumple E(f1 U f2), el camino completo hasta la raiz pasando por este estado siguiente es más corto --> cuando se termine de computar devolveremos ese camino.
+      b) si esta transicion no forma parte de un camino ejemplo:
+	     b.1) si por otro lado se encuentra un camino ejemplo, esta transicion no formará parte de ese camino ejemplo y será desechada.
+		 b.2) si no se encuentra ningun camino ejemplo en todo el grafo , debemos devolver todo grafo como contraejemplo incluyendo esta transicion.
+		 
+	Dicho de otra forma, los caminos a partir de este estado estarían repetidos --> con computar el más corto es suficiente para probar la fórmula. Esto supone una gran optimizacion ya que para todas las ramificaciones hay que guardar todo el camino seguido, porque será el ejemplo. En este caso se unen dos árboles en uno y se desecha uno de ellos.
+	
+   Este algoritmo se ha implementado usando la idea de búsqueda en anchura para poder explorar máquinas de estados infinitos. Para contraejemplo se usa un grafo global, que en caso de ser falsa la fórmula será todo el subgrafo a partir del estado inicial. Para los posibles ejemplos que se están computando, necesitamos guardar para cada estado explorado todo su camino hasta la raíz. Para que ello no suponga un gran coste en memoria, se optimiza el espacio compartiendo subgrafos.
 
