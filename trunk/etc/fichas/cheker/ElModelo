@@ -1,8 +1,6 @@
 EL Modelo
+- El modelo debe ser una máquina de estados finita.
+ Para una gran mayoría de sistemas, existe una representación a un determinado nivel de abstracción donde el sistema se reduce a una máquina de estados finita. Conocer a qué nivel es necesario estudiar el sistema ayuda a encontrar dicha representación e incluso pueden encontrarse representaciones más eficientes.
 
-Requisitos de un sistema para que sirva como modelo:
+ En realidad la restricción de que sea finita o no depende del algoritmo de Modelchecking. El algoritmo que se proporciona por defecto está preparado para máquinas de estados infinitas. La limitación entonces se encuentra en el almacenamiento.
 
-- Que se defina como una máquina de estados finita. [¿no?]
-
-
-El modelo que se
