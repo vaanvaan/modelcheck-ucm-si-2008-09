@@ -1,1 +1,13 @@
 El visualizador de Teoría de Actividades
+
+Utilizamos la facilidad del visualizador básico del Framework.
+
+Como mencionamos anteriormente se comppone de 2 paneles.
+En uno de ellos representamos el estado, es decir el conjundo de actividades del
+sistema, junto con sus estados. Representamos los vínculos entre actividades y
+entidades que sufren modificación de estado.
+
+[mostrar capturas, es lo mejor]
+
+La navegación por el grafo resultado se realiza mediante el panel de botones, donde
+se identificarán por las actividades que cambian de estado.

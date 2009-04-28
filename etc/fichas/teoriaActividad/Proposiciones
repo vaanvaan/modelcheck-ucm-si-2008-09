@@ -1,1 +1,19 @@
 Proposiciones de la Teoria de Actividades
+
+Las proposiciones que proponemos para este caso de uso consisten en consultas
+sobre actividades y entidades.
+
+Partiendo de la descripción del estado del sistema de actividades es natural lle-
+var control sobre los elementos que interactuan en las transiciones.
+
+Mantenemos la estructura planteada de proposición. Ésta se basa en el estado del
+sistema. Diferenciamos 2 tipos de proposiciones.
+
+Porposiciones de Actividades: estas proposiciones sirven para consultar el esta-
+do de una o un conjunto de actividades.
+
+Proposiciones de Entidades: estas sirven para consultar el estado de una o varias
+entidades.
+
+Combinando estas 2 proposicones conseguimos definir cualquier estado de nuestro
+sistema, concluyendo que es un sistema generador de estados.
