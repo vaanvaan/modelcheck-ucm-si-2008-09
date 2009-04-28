@@ -1,22 +1,22 @@
 El motor de chequeo
 
-El motor es el que implementa toda la lÛgica computacional del algoritmo de modelchecking. Como entrada tiene un estado inicial, una fÛrmula de lÛgica CTL y el intÈrprete. Este motor verifica la fÛrmula en el estado inicial y devuelve un objeto Resultado que contiene la respuesta y un ejemplo o contraejemplo que respalda la respuesta.
+El motor es el que implementa toda la l√≥gica computacional del algoritmo de modelchecking. Como entrada tiene un estado inicial, una f√≥rmula de l√≥gica CTL y el int√©rprete. Este motor verifica la f√≥rmula en el estado inicial y devuelve un objeto Resultado que contiene la respuesta y un ejemplo o contraejemplo que respalda la respuesta.
 
-Este motor est· modularizado de tal manera que se pueda elegir el algoritmo de verificaciÛn a utilizar. Por defecto se proporciona un algoritmo cuya arquitectura permite elegir quÈ algoritmo utilizar a nivel de fÛrmula ya que es com˙n en los algoritmos de modelchecking especificar una estrategia distinta para cada tipo de fÛrmula. El patrÛn Visitor es la estrategia m·s natural para implementar el algoritmo.
+Este motor est√° modularizado de tal manera que se pueda elegir el algoritmo de verificaci√≥n a utilizar. Por defecto se proporciona un algoritmo cuya arquitectura permite elegir qu√© algoritmo utilizar a nivel de f√≥rmula ya que es com√∫n en los algoritmos de modelchecking especificar una estrategia distinta para cada tipo de f√≥rmula. El patr√≥n Visitor es la estrategia m√°s natural para implementar el algoritmo.
 
-El algoritmo de modelchecking que hemos desarrollado comienza en el estado inicial, computa el valor lÛgico de la fÛrmula en ese estado, y detiene la verificaciÛn en cuanto dispone de un subgrafo ejemplo(contraejemplo) mÌnimo donde la fÛrmula es cierta (falsa) y seguir· con el mismo valor si se sigue computando todo el grafo.
+El algoritmo de modelchecking que hemos desarrollado comienza en el estado inicial, computa el valor l√≥gico de la f√≥rmula en ese estado, y detiene la verificaci√≥n en cuanto dispone de un subgrafo ejemplo(contraejemplo) m√≠nimo donde la f√≥rmula es cierta (falsa) y seguir√° con el mismo valor si se sigue computando todo el grafo.
 
 En general:
-  - El cÛmputo de una fÛrmula atÛmica verificar· la fÛrmula en ese estado.
-  - Una fÛrmula no atÛmica computar· su resultado a partir de los cÛmputos de sus subfÛrmulas.
-  - Una fÛrmula temporal, adicionalmente, computar· su resultado a partir de los resultados de sus subfÛrmulas en el estado dado y sus estados siguientes.
+  - El c√≥mputo de una f√≥rmula at√≥mica verificar√° la f√≥rmula en ese estado.
+  - Una f√≥rmula no at√≥mica computar√° su resultado a partir de los c√≥mputos de sus subf√≥rmulas.
+  - Una f√≥rmula temporal, adicionalmente, computar√° su resultado a partir de los resultados de sus subf√≥rmulas en el estado dado y sus estados siguientes.
 
-En particular vamos a explicar por ejemplo el checkeo de una fÛrmula E(f1 U f2)(vÈase apÈndice de lÛgica CTL):
-  - Partimos del estado inicial. Si en este estado se cumple f2(o no se cumple f1) devolvemos cierto(falso) y el ejemplo (contraejemplo) ser· este estado inicial.
-  - En el caso de que se cumpla f1 y no se cumpla f2 procesamos sus hijos. Para todos los hijos que cumplan f1 y no cumplan f2 tendr·n que ser explorados sus hijos. El algoritmo para cuando se encuentra un estado que cumple f2  --> respuesta cierto y ejemplo sus camino hasta la raiz (estado inicial).
+En particular vamos a explicar por ejemplo el checkeo de una f√≥rmula E(f1 U f2)(v√©ase ap√©ndice de l√≥gica CTL):
+  - Partimos del estado inicial. Si en este estado se cumple f2(o no se cumple f1) devolvemos cierto(falso) y el ejemplo (contraejemplo) ser√° este estado inicial.
+  - En el caso de que se cumpla f1 y no se cumpla f2 procesamos sus hijos. Para todos los hijos que cumplan f1 y no cumplan f2 tendr√°n que ser explorados sus hijos. El algoritmo para cuando se encuentra un estado que cumple f2  --> respuesta cierto y ejemplo sus camino hasta la raiz (estado inicial).
   - Para los estados que no cumplen ni f1 ni f2, hemos de guardarlos para el contraejemplo pero no tenemos que explorar sus hijos. 
-  - Para las transiciones que vuelven a un estado anterior, sÛlo hay que anotar la transiciÛn en el contraejemplo, ya que si esta transiciÛn hubiese sido un ejemplo, el cÛmputo habrÌa parado antes, y si no lo es, los caminos a partir de este estado estarÌan repetidos --> con computar el m·s corto es suficiente para probar la fÛrmula. Esto supone una gran optimizacion ya que para todas las ramificaciones hay que guardar todo el camino seguido, porque ser· el ejemplo. En este caso se unen dos "arboles" en uno.
-  - Si no se ha encontrado un estado que le de un valor verdadero a la fÛrmula, se devuelve todo el grafo explorado como contraejemplo y se devuelve falso.
+  - Para las transiciones que vuelven a un estado anterior, s√≥lo hay que anotar la transici√≥n en el contraejemplo, ya que si esta transici√≥n hubiese sido un ejemplo, el c√≥mputo habr√≠a parado antes, y si no lo es, los caminos a partir de este estado estar√≠an repetidos --> con computar el m√°s corto es suficiente para probar la f√≥rmula. Esto supone una gran optimizacion ya que para todas las ramificaciones hay que guardar todo el camino seguido, porque ser√° el ejemplo. En este caso se unen dos "arboles" en uno.
+  - Si no se ha encontrado un estado que le de un valor verdadero a la f√≥rmula, se devuelve todo el grafo explorado como contraejemplo y se devuelve falso.
 
-   Este algoritmo se ha implementado usando la idea de b˙squeda en anchura para poder explorar m·quinas de estados infinitos. Para contraejemplo se usa un grafo global, que en caso de ser falsa la fÛrmula ser· todo el subgrafo a partir del estado inicial. Para los posibles ejemplos que se est·n computando, necesitamos guardar para cada estado explorado todo su camino hasta la raÌz.
+   Este algoritmo se ha implementado usando la idea de b√∫squeda en anchura para poder explorar m√°quinas de estados infinitos. Para contraejemplo se usa un grafo global, que en caso de ser falsa la f√≥rmula ser√° todo el subgrafo a partir del estado inicial. Para los posibles ejemplos que se est√°n computando, necesitamos guardar para cada estado explorado todo su camino hasta la ra√≠z.
 
