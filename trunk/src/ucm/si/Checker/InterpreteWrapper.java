@@ -207,6 +207,10 @@ public class InterpreteWrapper<S> implements Interprete<S> {
     public List<String> dameTransiciones() {
         return interprete.dameTransiciones();
     }
+
+    public void loadModel(Modelo<S> model) {
+        this.interprete.loadModel(model);
+    }
     
     
 }

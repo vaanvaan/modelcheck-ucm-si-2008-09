@@ -220,8 +220,8 @@ public class FrameAnimador<S> extends JFrame {
         //this.creaBotonesAccion(actionListenerAvanzar);
         JPanel pane = this.creaPanelAcciones(mouseListenerAvanza, actionListenerGo_to, actionListenerRetroceder);
         this.actualizaBotonera();
-
-
+        
+        
         /*
          * Seccion de tratamiento del panel cuyo objetivo es ser el marco
          * donde se va a pintar el estado. 
