@@ -14,6 +14,7 @@ import ucm.si.Checker.DefaultModelChecker;
 import ucm.si.Checker.Interprete;
 import ucm.si.Checker.InterpreteWrapper;
 import ucm.si.Checker.ModelChecker;
+import ucm.si.Checker.Modelo;
 import ucm.si.Checker.Resultado;
 import ucm.si.Checker.util.StateLabeledList;
 import ucm.si.animadorGUI.PanelJPane;
@@ -33,8 +34,17 @@ public class Laberinto implements Interprete<Posicion> {
     private boolean[][] laberinto;
     private int dim;
 
+
+
+
     public Laberinto(int dim) {
-        this.dim = dim;
+        this.setLeberinto(dim);
+
+    }
+
+    public void setLeberinto(int dim)
+    {
+                this.dim = dim;
         Random r=  new Random(122334234);
         laberinto = new boolean[dim][dim];
         for (int j = 0; j < dim; j++) {
@@ -48,10 +58,10 @@ public class Laberinto implements Interprete<Posicion> {
             boolean dir = r.nextBoolean();
             if (dir){
                 if (p.posX<this.dim-1){
-                    p.posX++;                    
+                    p.posX++;
                 }else p.posY++;
             }else if (p.posY<this.dim-1){
-                    p.posY++;                    
+                    p.posY++;
                 }else p.posX++;
             laberinto[p.posX][p.posY] = true;
             seguir = p.posX!=dim-1 || p.posY!=dim-1;
@@ -65,8 +75,14 @@ public class Laberinto implements Interprete<Posicion> {
         laberinto[0][4] = false;*/
         //laberinto[3][0] = false;
 //        laberinto[dim-1][dim-1] = false;
-
     }
+
+    public void setLeberinto(boolean[][] lab , int dim)
+    {
+        this.laberinto = lab;
+        this.dim = dim;
+    }
+
 
     @Override
     public List<String> dameTransiciones() {
@@ -236,6 +252,10 @@ public class Laberinto implements Interprete<Posicion> {
             }
         } );
         System.out.println(m.chequear(formula));
+    }
+
+    public void loadModel(Modelo<Posicion> model) {
+        model.visita(this);
     }
     
 }

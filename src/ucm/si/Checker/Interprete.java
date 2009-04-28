@@ -23,5 +23,7 @@ public interface Interprete<S> {
     
     public List<String> dameTransiciones();
 
+    public void loadModel(Modelo<S> model);
+
 }
 

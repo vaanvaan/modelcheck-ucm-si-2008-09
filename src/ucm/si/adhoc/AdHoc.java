@@ -12,6 +12,7 @@ import javax.print.attribute.HashAttributeSet;
 import ucm.si.Checker.DefaultModelChecker;
 import ucm.si.Checker.Interprete;
 import ucm.si.Checker.ModelChecker;
+import ucm.si.Checker.Modelo;
 import ucm.si.Checker.Resultado;
 import ucm.si.Checker.util.StateLabeledList;
 import ucm.si.basico.ecuaciones.AU;
@@ -76,6 +77,10 @@ public class AdHoc implements Interprete<Integer>{
     }
 
     public List<String> dameTransiciones() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void loadModel(Modelo<Integer> model) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

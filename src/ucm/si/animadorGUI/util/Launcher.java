@@ -37,6 +37,16 @@ public class Launcher<S>
     private Formula formula;
     private Resultado<S> resultado;
 
+    /**
+     * 
+     * @param navegador
+     * @param contexto
+     * @param checker
+     * @param interprete
+     * @param formula
+     * @deprecated
+     */
+    @Deprecated
     public Launcher(NavigatorInterface<S> navegador, Contexto contexto, ModelChecker checker, Interprete<S> interprete, Formula formula) {
         this.navegador = navegador;
         this.contexto = contexto;
@@ -45,6 +55,12 @@ public class Launcher<S>
         this.formula = formula;
     }
 
+    /**
+     * Constructor de la clase Launcher
+     * @param contexto Objeto Contexto con informacion que puede necesitar el interprete.
+     * @param interprete Interprete concreto escogido.
+     * @param formula Formula que probaremos sobre el interprete y modelo definido.
+     */
     public Launcher(Contexto contexto, Interprete<S> interprete, Formula formula) {
         this.contexto = contexto;
         this.interprete = interprete;

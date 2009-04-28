@@ -16,6 +16,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.LinkedBlockingQueue;
 import ucm.si.Checker.Interprete;
+import ucm.si.Checker.Modelo;
 import ucm.si.Checker.util.StateLabeledList;
 import ucm.si.TeoriaActividad.GUI.DrawerActividad;
 import ucm.si.TeoriaActividad.actividad.*;
@@ -435,6 +436,74 @@ public class Pruebas implements Interprete<EstadoTA>, IInterprete {
 
     public LinkedList<String> getActividadesOrdenadas() {
         return actividadesOrdenadas;
+    }
+
+    public void loadModel(Modelo<EstadoTA> model) {
+        model.visita(this);
+    }
+
+    public void loadFromGenerators()
+    {
+        actividades = activGen.getConjunto().keySet().toArray(new String[0]);
+            items = itemGen.getItems();
+
+            //Ahora creamos el recorrido preorden:
+            actividadesOrdenadas = new LinkedList<String>();
+            for (int i = 0; i < actividades.length; i++) {
+                Actividad a = activGen.getItem(actividades[i]);
+                if (a.getPadre() == null) {
+                    actividadesOrdenadas.add(a.getNombre());
+                }
+            }
+            int a = 0;
+            while (actividadesOrdenadas.size() < actividades.length) {
+                Actividad act = activGen.getItem(actividadesOrdenadas.get(a));
+                Set<Actividad> setaux = act.getActividadesHijas();
+                if (!setaux.isEmpty()) {
+                    for (Iterator<Actividad> it = setaux.iterator(); it.hasNext();) {
+                        actividadesOrdenadas.addLast(it.next().getNombre());
+                    }
+                }
+                a++;
+            }
+
+            // Creamos una tabla de compatibilidad de actividades
+            int numact = actividadesOrdenadas.size();
+            /*tabla = new boolean[numact - 1][];
+            for (int i = 0; i < tabla.length; i++) {
+            tabla[i] = new boolean[numact - 1 - i];
+            }*/
+            tabla = new TreeMap<String, Set<String>>();
+            for (int i = 0; i < numact; i++) {
+                Actividad a1 = activGen.getItem(actividadesOrdenadas.get(i));
+                Item[] s1 = a1.getItemNecesarios();
+                TreeSet<String> conjComp = new TreeSet<String>();
+                for (int j = 0; j < numact; j++) {
+                    if (i != j) {
+                        Actividad a2 = activGen.getItem(actividadesOrdenadas.get(j));
+                        if (!a1.parienteDe(a2)) {
+                            Item[] s2 = a2.getItemNecesarios();
+                            boolean incompatibles = false;
+                            for (int k = 0; !incompatibles && k < s1.length; k++) {
+                                Item e1 = s1[k];
+                                for (int m = 0; !incompatibles && m < s2.length; m++) {
+                                    Item e2 = s2[m];
+                                    if (e1.compareTo(e2) == 0) {
+                                        incompatibles = true;
+                                    }
+                                }
+                            }
+                            if (!incompatibles) {
+                                conjComp.add(a2.getNombre());
+                            }
+                        } else {
+                            conjComp.add(a2.getNombre());
+                        }
+                    }
+                }
+                tabla.put(a1.getNombre(), conjComp);
+            }
+
     }
     
 }
