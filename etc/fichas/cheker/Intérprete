@@ -1,18 +1,10 @@
 El Intérprete
 
 Es una interfaz que define las operaciones mínimas necesarias para que el 
-motor de chequeo pueda trabajar con el modelo.
-Las funciones que debe tener son:
+motor de chequeo pueda trabajar con el modelo:
 
 - Indicar el conjunto inicial de estados
 - Definir las transiciones entre estados.
-- Las transiciones deben de tener un identificador (nombre) para facilitar la
-labor de visualización de resultados, con el fin de poder indicar las transicio-
-nes seguidas.
+- Las transiciones deben de tener un identificador (nombre) para facilitar la visualización de resultados, con el fin de poder indicar las transiciones seguidas.
 
-[
-*Los requisitos anteriormente descritos son necesarios para cualquier sistema de
-*de estados finitos cuyo propósito será el de modelchecking.
-*Esta información la necestamos para poder aplicar la algoritmia.
-..vaya basura...
-*No creo que sea una basura, la ventaja de esto es que el modelo no depende en absoluto del modelchecker, sólo depende de lo mínimo para que pueda ser checkeado]
+El usuario debe proporcionar una clase que implemente esta interfaz y que será la conexión entre el modelo a estudiar y el algoritmo de Modelchecking. Cada vez que el motor de chequeo pregunte cuáles son los posibles estados siguientes a un estado dado, esta clase debe computar todas las posibles transiciones desde ese estado. Dicho de otra forma, cada estado de ese conjunto debe representar una línea temporal distinta.
