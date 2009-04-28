@@ -1,20 +1,25 @@
 Visualizador de resultados
 
 En el caso de que al usuario le interese algo más que una simple respuesta de
-cierto o no, hay un visualizador básico de los resultados.
+cierto o no, hay un framework basico para la visualizacion básica del resultado.
+Como ya sabemos el resultado consiste en un Ejemplo (para el caso de que la respuesta sea cierta) 
+que demuestra la correctitud de la propiedad, o en un Contra-Ejemplo (para el caso de una respuseta falsa) 
+que demuestra los casos en el que la propiedad es erronea. 
+Este Ejemplo o Contra-Ejemplo consiste en un grafo que contienen un sub-conjunto de estados y transiciones que demuestra o desmiente la propiedad a comprobar.
 
 El visualizador básico:
 
 Consiste en una pantalla Swing. La pantalla se divide básicamente en 2 secciones
 
 	- Panel de visionado: es un panel sobre el que se visualiza la información
-	del estado por el que estamos navegando.
-	- Panel de botones con las posibles transiciones a partir del estado que se
-	visualiza en el panel anterior.
+	del estado por el que estamos navegando. Originalmentes esta situado a la izquierda
+	- Panel de botones: Muestra las posibles transiciones que se pueden realizar desde el estado actual (el estado mostrado en el panel de visionado). Incluye un boton retrocede que ejecuta la accion de retroceder a el estado anterior al monstrado en el panel de visualizacion
 	
+
 Dado que el resultado es un conjunto de estados, ya sea ejemplo o contraejemplo,
 está definido un componente de navegación que facilita el seguimiento de las
 transiciones entre ese conjunto.
+[JA: No entinedo este ultimo parrafo]
 
 Todo resultado acaba siendo un grafo de estados y transiciones. El componente de
 navegación simplemente recorre este grafo. El navegador es el encargado de
