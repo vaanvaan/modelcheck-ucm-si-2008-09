@@ -1,1 +1,4 @@
 Resultados del motor Teoria de Actividades
+
+No se pueden producir ciclos por la definición del sistema. (no se pueden generar
+actividades como resultado de otras actividades)
