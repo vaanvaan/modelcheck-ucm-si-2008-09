@@ -16,7 +16,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
-import ucm.si.TeoriaActividad.Interprete.InterpreteTA;
+import ucm.si.TeoriaActividad.Interprete.SistemaActividades;
 import ucm.si.TeoriaActividad.actividad.Actividad;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
 import ucm.si.TeoriaActividad.item.ItemGenerator;
@@ -30,11 +30,11 @@ import ucm.si.animadorGUI.PanelInterface;
 public class DrawerActividad extends Drawer<EstadoTA>{
     private JList jlItems;
     private DefaultListModel dlmItems;
-    private InterpreteTA p;
+    private SistemaActividades p;
     private LinkedList<DefaultMutableTreeNode> dmtNodes;
     private LinkedList<JTree> listaArboles;
 
-    public DrawerActividad(InterpreteTA p){
+    public DrawerActividad(SistemaActividades p){
         this.p = p;
     }
 

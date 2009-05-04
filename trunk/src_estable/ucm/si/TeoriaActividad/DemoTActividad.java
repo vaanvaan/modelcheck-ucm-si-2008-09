@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import ucm.si.TeoriaActividad.GUI.DrawerActividad;
-import ucm.si.TeoriaActividad.Interprete.InterpreteTA;
+import ucm.si.TeoriaActividad.Interprete.SistemaActividades;
 import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.actividad.ListaEstadosActividades;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
@@ -31,7 +31,7 @@ public class DemoTActividad {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		InterpreteTA interprete = new InterpreteTA();
+		SistemaActividades interprete = new SistemaActividades();
 		
 		// preparamos las proposiciones
 		// la primera es que A1 finalice
