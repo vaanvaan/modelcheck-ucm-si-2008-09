@@ -6,9 +6,8 @@ package ucm.si.TeoriaActividad;
 import java.util.Iterator;
 import java.util.List;
 
-import ucm.si.Checker.Interprete;
 import ucm.si.TeoriaActividad.GUI.DrawerActividad;
-import ucm.si.TeoriaActividad.Interprete.Pruebas;
+import ucm.si.TeoriaActividad.Interprete.SistemaActividades;
 import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.actividad.ListaEstadosActividades;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
@@ -19,6 +18,7 @@ import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.EU;
 import ucm.si.basico.ecuaciones.Formula;
 import ucm.si.basico.ecuaciones.Not;
+import ucm.si.basico.ecuaciones.Proposicion;
 import ucm.si.util.Contexto;
 
 /**
@@ -31,16 +31,8 @@ public class DemoTActividad {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Pruebas interprete = new Pruebas();
-		List<EstadoTA> listaIniciales=interprete.iniciales();
-		Iterator it = listaIniciales.iterator();
-		// mostrar por consola las actividades.
-		while (it.hasNext()){
-			System.out.println("Conj de actividades");
-			EstadoTA stat = (EstadoTA) it.next();
-			ListaEstadosActividades listaActiv = stat.actividades;
-			System.out.println(listaActiv.keySet());
-		}
+		SistemaActividades interprete = new SistemaActividades();
+		
 		// preparamos las proposiciones
 		// la primera es que A1 finalice
 		Formula propA1= new ProposicionActividad("A1",EstadoActividad.Finalized);
@@ -56,7 +48,17 @@ public class DemoTActividad {
         Formula temp3 = new And(propA3ini, temp12);
         Formula temp4 = new And(propA4ini, temp3);
         Formula fin = new And (propA2, propA3);
-		Formula formula = new EU(temp4, fin); // finalizan a la vez A2 y A3?
+		//Formula formula = new EU(temp4, fin); // finalizan a la vez A2 y A3?
+        Formula formula = new EU(new Proposicion(){
+            @Override
+            public boolean esCierta(Object s) {
+                return true;
+            }
+        }, new Proposicion(){
+            @Override
+            public boolean esCierta(Object s) {
+                return false;
+            }}); // finalizan a la vez A2 y A3?
 		Launcher<EstadoTA> launcher = new Launcher<EstadoTA>(new Contexto() {}, interprete, formula);
 		launcher.runCheck();
 		Drawer drw = new DrawerActividad(interprete);

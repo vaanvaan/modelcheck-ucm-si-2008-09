@@ -7,9 +7,7 @@ package ucm.si.TeoriaActividad.GUI;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.TreeMap;
 import javax.swing.BoxLayout;
@@ -18,14 +16,9 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
-import ucm.si.TeoriaActividad.Interprete.Pruebas;
+import ucm.si.TeoriaActividad.Interprete.SistemaActividades;
 import ucm.si.TeoriaActividad.actividad.Actividad;
-import ucm.si.TeoriaActividad.actividad.ActividadGenerator;
-import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
-import ucm.si.TeoriaActividad.estado.IEstadoDrawable;
 import ucm.si.TeoriaActividad.item.ItemGenerator;
 import ucm.si.animadorGUI.Drawer;
 import ucm.si.animadorGUI.PanelInterface;
@@ -34,18 +27,19 @@ import ucm.si.animadorGUI.PanelInterface;
  *
  * @author nico
  */
-public class DrawerActividad extends Drawer<IEstadoDrawable>{
+public class DrawerActividad extends Drawer<EstadoTA>{
     private JList jlItems;
     private DefaultListModel dlmItems;
-    private Pruebas p;
+    private SistemaActividades p;
     private LinkedList<DefaultMutableTreeNode> dmtNodes;
+    private LinkedList<JTree> listaArboles;
 
-    public DrawerActividad(Pruebas p){
+    public DrawerActividad(SistemaActividades p){
         this.p = p;
     }
 
     @Override
-    public void pintaEstado(IEstadoDrawable s, PanelInterface<IEstadoDrawable> pane) {
+    public void pintaEstado(EstadoTA s, PanelInterface<EstadoTA> pane) {
         dlmItems = new DefaultListModel();
         String[] items = ItemGenerator.getReference().getItems();
         java.util.Arrays.sort(items);
@@ -132,19 +126,21 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
                 return d;
             }
         };
-        panelActividades2.add(panelActividades);
         panelActividades2.setLayout(new BoxLayout(panelActividades2,BoxLayout.Y_AXIS));
+        panelActividades2.add(panelActividades);
+        listaArboles = new LinkedList<JTree>();
         for (int i = 0; i < listaNodosRaiz.size(); i++) {
             DefaultMutableTreeNode a = listaNodosRaiz.get(i);
             JTree jtActividades = new JTree(a);
             jtActividades.setCellRenderer(new ActivityDrawer(mapeadoColores,p));
+            listaArboles.add(jtActividades);
             panelActividades2.add(jtActividades);
         }
         pane.add(panelActividades2);
     }
 
     @Override
-    public void rePinta(IEstadoDrawable s, PanelInterface<IEstadoDrawable> pane) {
+    public void rePinta(EstadoTA s, PanelInterface<EstadoTA> pane) {
         dlmItems.removeAllElements();
         String[] items = ItemGenerator.getReference().getItems();
         java.util.Arrays.sort(items);
@@ -154,6 +150,9 @@ public class DrawerActividad extends Drawer<IEstadoDrawable>{
         }
         for (int i = 0; i < dmtNodes.size(); i++) {
             ((Object[])dmtNodes.get(i).getUserObject())[1] = s;
+        }
+        for (JTree jTree : listaArboles) {
+            jTree.updateUI();
         }
     }
 

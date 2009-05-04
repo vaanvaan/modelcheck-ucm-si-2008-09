@@ -3,10 +3,10 @@
  */
 package ucm.si.TeoriaActividad.proposiciones;
 
-import ucm.si.TeoriaActividad2.actividad.ProposicionTA;
-import ucm.si.TeoriaActividad2.estado.EstadoTA;
-import ucm.si.TeoriaActividad2.item.EstadoItem;
-import ucm.si.TeoriaActividad2.item.ListaEstadosItems;
+import ucm.si.TeoriaActividad.actividad.ProposicionTA;
+import ucm.si.TeoriaActividad.estado.EstadoTA;
+import ucm.si.TeoriaActividad.item.EstadoItem;
+import ucm.si.TeoriaActividad.item.ListaEstadosItems;
 
 /**
  * @author Ivan
@@ -24,13 +24,10 @@ public class ProposicionItem extends ProposicionTA{
 	@Override
 	public boolean comparaActividad(EstadoTA estado) {
 		boolean resultado = false;
-		ListaEstadosItems listaitems = estado.getItems();
-		if(listaitems.containsItem(nomItem)){
+		ListaEstadosItems listaitems = estado.items;
 			if(listaitems.getEstado(nomItem).equals(estadoItem)){
 				resultado = true;
 			}
-		}else
-			System.out.println("Atencion: Item no encontrado!");
 		return resultado;
 	}
 
