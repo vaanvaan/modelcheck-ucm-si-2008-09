@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import ucm.si.TeoriaActividad.Interprete.InterpreteTA;
+import ucm.si.TeoriaActividad.Interprete.SistemaActividades;
 import ucm.si.TeoriaActividad.actividad.Actividad;
 import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.actividad.ListaEstadosActividades;
@@ -61,7 +61,7 @@ public class EstadoTA implements Comparable<EstadoTA> {
         }
     }
 
-    public void lanzarPosibles(InterpreteTA p) {
+    public void lanzarPosibles(SistemaActividades p) {
         for (Iterator<String> it = this.propietarias.keySet().iterator(); it.hasNext();) {
             String a = it.next();
             if (this.getEstadoActividad(a).equals(EstadoActividad.Waiting)) {

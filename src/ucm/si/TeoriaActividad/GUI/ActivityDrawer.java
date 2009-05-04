@@ -16,9 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
-import ucm.si.TeoriaActividad.Interprete.Pruebas;
+import ucm.si.TeoriaActividad.Interprete.SistemaActividades;
 import ucm.si.TeoriaActividad.actividad.EstadoActividad;
-import ucm.si.TeoriaActividad.estado.IEstadoDrawable;
+import ucm.si.TeoriaActividad.estado.EstadoTA;
 import ucm.si.TeoriaActividad.item.EstadoItem;
 import ucm.si.TeoriaActividad.item.Item;
 
@@ -31,10 +31,10 @@ public class ActivityDrawer extends JPanel implements TreeCellRenderer {
     private String texto;
     private TreeMap<String, Color> mapeadoColores;
     private JList jlitemsObjetos;
-    private Pruebas p;
+    private SistemaActividades p;
     private JList jlitemsGenerados;
 
-    ActivityDrawer(TreeMap<String, Color> mapeadoColores, Pruebas p) {
+    ActivityDrawer(TreeMap<String, Color> mapeadoColores, SistemaActividades p) {
         this.mapeadoColores = mapeadoColores;
         this.p = p;
     }
@@ -44,7 +44,7 @@ public class ActivityDrawer extends JPanel implements TreeCellRenderer {
         DefaultMutableTreeNode dmtn = (DefaultMutableTreeNode)arg1;
         Object[] e = (Object[])dmtn.getUserObject();
         this.texto = (String) e[0];
-        IEstadoDrawable ei = (IEstadoDrawable) e[1];
+        EstadoTA ei = (EstadoTA) e[1];
         boolean activa = ei.getEstadoActividad(this.texto).equals(EstadoActividad.Executing);
         boolean finalizada = ei.getEstadoActividad(this.texto).equals(EstadoActividad.Finalized);
         if (!finalizada) {
@@ -75,11 +75,11 @@ public class ActivityDrawer extends JPanel implements TreeCellRenderer {
         if (ei.getEstadoActividad(this.texto).equals(EstadoActividad.Finalized)) {
             jlabel.setEnabled(false);
         } else if (!activa) {
-            ImageIcon espera = new ImageIcon("src/ucm/si/TeoriaActividad/GUI/Waiting32.png");
+            ImageIcon espera = new ImageIcon("images/Waiting32.png");
             jlabel.setIcon(espera);
             jlabel.setForeground(Color.RED);
         } else {
-            ImageIcon espera = new ImageIcon("src/ucm/si/TeoriaActividad/GUI/Executing32.png");
+            ImageIcon espera = new ImageIcon("images/Executing32.png");
             jlabel.setIcon(espera);
         }
         this.add(jlabel);
@@ -90,7 +90,7 @@ public class ActivityDrawer extends JPanel implements TreeCellRenderer {
                 itemsGenerados[i] = itemsToGenerate[i].getClave();
             }
             DefaultListModel dlmItemsGenerados = new DefaultListModel();
-            if (itemsGenerados != null) {
+            if ((itemsGenerados != null)&&(itemsGenerados.length!=0)) {
                 java.util.Arrays.sort(itemsGenerados);
                 for (String s : itemsGenerados) {
                     if (activa) {

@@ -9,4 +9,4 @@ package ucm.si.TeoriaActividad.actividad;
  *
  * @author José Antonio
  */
-public enum EstadoActividad {Idle, Waiting, Finalized, Executing };
+public enum EstadoActividad {Waiting, Executing, Finalized};

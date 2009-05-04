@@ -182,16 +182,7 @@ public class Actividad implements Comparable<Actividad> {
 
   
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 37 * hash + (this.itemNecesarios != null ? this.itemNecesarios.hashCode() : 0);
-        hash = 37 * hash + (this.itemToDispose != null ? this.itemToDispose.hashCode() : 0);
-        hash = 37 * hash + (this.itemToGenerate != null ? this.itemToGenerate.hashCode() : 0);
-        hash = 37 * hash + (this.condiciones != null ? this.condiciones.hashCode() : 0);
-        return hash;
-    }
-
+    
     public int compareTo(Actividad arg0) {
         return this.getNombre().compareTo(arg0.getNombre());
     }

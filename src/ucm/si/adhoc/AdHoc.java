@@ -7,6 +7,7 @@ package ucm.si.adhoc;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
 import javax.print.attribute.HashAttributeSet;
 import ucm.si.Checker.DefaultModelChecker;
@@ -73,7 +74,13 @@ public class AdHoc implements Interprete<Integer>{
     }
 
     public StateLabeledList<Integer> transitarConEtiqueta(Integer state) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<Integer> l = transitar(state);
+        List<String> lNombres = new LinkedList<String>();
+        for (Integer integer : l) {
+            lNombres.add(state.toString() + "-" + integer.toString());
+        }
+        StateLabeledList<Integer> stl = new StateLabeledList<Integer>(l, lNombres);
+        return stl;
     }
 
     public List<String> dameTransiciones() {
