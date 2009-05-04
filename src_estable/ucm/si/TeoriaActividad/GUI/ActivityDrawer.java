@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
-import ucm.si.TeoriaActividad.Interprete.InterpreteTA;
+import ucm.si.TeoriaActividad.Interprete.SistemaActividades;
 import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
 import ucm.si.TeoriaActividad.item.EstadoItem;
@@ -31,10 +31,10 @@ public class ActivityDrawer extends JPanel implements TreeCellRenderer {
     private String texto;
     private TreeMap<String, Color> mapeadoColores;
     private JList jlitemsObjetos;
-    private InterpreteTA p;
+    private SistemaActividades p;
     private JList jlitemsGenerados;
 
-    ActivityDrawer(TreeMap<String, Color> mapeadoColores, InterpreteTA p) {
+    ActivityDrawer(TreeMap<String, Color> mapeadoColores, SistemaActividades p) {
         this.mapeadoColores = mapeadoColores;
         this.p = p;
     }
