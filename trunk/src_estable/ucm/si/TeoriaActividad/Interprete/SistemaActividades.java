@@ -181,9 +181,6 @@ public class SistemaActividades implements Interprete<EstadoTA> {
                     String item = itemsToGenerate[i].getClave();
                     estadoini.items.setEstado(item, EstadoItem.FREE);
                 }
-            } else if (estadoini.getEstadoActividad(a).equals(EstadoActividad.Finalized)
-                    &&(activGen.getItem(a).getPadre()==null)){
-                estadoini.actividades.setEstado(a, EstadoActividad.Waiting);
             }
         }
         List<EstadoTA> laux = backtracking(estadoini);
@@ -280,12 +277,12 @@ public class SistemaActividades implements Interprete<EstadoTA> {
         }
     }
 
-    private void backtracking2(EstadoTA eini, TreeSet<String> conjIni, TreeSet<String> conjHechos, TreeMap<String, Set<String>> propietarias,
+    private void backtracking2(EstadoTA eini, TreeSet<String> conjIni, TreeSet<String> conjHechas, TreeMap<String, Set<String>> propietarias,
             ArrayList<EstadoTA> laux) {
         boolean algunaLanza = false;
         for (Iterator<String> it = conjIni.iterator(); it.hasNext();) {
             String act = it.next();
-            if (!conjHechos.contains(act)) {
+            if (!conjHechas.contains(act)) {
                 TreeSet<String> propaux = new TreeSet<String>();
                 Item[] itemsNecesarios = activGen.getItem(act).getItemNecesarios();
                 for (int i = 0; i < itemsNecesarios.length; i++) {
@@ -312,7 +309,7 @@ public class SistemaActividades implements Interprete<EstadoTA> {
                             estadoaux.lanzarPosibles(this);
                             laux.add(estadoaux);
                         } else {
-                            TreeSet<String> conjHechos2 = new TreeSet<String>(conjHechos);
+                            TreeSet<String> conjHechos2 = new TreeSet<String>(conjHechas);
                             conjHechos2.add(act);
                             backtracking2(eini, conjIni2, conjHechos2, propietarias, laux);
                         }
