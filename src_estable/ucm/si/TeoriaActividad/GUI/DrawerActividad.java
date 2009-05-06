@@ -6,6 +6,7 @@
 package ucm.si.TeoriaActividad.GUI;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.LinkedList;
@@ -126,6 +127,7 @@ public class DrawerActividad extends Drawer<EstadoTA>{
                 return d;
             }
         };
+        panelActividades.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelActividades2.setLayout(new BoxLayout(panelActividades2,BoxLayout.Y_AXIS));
         panelActividades2.add(panelActividades);
         listaArboles = new LinkedList<JTree>();
@@ -133,6 +135,7 @@ public class DrawerActividad extends Drawer<EstadoTA>{
             DefaultMutableTreeNode a = listaNodosRaiz.get(i);
             JTree jtActividades = new JTree(a);
             jtActividades.setCellRenderer(new ActivityDrawer(mapeadoColores,p));
+            jtActividades.setAlignmentX(Component.LEFT_ALIGNMENT);
             listaArboles.add(jtActividades);
             panelActividades2.add(jtActividades);
         }
