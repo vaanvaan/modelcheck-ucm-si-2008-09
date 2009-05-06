@@ -15,7 +15,7 @@ import ucm.si.TeoriaActividad.GUI.DrawerActividad;
 import ucm.si.TeoriaActividad.Interprete.SistemaActividades;
 import ucm.si.TeoriaActividad.actividad.Actividad;
 import ucm.si.TeoriaActividad.actividad.ActividadGenerator;
-import ucm.si.TeoriaActividad.actividad.Conditions;
+import ucm.si.TeoriaActividad.actividad.Condition;
 import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.actividad.ListaEstadosActividades;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
@@ -54,27 +54,21 @@ public class DemoTARCP {
                     new Item[]{victima}, new Item[]{seguridad}, // objetos, objetivos
                     new Item[0], new Item[0], // herramientas, productos
                     new Item[0], new Item[]{seguridad}, //itemsTodispose, itemsToGenerate
-                    new Conditions[0]); // condiciones
+                    new Condition[0]); // condiciones
             Item salvarVictima = new Item("Salvar Victima");
-            Conditions haySeguridad = new Conditions() {
+            Condition haySeguridad = new Condition() {
 
                 public boolean Cumple(EstadoTA contx) {
                     return contx.getEstadoItem("Seguridad").equals(EstadoItem.FREE);
                 }
             };
-            Actividad RCP = new Actividad(
-                    "RCP", new Item[]{reanimador}, //nombre, sujetos
-                    new Item[0], new Item[]{salvarVictima}, // objetos, objetivos
-                    new Item[0], new Item[0], // herramientas, productos
-                    new Item[0], new Item[]{salvarVictima}, //itemsTodispose, itemsToGenerate
-                    new Conditions[]{haySeguridad}); // condiciones
             Item analisisConciencia = new Item("Analisis Conciencia");
             Actividad comprobarConciencia = new Actividad(
                     "Comprobar Conciencia", new Item[]{reanimador}, //nombre, sujetos
                     new Item[0], new Item[0], // objetos, objetivos
                     new Item[0], new Item[]{analisisConciencia}, // herramientas, productos
                     new Item[0], new Item[]{analisisConciencia}, //itemsTodispose, itemsToGenerate
-                    new Conditions[]{haySeguridad}); // condiciones
+                    new Condition[]{haySeguridad}); // condiciones
             Item victimaRespondeI = new Item("Victima Responde");
             Item victimaNoRespondeI = new Item("Victima No Responde");
             Actividad victimaResponde = new Actividad(
@@ -82,14 +76,14 @@ public class DemoTARCP {
                     new Item[]{analisisConciencia}, new Item[0], // objetos, objetivos
                     new Item[0], new Item[]{victimaRespondeI}, // herramientas, productos
                     new Item[]{analisisConciencia}, new Item[]{victimaRespondeI,salvarVictima}, //itemsTodispose, itemsToGenerate
-                    new Conditions[0]); // condiciones
+                    new Condition[0]); // condiciones
             Actividad victimaNoResponde = new Actividad(
                     "Victima No Responde", new Item[]{victima}, //nombre, sujetos
                     new Item[]{analisisConciencia}, new Item[0], // objetos, objetivos
                     new Item[0], new Item[]{victimaNoRespondeI}, // herramientas, productos
                     new Item[]{analisisConciencia}, new Item[]{victimaNoRespondeI}, //itemsTodispose, itemsToGenerate
-                    new Conditions[0]); // condiciones
-            Conditions noResponde = new Conditions() {
+                    new Condition[0]); // condiciones
+            Condition noResponde = new Condition() {
 
                 public boolean Cumple(EstadoTA contx) {
                     return contx.getEstadoItem("Victima No Responde").equals(EstadoItem.FREE);
@@ -101,7 +95,7 @@ public class DemoTARCP {
                     new Item[0], new Item[0], // objetos, objetivos
                     new Item[0], new Item[]{analisisRespiracion}, // herramientas, productos
                     new Item[0], new Item[]{analisisRespiracion}, //itemsTodispose, itemsToGenerate
-                    new Conditions[]{haySeguridad,noResponde}); // condiciones
+                    new Condition[]{haySeguridad,noResponde}); // condiciones
             Item victimaRespira = new Item("Victima Respira");
             Item victimaNoRespira = new Item("Victima No Respira");
             Actividad respira =  new Actividad(
@@ -109,15 +103,14 @@ public class DemoTARCP {
                     new Item[0], new Item[0], // objetos, objetivos
                     new Item[0], new Item[0], // herramientas, productos
                     new Item[]{analisisRespiracion}, new Item[]{victimaRespira}, //itemsTodispose, itemsToGenerate
-                    new Conditions[0]); // condiciones
+                    new Condition[0]); // condiciones
              Actividad noRespira =  new Actividad(
                     "Victima No Respira", new Item[]{victima}, //nombre, sujetos
                     new Item[0], new Item[0], // objetos, objetivos
                     new Item[0], new Item[0], // herramientas, productos
                     new Item[]{analisisRespiracion}, new Item[]{victimaNoRespira}, //itemsTodispose, itemsToGenerate
-                    new Conditions[0]); // condiciones
-             Conditions respiraC = new Conditions() {
-
+                    new Condition[0]); // condiciones
+             Condition respiraC = new Condition() {
                 public boolean Cumple(EstadoTA contx) {
                     return contx.getEstadoItem("Victima Respira").equals(EstadoItem.FREE);
                 }
@@ -125,17 +118,148 @@ public class DemoTARCP {
              Actividad colocarPosicionSeguridad  =  new Actividad(
                     "Colocar en Posicion de Seguridad", new Item[]{reanimador}, //nombre, sujetos
                     new Item[]{victima}, new Item[]{salvarVictima}, // objetos, objetivos
-                    new Item[0], new Item[]{salvarVictima}, // herramientas, productos
+                    new Item[0], new Item[0], // herramientas, productos
                     new Item[0], new Item[]{salvarVictima}, //itemsTodispose, itemsToGenerate
-                    new Conditions[]{haySeguridad,respiraC}); // condiciones
+                    new Condition[]{haySeguridad,respiraC}); // condiciones
+             Item telf = new Item("Telefono");
+             Item ambulanciaAvisada = new Item("Ambulancia Avisada");
+             Actividad llamar112  =  new Actividad(
+                    "Llamar 112", new Item[]{reanimador}, //nombre, sujetos
+                    new Item[0], new Item[]{ambulanciaAvisada}, // objetos, objetivos
+                    new Item[]{telf}, new Item[0], // herramientas, productos
+                    new Item[0], new Item[]{ambulanciaAvisada}, //itemsTodispose, itemsToGenerate
+                    new Condition[]{haySeguridad,respiraC}); // condiciones
+             Condition norespiraC = new Condition() {
+                public boolean Cumple(EstadoTA contx) {
+                    return contx.getEstadoItem("Victima No Respira").equals(EstadoItem.FREE);
+                }
+             };
+             Actividad llamarInmed112  =  new Actividad(
+                    "Llamar inmediatamente al 112", new Item[]{reanimador}, //nombre, sujetos
+                    new Item[0], new Item[]{ambulanciaAvisada}, // objetos, objetivos
+                    new Item[]{telf}, new Item[0], // herramientas, productos
+                    new Item[0], new Item[]{ambulanciaAvisada}, //itemsTodispose, itemsToGenerate
+                    new Condition[]{haySeguridad,norespiraC}); // condiciones
+             Item ayudante = new Item("Ayudante");
+             Item prioridadAyuda = new Item("PrioridadAyuda");
+             Condition ambulanciaC = new Condition() {
+                public boolean Cumple(EstadoTA contx) {
+                    return contx.getEstadoItem("Ambulancia Avisada").equals(EstadoItem.FREE);
+                }
+             };
+             Actividad pedirAyuda  =  new Actividad(
+                    "Pedir Ayuda", new Item[]{reanimador}, //nombre, sujetos
+                    new Item[]{ayudante}, new Item[]{prioridadAyuda}, // objetos, objetivos
+                    new Item[0], new Item[0], // herramientas, productos
+                    new Item[0], new Item[]{prioridadAyuda}, //itemsTodispose, itemsToGenerate
+                    new Condition[]{haySeguridad,norespiraC,ambulanciaC}); // condiciones
+             Item tomarPulso = new Item("Tomar Pulso Carotideo");
+             Condition prioridadAyudaC = new Condition() {
+                public boolean Cumple(EstadoTA contx) {
+                    return contx.getEstadoItem("PrioridadAyuda").equals(EstadoItem.FREE);
+                }
+             };
+             Actividad buscarPulsoCarotideo  =  new Actividad(
+                    "Buscar Pulso Carotideo", new Item[]{reanimador}, //nombre, sujetos
+                    new Item[]{victima}, new Item[]{tomarPulso}, // objetos, objetivos
+                    new Item[0], new Item[0], // herramientas, productos
+                    new Item[0], new Item[]{prioridadAyuda,tomarPulso}, //itemsTodispose, itemsToGenerate
+                    new Condition[]{haySeguridad,norespiraC,prioridadAyudaC}); // condiciones
+             Item victimaTienePulso = new Item("Victima Tiene Pulso");
+            Item victimaNoTienePulso = new Item("Victima No Tiene Pulso");
+            Actividad tienePulso =  new Actividad(
+                    "Victima Tiene Pulso", new Item[]{victima}, //nombre, sujetos
+                    new Item[0], new Item[0], // objetos, objetivos
+                    new Item[0], new Item[0], // herramientas, productos
+                    new Item[]{tomarPulso}, new Item[]{victimaTienePulso}, //itemsTodispose, itemsToGenerate
+                    new Condition[0]); // condiciones
+             Actividad notienePulso =  new Actividad(
+                    "Victima No Tiene Pulso", new Item[]{victima}, //nombre, sujetos
+                    new Item[0], new Item[0], // objetos, objetivos
+                    new Item[0], new Item[0], // herramientas, productos
+                    new Item[]{tomarPulso}, new Item[]{victimaNoTienePulso}, //itemsTodispose, itemsToGenerate
+                    new Condition[0]); // condiciones
+             Condition tienePulsoC = new Condition() {
+                public boolean Cumple(EstadoTA contx) {
+                    return contx.getEstadoItem("Victima Tiene Pulso").equals(EstadoItem.FREE);
+                }
+             };
+             Condition notienePulsoC = new Condition() {
+                public boolean Cumple(EstadoTA contx) {
+                    return contx.getEstadoItem("Victima No Tiene Pulso").equals(EstadoItem.FREE);
+                }
+             };
+             Item viaAereaLibre = new Item("via Aerea Libre");
+             Actividad limpiarViaAerea = new Actividad(
+                    "Limpiar Via Aerea", new Item[]{reanimador}, //nombre, sujetos
+                    new Item[]{victima}, new Item[]{viaAereaLibre}, // objetos, objetivos
+                    new Item[0], new Item[0], // herramientas, productos
+                    new Item[0], new Item[]{viaAereaLibre}, //itemsTodispose, itemsToGenerate
+                    new Condition[]{haySeguridad,norespiraC,prioridadAyudaC,tienePulsoC}); // condiciones
+             Condition viaAereaLibreC = new Condition() {
+                public boolean Cumple(EstadoTA contx) {
+                    return contx.getEstadoItem("via Aerea Libre").equals(EstadoItem.FREE);
+                }
+             };
+             Actividad reanimarRespiracion = new Actividad(
+                    "Reanimar Respiracion", new Item[]{reanimador}, //nombre, sujetos
+                    new Item[]{victima}, new Item[]{salvarVictima}, // objetos, objetivos
+                    new Item[0], new Item[0], // herramientas, productos
+                    new Item[]{victimaNoRespira}, new Item[]{salvarVictima,victimaRespira}, //itemsTodispose, itemsToGenerate
+                    new Condition[]{haySeguridad,norespiraC,
+                    prioridadAyudaC,tienePulsoC,viaAereaLibreC}); // condiciones
+            Item intentoResucitacion = new Item("Intento Resucitacion");
+            Actividad rcp = new Actividad(
+                    "Hacer RCP", new Item[]{reanimador}, //nombre, sujetos
+                    new Item[]{victima}, new Item[]{intentoResucitacion}, // objetos, objetivos
+                    new Item[0], new Item[0], // herramientas, productos
+                    new Item[0], new Item[]{intentoResucitacion}, //itemsTodispose, itemsToGenerate
+                    new Condition[]{haySeguridad,norespiraC,prioridadAyudaC,notienePulsoC}); // condiciones
+            Actividad resucitaPorRCP =  new Actividad(
+                    "Resucita Por RCP", new Item[]{victima}, //nombre, sujetos
+                    new Item[0], new Item[0], // objetos, objetivos
+                    new Item[0], new Item[]{salvarVictima,victimaRespira,victimaTienePulso}, // herramientas, productos
+                    new Item[]{intentoResucitacion}, new Item[]{salvarVictima,victimaRespira,victimaTienePulso}, //itemsTodispose, itemsToGenerate
+                    new Condition[0]); // condiciones
+            Actividad rcpFallida =  new Actividad(
+                    "RCP Fallida", new Item[]{victima}, //nombre, sujetos
+                    new Item[0], new Item[0], // objetos, objetivos
+                    new Item[0], new Item[0], // herramientas, productos
+                    new Item[]{intentoResucitacion}, new Item[0], //itemsTodispose, itemsToGenerate
+                    new Condition[0]); // condiciones
+             Condition rcpFallidaC = new Condition() {
+                public boolean Cumple(EstadoTA contx) {
+                    return contx.getEstadoActividad("RCP Fallida").equals(EstadoActividad.Finalized);
+                }
+             };
+             Item desfibrilador = new Item("Desfibrilador");
+             Item intentoDesfibrilacion = new Item("IntentoDesfibrilacion");
+             Actividad desfibrilar = new Actividad(
+                    "Desfibrilar", new Item[]{reanimador}, //nombre, sujetos
+                    new Item[]{victima}, new Item[]{intentoDesfibrilacion}, // objetos, objetivos
+                    new Item[]{desfibrilador}, new Item[0], // herramientas, productos
+                    new Item[0], new Item[]{intentoDesfibrilacion}, //itemsTodispose, itemsToGenerate
+                    new Condition[]{haySeguridad,norespiraC,prioridadAyudaC,notienePulsoC,rcpFallidaC}); // condiciones
+            Actividad resucitaPorDesfibrilador =  new Actividad(
+                    "Resucita Por Desfibrilador", new Item[]{victima}, //nombre, sujetos
+                    new Item[0], new Item[0], // objetos, objetivos
+                    new Item[0], new Item[]{salvarVictima,victimaRespira,victimaTienePulso}, // herramientas, productos
+                    new Item[]{intentoDesfibrilacion}, new Item[]{salvarVictima,victimaRespira,victimaTienePulso}, //itemsTodispose, itemsToGenerate
+                    new Condition[0]); // condiciones
+            Actividad desfibrilacionFallida =  new Actividad(
+                    "Desfibrilacion Fallida", new Item[]{victima}, //nombre, sujetos
+                    new Item[0], new Item[0], // objetos, objetivos
+                    new Item[0], new Item[0], // herramientas, productos
+                    new Item[]{intentoDesfibrilacion}, new Item[0], //itemsTodispose, itemsToGenerate
+                    new Condition[0]); // condiciones
+
+
             // Aqui construir el arbol de actividades
-            RCP.addActividadHija(comprobarConciencia);
-            RCP.addActividadHija(comprobarRespiracion);
-            RCP.addActividadHija(colocarPosicionSeguridad);
+            
             ActividadGenerator activGen = ActividadGenerator.getReference();
             ItemGenerator itemGen = ItemGenerator.getReference();
-            itemGen.addItem(reanimador);
-            itemGen.addItem(victima);
+            itemGen.addItem(reanimador); // inicial
+            itemGen.addItem(victima);  // inicial
             itemGen.addItem(seguridad);
             itemGen.addItem(salvarVictima);
             itemGen.addItem(analisisConciencia);
@@ -144,8 +268,19 @@ public class DemoTARCP {
             itemGen.addItem(analisisRespiracion);
             itemGen.addItem(victimaRespira);
             itemGen.addItem(victimaNoRespira);
+            itemGen.addItem(telf);   // inicial
+            itemGen.addItem(ambulanciaAvisada);
+            itemGen.addItem(ayudante);  // inicial
+            itemGen.addItem(prioridadAyuda);
+            itemGen.addItem(tomarPulso);
+            itemGen.addItem(victimaTienePulso);
+            itemGen.addItem(victimaNoTienePulso);
+            itemGen.addItem(viaAereaLibre);
+            itemGen.addItem(intentoResucitacion);
+            itemGen.addItem(desfibrilador);  // inicial
+            itemGen.addItem(intentoDesfibrilacion);
+
             activGen.addActividad(garantizarSeguridad);
-            activGen.addActividad(RCP);
             activGen.addActividad(comprobarConciencia);
             activGen.addActividad(victimaResponde);
             activGen.addActividad(victimaNoResponde);
@@ -153,6 +288,20 @@ public class DemoTARCP {
             activGen.addActividad(respira);
             activGen.addActividad(noRespira);
             activGen.addActividad(colocarPosicionSeguridad);
+            activGen.addActividad(llamar112);
+            activGen.addActividad(llamarInmed112);
+            activGen.addActividad(pedirAyuda);
+            activGen.addActividad(buscarPulsoCarotideo);
+            activGen.addActividad(tienePulso);
+            activGen.addActividad(notienePulso);
+            activGen.addActividad(limpiarViaAerea);
+            activGen.addActividad(reanimarRespiracion);
+            activGen.addActividad(rcp);
+            activGen.addActividad(resucitaPorRCP);
+            activGen.addActividad(rcpFallida);
+            activGen.addActividad(desfibrilar);
+            activGen.addActividad(resucitaPorDesfibrilador);
+            activGen.addActividad(desfibrilacionFallida);
         } catch (Exception ex) {
             Logger.getLogger(DemoTARCP.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -171,7 +320,10 @@ public class DemoTARCP {
         ListaEstadosItems lEstItems = new ListaEstadosItems();
         for (int i = 0; i < items.length; i++) {
             if (items[i].equalsIgnoreCase("reanimador") ||
-                    items[i].equalsIgnoreCase("victima")) {
+                    items[i].equalsIgnoreCase("victima") ||
+                    items[i].equalsIgnoreCase("Telefono") ||
+                    items[i].equalsIgnoreCase("Ayudante") ||
+                    items[i].equalsIgnoreCase("Desfibrilador")) {
                 lEstItems.addEstado(items[i], EstadoItem.FREE);
             } else {
                 lEstItems.addEstado(items[i], EstadoItem.DISPOSED);
@@ -182,9 +334,12 @@ public class DemoTARCP {
         laux.add(estadoIni);
         SistemaActividades interprete = new SistemaActividades(laux);
         // preparamos las proposiciones
-        Formula propA1 = new ProposicionItem("Salvar Victima", EstadoItem.FREE);
-        Formula propA1ini = new Not(propA1);
-        Formula formula = new AU(propA1ini,propA1); // siempre se salva la victima?
+        Formula propSalvada = new ProposicionItem("Salvar Victima", EstadoItem.FREE);
+        Formula propSalvadaini = new Not(propSalvada);
+        Formula respira = new ProposicionItem("Victima Respira", EstadoItem.FREE);
+        Formula tienepulso = new ProposicionItem("Victima Tiene Pulso", EstadoItem.FREE);
+        Formula signos = new And(respira, tienepulso);
+        Formula formula = new AU(propSalvadaini,signos); // siempre que se salva se analiza respiracion y pulso
         Launcher<EstadoTA> launcher = new Launcher<EstadoTA>(
                 new Contexto() {
                 }, interprete, formula);

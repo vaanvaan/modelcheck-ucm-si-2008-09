@@ -21,7 +21,7 @@ public class Actividad implements Comparable<Actividad> {
     private Item[] Objetives;
     private Item[] Tools;
     private Item[] Outcomes;
-    private Conditions[] condiciones;
+    private Condition[] condiciones;
     private Actividad padre = null;
     private TreeSet<Actividad> actividadesHijas = new TreeSet<Actividad>();
     private String nombre;
@@ -29,7 +29,7 @@ public class Actividad implements Comparable<Actividad> {
     private Item[] itemToDispose;
     private Item[] itemToGenerate;
 
-    public Actividad(String nombre,Item[] Subjects, Item[] Objects, Item[] Objetives, Item[] Tools, Item[] Outcomes, Item[] itemToDispose,Item[] itemToGenerate, Conditions[] condiciones) {
+    public Actividad(String nombre,Item[] Subjects, Item[] Objects, Item[] Objetives, Item[] Tools, Item[] Outcomes, Item[] itemToDispose,Item[] itemToGenerate, Condition[] condiciones) {
         this.Subjects = Subjects;
         this.Objects = Objects;
         this.Objetives = Objetives;
@@ -72,7 +72,7 @@ public class Actividad implements Comparable<Actividad> {
         return saux;
     }
 
-    public Conditions[] getCondiciones() {
+    public Condition[] getCondiciones() {
         return condiciones;
     }
 
@@ -80,7 +80,7 @@ public class Actividad implements Comparable<Actividad> {
         boolean b = true;
         int cont = 0;
         int max = this.condiciones.length;
-        Conditions c;
+        Condition c;
         while (b && (cont < max)) {
             c = this.condiciones[cont];
             b = b && c.Cumple(contx);
@@ -93,7 +93,7 @@ public class Actividad implements Comparable<Actividad> {
         return (this.getAntecesores().contains(a2.getNombre())) || (a2.getAntecesores().contains(this.getNombre()));
     }
 
-    public void setCondiciones(Conditions[] condiciones) {
+    public void setCondiciones(Condition[] condiciones) {
         this.condiciones = condiciones;
     }
 
