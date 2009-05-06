@@ -11,7 +11,7 @@ import ucm.si.TeoriaActividad.estado.EstadoTA;
  *
  * @author José Antonio
  */
-public interface Conditions
+public interface Condition
 {
     public boolean Cumple(EstadoTA contx);
 

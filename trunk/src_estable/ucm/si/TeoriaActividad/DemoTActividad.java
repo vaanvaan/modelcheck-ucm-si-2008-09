@@ -15,7 +15,7 @@ import ucm.si.TeoriaActividad.GUI.DrawerActividad;
 import ucm.si.TeoriaActividad.Interprete.SistemaActividades;
 import ucm.si.TeoriaActividad.actividad.Actividad;
 import ucm.si.TeoriaActividad.actividad.ActividadGenerator;
-import ucm.si.TeoriaActividad.actividad.Conditions;
+import ucm.si.TeoriaActividad.actividad.Condition;
 import ucm.si.TeoriaActividad.actividad.EstadoActividad;
 import ucm.si.TeoriaActividad.actividad.ListaEstadosActividades;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
@@ -55,10 +55,10 @@ public class DemoTActividad {
             Item[] listaItem2 = {item2, item4};
             Item[] listaItem3 = {item3, item5};
             Item[] listaItem4 = {item3, item4};
-            Actividad actividad1 = new Actividad("A1", listaItem1, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[]{item4}, new Conditions[0]);
-            Actividad actividad2 = new Actividad("A2", listaItem2, new Item[0], new Item[0], new Item[0], new Item[0], new Item[]{item4}, new Item[0], new Conditions[0]);
-            Actividad actividad3 = new Actividad("A3", listaItem3, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Conditions[0]);
-            Actividad actividad4 = new Actividad("A4", listaItem4, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Conditions[0]);
+            Actividad actividad1 = new Actividad("A1", listaItem1, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[]{item4}, new Condition[0]);
+            Actividad actividad2 = new Actividad("A2", listaItem2, new Item[0], new Item[0], new Item[0], new Item[0], new Item[]{item4}, new Item[0], new Condition[0]);
+            Actividad actividad3 = new Actividad("A3", listaItem3, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Condition[0]);
+            Actividad actividad4 = new Actividad("A4", listaItem4, new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Item[0], new Condition[0]);
             // Aqui construir el arbol de actividades
             actividad1.addActividadHija(actividad2);
             actividad1.addActividadHija(actividad4);
