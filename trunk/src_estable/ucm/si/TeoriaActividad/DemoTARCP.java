@@ -3,6 +3,8 @@
  */
 package ucm.si.TeoriaActividad;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,6 +13,10 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import ucm.si.TeoriaActividad.GUI.DrawerActividad;
 import ucm.si.TeoriaActividad.Interprete.SistemaActividades;
 import ucm.si.TeoriaActividad.actividad.Actividad;
@@ -28,10 +34,12 @@ import ucm.si.TeoriaActividad.proposiciones.ProposicionItem;
 import ucm.si.animadorGUI.Drawer;
 import ucm.si.animadorGUI.util.Launcher;
 import ucm.si.basico.ecuaciones.AU;
+import ucm.si.basico.ecuaciones.AX;
 import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.EU;
 import ucm.si.basico.ecuaciones.Formula;
 import ucm.si.basico.ecuaciones.Not;
+import ucm.si.basico.ecuaciones.Or;
 import ucm.si.basico.ecuaciones.Proposicion;
 import ucm.si.util.Contexto;
 
@@ -39,12 +47,51 @@ import ucm.si.util.Contexto;
  * @author Ivan
  *
  */
-public class DemoTARCP {
+public class DemoTARCP extends JFrame{
 
+    private JPanel botonera;
+    private ArrayList<JButton> botones;
+    private SistemaActividades interprete;
+    private ArrayList<Formula> propiedades;
+    private Launcher<EstadoTA> launcher;
+
+    public DemoTARCP() {
+        this.botones = new ArrayList<JButton>();
+        this.propiedades = new ArrayList<Formula>();
+        this.botonera = new JPanel();
+        this.botonera.setLayout(new BoxLayout(this.botonera,BoxLayout.Y_AXIS));
+        this.setContentPane(this.botonera);
+        this.setTitle("Demo RCP");
+        this.crearActividades();
+        ActividadGenerator activGen = ActividadGenerator.getReference();
+        ItemGenerator itemGen = ItemGenerator.getReference();
+        String[] actividades = activGen.getConjunto().keySet().toArray(new String[0]);
+        String[] items = itemGen.getItems();
+        ListaEstadosActividades lEstAct = new ListaEstadosActividades();
+        for (int i = 0; i < actividades.length; i++) {
+            lEstAct.addEstado(actividades[i], EstadoActividad.Waiting);
+        }
+        ListaEstadosItems lEstItems = new ListaEstadosItems();
+        for (int i = 0; i < items.length; i++) {
+            if (items[i].equalsIgnoreCase("reanimador") ||
+                    items[i].equalsIgnoreCase("victima") ||
+                    items[i].equalsIgnoreCase("Telefono") ||
+                    items[i].equalsIgnoreCase("Ayudante") ||
+                    items[i].equalsIgnoreCase("Desfibrilador")) {
+                lEstItems.addEstado(items[i], EstadoItem.FREE);
+            } else {
+                lEstItems.addEstado(items[i], EstadoItem.DISPOSED);
+            }
+        }
+        EstadoTA estadoIni = new EstadoTA(lEstItems, lEstAct, new TreeMap<String, Set<String>>());
+        List<EstadoTA> laux = new ArrayList<EstadoTA>();
+        laux.add(estadoIni);
+        this.interprete = new SistemaActividades(laux);
+    }
     /**
      * @param args
      */
-    private static void crearActividades() {
+    private  void crearActividades() {
         try {
             Item reanimador = new Item("Reanimador");
             Item victima = new Item("Victima");
@@ -308,43 +355,61 @@ public class DemoTARCP {
     }
 
     public static void main(String[] args) {
-        DemoTARCP.crearActividades();
-        ActividadGenerator activGen = ActividadGenerator.getReference();
-        ItemGenerator itemGen = ItemGenerator.getReference();
-        String[] actividades = activGen.getConjunto().keySet().toArray(new String[0]);
-        String[] items = itemGen.getItems();
-        ListaEstadosActividades lEstAct = new ListaEstadosActividades();
-        for (int i = 0; i < actividades.length; i++) {
-            lEstAct.addEstado(actividades[i], EstadoActividad.Waiting);
-        }
-        ListaEstadosItems lEstItems = new ListaEstadosItems();
-        for (int i = 0; i < items.length; i++) {
-            if (items[i].equalsIgnoreCase("reanimador") ||
-                    items[i].equalsIgnoreCase("victima") ||
-                    items[i].equalsIgnoreCase("Telefono") ||
-                    items[i].equalsIgnoreCase("Ayudante") ||
-                    items[i].equalsIgnoreCase("Desfibrilador")) {
-                lEstItems.addEstado(items[i], EstadoItem.FREE);
-            } else {
-                lEstItems.addEstado(items[i], EstadoItem.DISPOSED);
-            }
-        }
-        EstadoTA estadoIni = new EstadoTA(lEstItems, lEstAct, new TreeMap<String, Set<String>>());
-        List<EstadoTA> laux = new ArrayList<EstadoTA>();
-        laux.add(estadoIni);
-        SistemaActividades interprete = new SistemaActividades(laux);
+        DemoTARCP demo = new DemoTARCP();
         // preparamos las proposiciones
+        Formula noRespira = new ProposicionActividad("Victima No Respira", EstadoActividad.Executing);
+        Formula noTienePulso = new ProposicionActividad("Victima No Tiene Pulso", EstadoActividad.Executing);
+        Formula grave = new Or(noRespira,noTienePulso);
+        Formula llamaAmbulancia = new ProposicionActividad("Llamar inmediatamente al 112", EstadoActividad.Executing);
+        Formula siguienteLlamaAmbulancia = new AX(llamaAmbulancia);
+        Formula respira = new ProposicionActividad("Victima Respira", EstadoActividad.Finalized);
+        Formula tienePulso = new ProposicionActividad("Victima Tiene Pulso", EstadoActividad.Finalized);
+        Formula incertidumbre = new Not(new Or(new Or(noRespira,respira),
+                                        new Or(noTienePulso,tienePulso)));
+        Formula graveynollama = new And(grave,new Not(siguienteLlamaAmbulancia));
+        Formula formula = new Not(new EU(incertidumbre,graveynollama));
+        demo.addPropiedad(formula, "Si una victima esta grave, se llama a una ambulancia.");
+
         Formula propSalvada = new ProposicionItem("Salvar Victima", EstadoItem.FREE);
-        Formula propSalvadaini = new Not(propSalvada);
-        Formula respira = new ProposicionItem("Victima Respira", EstadoItem.FREE);
+        Formula nopropSalvada = new Not(propSalvada);
+        Formula graveymastardesesalva = new And(grave,new EU(nopropSalvada,propSalvada));
+        formula  = new EU(incertidumbre, graveymastardesesalva);
+        demo.addPropiedad(formula, "Es posible salvar la vida de una victima grave.");
+
+        
+        Formula respiraI = new ProposicionItem("Victima Respira", EstadoItem.FREE);
         Formula tienepulso = new ProposicionItem("Victima Tiene Pulso", EstadoItem.FREE);
-        Formula signos = new And(respira, tienepulso);
-        Formula formula = new AU(propSalvadaini,signos); // siempre que se salva se analiza respiracion y pulso
-        Launcher<EstadoTA> launcher = new Launcher<EstadoTA>(
-                new Contexto() {
-                }, interprete, formula);
+        Formula signos = new And(respiraI, tienepulso);
+        formula = new AU(nopropSalvada,signos); // siempre que se salva se analiza respiracion y pulso
+        demo.addPropiedad(formula, "Siempre que se salva se ha analizado respiracion y pulso.");
+
+        demo.lanzar();
+    }
+
+    private void addPropiedad(Formula propiedad, String nombrePropiedad) {
+        JButton boton = new JButton(nombrePropiedad);
+        this.botones.add(boton);
+        this.propiedades.add(propiedad);
+        boton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                check(arg0.getSource());
+            }
+        });
+        this.botonera.add(boton);
+    }
+    private void check(Object o){
+        int posicion = this.botones.indexOf(o);
+        Formula f = this.propiedades.get(posicion);
+        this.launcher = new Launcher<EstadoTA>(
+                new Contexto() {}, this.interprete, f);
         launcher.runCheck();
-        Drawer drw = new DrawerActividad(interprete);
+        Drawer drw = new DrawerActividad(this.interprete);
         launcher.launchGrafico(drw);
+
+    }
+
+    private void lanzar() {
+        this.setVisible(true);
+        this.pack();
     }
 }

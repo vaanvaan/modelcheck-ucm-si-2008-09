@@ -314,39 +314,29 @@ public class SistemaActividades implements Interprete<EstadoTA> {
 
     private String nombreTransicion(EstadoTA eini, EstadoTA efin) {
         StringBuffer strbuf = new StringBuffer();
-        StringBuffer strbuf2 = new StringBuffer();
         for (int a = 0; a < actividades.length; a++) {
             String s = actividades[a];
             if (!eini.getEstadoActividad(s).equals(efin.getEstadoActividad(s))) {
-                strbuf.append(s + "->" + efin.getEstadoActividad(s).toString() + ", ");
-            }
-            if ((eini.getItemsPoseidos(s) == null) ||
-                    (efin.getItemsPoseidos(s) == null) ||
-                    (!Arrays.equals(eini.getItemsPoseidos(s), efin.getItemsPoseidos(s)))) {
-                String[] itemsp = efin.getItemsPoseidos(s);
-                if (itemsp != null) {
-                    java.util.Arrays.sort(itemsp);
-                    strbuf2.append(s + " posee ");
-                    for (int i = 0; i < itemsp.length; i++) {
-                        strbuf2.append(itemsp[i] + ", ");
-                    }
-                } else {
-                    itemsp = eini.getItemsPoseidos(s);
-                    if (itemsp != null) {
-                        java.util.Arrays.sort(itemsp);
-                        strbuf2.append(s + " suelta ");
-                        for (int i = 0; i < itemsp.length; i++) {
-                            strbuf2.append(itemsp[i] + ", ");
-                        }
-                    }
-
+                strbuf.append(s + "->");
+                switch (efin.getEstadoActividad(s)){
+                    case Waiting:
+                        strbuf.append('W');
+                        break;
+                    case Executing:
+                        strbuf.append('E');
+                        break;
+                    default:
+                        strbuf.append('F');
                 }
+                strbuf.append(',');
             }
         }
-        if ((strbuf.length() == 0) && (strbuf2.length() == 0)) {
+        strbuf.deleteCharAt(strbuf.length()-1);
+
+        if (strbuf.length() == 0) {
             return efin.toString();
         } else {
-            return strbuf.append(strbuf2).toString();
+            return strbuf.toString();
         }
     }
 
