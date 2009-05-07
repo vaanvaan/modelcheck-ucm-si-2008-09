@@ -25,10 +25,12 @@ public class ItemDrawer extends Component implements ListCellRenderer{
     private TreeMap<String, Color> mapeadoColores;
     private EstadoItem ei;
     private boolean activado;
+    private float tam;
 
-    ItemDrawer(TreeMap<String, Color> mapeadoColores,boolean activado) {
+    ItemDrawer(TreeMap<String, Color> mapeadoColores,boolean activado,float tam) {
         this.mapeadoColores = mapeadoColores;
         this.activado = activado;
+        this.tam = tam;
     }
 
     public Component getListCellRendererComponent(JList arg0, Object arg1, int arg2, boolean arg3, boolean arg4) {
@@ -49,7 +51,7 @@ public class ItemDrawer extends Component implements ListCellRenderer{
             c = escalaGrises(c);
             cxor = escalaGrises(cxor);
         }
-        int lado = 2*(int)rect.getHeight() - 4;
+        int lado = (int)(rect.getHeight()*tam) - 2;
         if (ei.equals(EstadoItem.FREE)){
             arg0.setColor(c);
             arg0.fillOval(0, 1, lado, lado);
@@ -61,9 +63,9 @@ public class ItemDrawer extends Component implements ListCellRenderer{
             arg0.setColor(Color.black);
             arg0.drawOval(0, 1, lado, lado);
             arg0.setColor(c);
-            arg0.fillOval(4, 5, lado - 8, lado-8);
+            arg0.fillOval(2*(int)tam, 3*(int)tam, lado - 4*(int)tam, lado-4*(int)tam);
             arg0.setColor(Color.black);
-            arg0.drawOval(4, 5, lado - 8, lado-8);
+            arg0.drawOval(2*(int)tam, 3*(int)tam, lado - 4*(int)tam, lado-4*(int)tam);
         } else {
             arg0.setColor(c);
             arg0.fillOval(0, 1, lado, lado);
@@ -79,13 +81,13 @@ public class ItemDrawer extends Component implements ListCellRenderer{
             arg0.drawPolygon(px, py, px.length);
         }
         arg0.setColor(Color.BLACK);
-        arg0.setFont(arg0.getFont().deriveFont(2.0F*arg0.getFont().getSize()));
+        arg0.setFont(arg0.getFont().deriveFont(tam*arg0.getFont().getSize()));
         arg0.drawString(texto, lado+1, lado-1);
     }
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(2*(14 + 8*texto.length()), 2*14);
+        return new Dimension((int)(tam*(14 + 8*texto.length())), (int)(tam*14));
     }
 
     private Color escalaGrises(Color c) {
