@@ -37,6 +37,7 @@ import ucm.si.basico.ecuaciones.AU;
 import ucm.si.basico.ecuaciones.AX;
 import ucm.si.basico.ecuaciones.And;
 import ucm.si.basico.ecuaciones.EU;
+import ucm.si.basico.ecuaciones.EX;
 import ucm.si.basico.ecuaciones.Formula;
 import ucm.si.basico.ecuaciones.Not;
 import ucm.si.basico.ecuaciones.Or;
@@ -162,20 +163,31 @@ public class DemoTARCP extends JFrame{
                     return contx.getEstadoItem("Victima Respira").equals(EstadoItem.FREE);
                 }
              };
+             Condition victimaNoSalvada = new Condition() {
+                public boolean Cumple(EstadoTA contx) {
+                    return !contx.getEstadoItem("Salvar Victima").equals(EstadoItem.FREE);
+                }
+             };
+
              Actividad colocarPosicionSeguridad  =  new Actividad(
                     "Colocar en Posicion de Seguridad", new Item[]{reanimador}, //nombre, sujetos
                     new Item[]{victima}, new Item[]{salvarVictima}, // objetos, objetivos
                     new Item[0], new Item[0], // herramientas, productos
                     new Item[0], new Item[]{salvarVictima}, //itemsTodispose, itemsToGenerate
-                    new Condition[]{haySeguridad,respiraC}); // condiciones
+                    new Condition[]{haySeguridad,respiraC,victimaNoSalvada}); // condiciones
              Item telf = new Item("Telefono");
              Item ambulanciaAvisada = new Item("Ambulancia Avisada");
+             Condition ambulanciaNoAvisada = new Condition() {
+                public boolean Cumple(EstadoTA contx) {
+                    return !contx.getEstadoItem("Ambulancia Avisada").equals(EstadoItem.FREE);
+                }
+            };
              Actividad llamar112  =  new Actividad(
                     "Llamar 112", new Item[]{reanimador}, //nombre, sujetos
                     new Item[0], new Item[]{ambulanciaAvisada}, // objetos, objetivos
                     new Item[]{telf}, new Item[0], // herramientas, productos
                     new Item[0], new Item[]{ambulanciaAvisada}, //itemsTodispose, itemsToGenerate
-                    new Condition[]{haySeguridad,respiraC}); // condiciones
+                    new Condition[]{haySeguridad,respiraC,ambulanciaNoAvisada}); // condiciones
              Condition norespiraC = new Condition() {
                 public boolean Cumple(EstadoTA contx) {
                     return contx.getEstadoItem("Victima No Respira").equals(EstadoItem.FREE);
@@ -266,7 +278,7 @@ public class DemoTARCP extends JFrame{
                     "Resucita Por RCP", new Item[]{victima}, //nombre, sujetos
                     new Item[0], new Item[0], // objetos, objetivos
                     new Item[0], new Item[]{salvarVictima,victimaRespira,victimaTienePulso}, // herramientas, productos
-                    new Item[]{intentoResucitacion}, new Item[]{salvarVictima,victimaRespira,victimaTienePulso}, //itemsTodispose, itemsToGenerate
+                    new Item[]{intentoResucitacion,victimaNoRespira,victimaNoTienePulso}, new Item[]{salvarVictima,victimaRespira,victimaTienePulso}, //itemsTodispose, itemsToGenerate
                     new Condition[0]); // condiciones
             Actividad rcpFallida =  new Actividad(
                     "RCP Fallida", new Item[]{victima}, //nombre, sujetos
@@ -291,7 +303,7 @@ public class DemoTARCP extends JFrame{
                     "Resucita Por Desfibrilador", new Item[]{victima}, //nombre, sujetos
                     new Item[0], new Item[0], // objetos, objetivos
                     new Item[0], new Item[]{salvarVictima,victimaRespira,victimaTienePulso}, // herramientas, productos
-                    new Item[]{intentoDesfibrilacion}, new Item[]{salvarVictima,victimaRespira,victimaTienePulso}, //itemsTodispose, itemsToGenerate
+                    new Item[]{intentoDesfibrilacion,victimaNoRespira,victimaNoTienePulso}, new Item[]{salvarVictima,victimaRespira,victimaTienePulso}, //itemsTodispose, itemsToGenerate
                     new Condition[0]); // condiciones
             Actividad desfibrilacionFallida =  new Actividad(
                     "Desfibrilacion Fallida", new Item[]{victima}, //nombre, sujetos
@@ -381,8 +393,22 @@ public class DemoTARCP extends JFrame{
         Formula tienepulso = new ProposicionItem("Victima Tiene Pulso", EstadoItem.FREE);
         Formula signos = new And(respiraI, tienepulso);
         formula = new AU(nopropSalvada,signos); // siempre que se salva se analiza respiracion y pulso
-        demo.addPropiedad(formula, "Siempre que se salva se ha analizado respiracion y pulso.");
+        demo.addPropiedad(formula, "Siempre que se salva, se ha analizado respiracion y pulso.");
 
+        formula = new EU(new Proposicion() {
+
+            @Override
+            public boolean esCierta(Object s) {
+                return true;
+            }
+        }, new Proposicion() {
+
+            @Override
+            public boolean esCierta(Object s) {
+                return false;
+            }
+        });
+        demo.addPropiedad(formula, "Ver todo el grafo.");
         demo.lanzar();
     }
 
