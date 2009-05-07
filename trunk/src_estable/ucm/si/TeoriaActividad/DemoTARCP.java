@@ -396,20 +396,6 @@ public class DemoTARCP extends JFrame{
         formula = new AU(nopropSalvada,signos); // siempre que se salva se analiza respiracion y pulso
         demo.addPropiedad(formula, "Siempre que se salva, se ha analizado respiracion y pulso.");
 
-        formula = new EU(new Proposicion() {
-
-            @Override
-            public boolean esCierta(Object s) {
-                return true;
-            }
-        }, new Proposicion() {
-
-            @Override
-            public boolean esCierta(Object s) {
-                return false;
-            }
-        });
-        demo.addPropiedad(formula, "Ver todo el grafo.");
         demo.lanzar();
     }
 
