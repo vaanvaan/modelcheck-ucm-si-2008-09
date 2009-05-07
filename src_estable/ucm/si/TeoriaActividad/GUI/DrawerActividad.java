@@ -85,6 +85,8 @@ public class DrawerActividad extends Drawer<EstadoTA>{
             }
         };
         jlItems.setCellRenderer(new ItemDrawer(mapeadoColores,true));
+        jlItems.setAlignmentY(Component.TOP_ALIGNMENT);
+        pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
         pane.add(jlItems);
         LinkedList<String> actividades = p.getActividadesOrdenadas();
         dmtNodes = new LinkedList<DefaultMutableTreeNode>();
@@ -134,11 +136,12 @@ public class DrawerActividad extends Drawer<EstadoTA>{
         for (int i = 0; i < listaNodosRaiz.size(); i++) {
             DefaultMutableTreeNode a = listaNodosRaiz.get(i);
             JTree jtActividades = new JTree(a);
-            jtActividades.setCellRenderer(new ActivityDrawer(mapeadoColores,p));
+            jtActividades.setCellRenderer(new ActivityDrawerSimple(mapeadoColores,p));
             jtActividades.setAlignmentX(Component.LEFT_ALIGNMENT);
             listaArboles.add(jtActividades);
             panelActividades2.add(jtActividades);
         }
+        panelActividades2.setAlignmentY(Component.TOP_ALIGNMENT);
         pane.add(panelActividades2);
     }
 

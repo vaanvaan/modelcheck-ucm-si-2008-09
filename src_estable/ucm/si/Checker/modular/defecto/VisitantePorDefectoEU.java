@@ -108,7 +108,7 @@ public class VisitantePorDefectoEU<S> extends ModuloVisitante implements Visitan
                                 cej.setArista(estado, s);
                             }
                         }
-                    } else if (resParcial.equals(Resultado.COD_FALSE)) {
+                    } else {
                         if (eanterior != null) {
                             cej.setArista(eanterior, estado);
                         }
