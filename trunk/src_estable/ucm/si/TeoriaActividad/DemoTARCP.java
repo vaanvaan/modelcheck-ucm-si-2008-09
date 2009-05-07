@@ -88,6 +88,7 @@ public class DemoTARCP extends JFrame{
         List<EstadoTA> laux = new ArrayList<EstadoTA>();
         laux.add(estadoIni);
         this.interprete = new SistemaActividades(laux);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     /**
      * @param args

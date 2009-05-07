@@ -4,8 +4,10 @@
  */
 package ucm.si.TeoriaActividad.GUI;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.util.TreeMap;
 import javax.swing.DefaultListModel;
@@ -26,9 +28,10 @@ import ucm.si.TeoriaActividad.item.Item;
  *
  * @author nico
  */
-public class ActivityDrawer extends JPanel implements TreeCellRenderer {
+public class ActivityDrawer extends JPanel{
 
     private String texto;
+    private EstadoTA ei;
     private TreeMap<String, Color> mapeadoColores;
     private JList jlitemsObjetos;
     private SistemaActividades p;
@@ -39,12 +42,12 @@ public class ActivityDrawer extends JPanel implements TreeCellRenderer {
         this.p = p;
     }
 
-    public Component getTreeCellRendererComponent(JTree arg0, Object arg1, boolean arg2, boolean arg3, boolean arg4, int arg5, boolean arg6) {
+    void setInfo(String texto, EstadoTA ei) {
+        this.texto = texto;
+        this.ei = ei;
+        if (texto!=null){
         this.removeAll();
-        DefaultMutableTreeNode dmtn = (DefaultMutableTreeNode)arg1;
-        Object[] e = (Object[])dmtn.getUserObject();
-        this.texto = (String) e[0];
-        EstadoTA ei = (EstadoTA) e[1];
+        this.setLayout(new FlowLayout());
         boolean activa = ei.getEstadoActividad(this.texto).equals(EstadoActividad.Executing);
         boolean finalizada = ei.getEstadoActividad(this.texto).equals(EstadoActividad.Finalized);
         if (!finalizada) {
@@ -65,7 +68,7 @@ public class ActivityDrawer extends JPanel implements TreeCellRenderer {
                 }
             }
             this.jlitemsObjetos = new JList(dlmItems);
-            this.jlitemsObjetos.setCellRenderer(new ItemDrawer(mapeadoColores, activa));
+            this.jlitemsObjetos.setCellRenderer(new ItemDrawer(mapeadoColores, activa,1F));
             if (!activa) {
                 this.jlitemsObjetos.setEnabled(false);
             }
@@ -104,15 +107,15 @@ public class ActivityDrawer extends JPanel implements TreeCellRenderer {
             if (!activa) {
                 this.jlitemsGenerados.setEnabled(false);
             }
-            this.jlitemsGenerados.setCellRenderer(new ItemDrawer(mapeadoColores, activa));
+            this.jlitemsGenerados.setCellRenderer(new ItemDrawer(mapeadoColores, activa,1F));
             this.add(this.jlitemsGenerados);
         }
-        return this;
+        }
     }
-
+   
     @Override
     protected void paintComponent(Graphics arg0) {
         super.paintComponent(arg0);
-        arg0.drawRoundRect(0, 0, this.getWidth() - 1, this.getHeight()-1,6,6);
+        //arg0.drawRoundRect(0, 0, this.getWidth() - 1, this.getHeight()-1,6,6);
     }
 }
