@@ -1,6 +1,5 @@
 package ucm.si.animadorGUI;
 
-import com.sun.org.apache.xerces.internal.impl.dv.xs.IntegerDV;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
