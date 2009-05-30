@@ -54,81 +54,35 @@ public class Launcher<S>
         
     }
 
-    public void runCheck()
+    public Resultado<S> runCheck()
     {
-        /*this.resultado = this.checker.chequear(interprete, formula, resultado);
-        String res = this.resultado.getResultado();
-        GrafoCaminos<S> camino = null;
-        if(res.equals(Resultado.COD_TRUE) || res.equals(Resultado.COD_MAYBET) )
-        {
-            camino = this.resultado.getEjemplo();
-        }
-        else if(res.equals(Resultado.COD_FALSE) || res.equals(Resultado.COD_MAYBEF) )
-        {
-            camino = this.resultado.getContraejemplo();
-        }
-        else
-        {
-            // generar log de error
-        }
-        
-        Roseta<S> roseta = this.checker.getRoseta();
-        this.navegador = new Navegador<S>(camino, roseta);*/
         S ini = this.interprete.iniciales().get(0);
-        this.runCheck(ini);
-    
+        return this.runCheck(ini);
     }
     
-    public void runCheck(S inicio)
+    public Resultado<S> runCheck(S inicio)
     {
-        //m.chequear(lab, new Not(haycamino), pos)
         this.resultado = this.checker.chequear(interprete, formula, inicio);
-        String res = this.resultado.getResultado();
+        return this.resultado;
+    }
+    
+    public void launchGrafico(Drawer<S> dw , int tipoBotonera)
+    {
+        Resultado<S> res = this.resultado;
         GrafoCaminos<S> camino = null;
-        if(res.equals(Resultado.COD_TRUE) || res.equals(Resultado.COD_MAYBET) )
+        if (res.equals(Resultado.COD_TRUE))
         {
             camino = this.resultado.getEjemplo();
-            JOptionPane.showMessageDialog(new JFrame(), "La formula es "+ res);
         }
-        else if(res.equals(Resultado.COD_FALSE) || res.equals(Resultado.COD_MAYBEF) )
+        else if(res.equals(Resultado.COD_FALSE))
         {
             camino = this.resultado.getContraejemplo();
-            JOptionPane.showMessageDialog(new JFrame(), "La formula es falsa");
         }
-        else
-        {
-            // generar log de error
-        }
-        
+
         Roseta<S> roseta = this.checker.getRoseta();
         this.navegador = new Navegador<S>(camino, roseta,interprete.dameTransiciones());
-
-    }
-    
-    public void launchGrafico(Drawer<S> dw )
-    {
-        AnimadorGrafico<S> anim = new AnimadorGrafico<S>((Navegador<S>) this.navegador, dw, this.contexto);
-        
-        /*lab = new Laberinto(20);
-        DefaultModelChecker<Posicion> m = new DefaultModelChecker<Posicion>();
-        Posicion pos = new Posicion(1, 1);
-        LaberintoPropo prop = new LaberintoPropo(pos);
-        prop.setLab(lab);
-        Final fin = new Final(lab.getDim() - 1, lab.getDim() - 1);
-        Formula nofin = new And(new Not(fin), prop);
-        Formula haycamino = new EU(nofin, fin);
-        Resultado<Posicion> res = m.chequear(lab, new Not(haycamino), pos);
-        Navegador<Posicion> nav;
-        if (res.equals(Resultado.COD_TRUE)) {
-            System.out.println("La formula es cierta.");
-            nav = new Navegador<Posicion>(res.getEjemplo(), m.getRoseta());
-        } else {
-            System.out.println("La formula es falsa.");
-            nav = new Navegador<Posicion>(res.getContraejemplo(), m.getRoseta());
-        }
-        ContextoLaberinto contxt = new ContextoLaberinto();
-        contxt.setLab(lab);
-        AnimadorGrafico<Posicion> anim = new AnimadorGrafico<Posicion>(nav, new DrawerLaberinto(), contxt);*/
+        AnimadorGrafico<S> anim = new AnimadorGrafico<S>((Navegador<S>) this.navegador,
+                dw, this.contexto, tipoBotonera);
     }
     
     
