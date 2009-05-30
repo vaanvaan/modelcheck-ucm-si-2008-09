@@ -1,25 +1,11 @@
 package ucm.si.animadorGUI;
 
 import ucm.si.util.Contexto;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
-import javax.swing.JOptionPane;
 
-import ucm.si.Checker.DefaultModelChecker;
-import ucm.si.Checker.ModelChecker;
-import ucm.si.Checker.Resultado;
 import ucm.si.Checker.util.StateAndLabel;
-import ucm.si.Laberinto.Final;
-import ucm.si.Laberinto.Laberinto;
-import ucm.si.Laberinto.LaberintoPropo;
-import ucm.si.Laberinto.Posicion;
-import ucm.si.basico.ecuaciones.And;
-import ucm.si.basico.ecuaciones.EU;
-import ucm.si.basico.ecuaciones.Formula;
-import ucm.si.basico.ecuaciones.Not;
 import ucm.si.navegador.AnimadorInterface;
 import ucm.si.navegador.Navegador;
 import ucm.si.navegador.events.Avanza;
@@ -29,15 +15,16 @@ import ucm.si.navegador.events.Retrocede;
 public class AnimadorGrafico<S> extends AnimadorInterface<S> 
 {
 	private S estadoactual;
-	private static Laberinto lab;
 	FrameAnimador<S> frame;
+    public static final int BOTONERA_CLASICA = 0;
+    public static final int BOTONERA_COMBO = 1;
 	
-        public AnimadorGrafico(Navegador<S> n, Drawer<S> dw, Contexto cntxt) 
+        public AnimadorGrafico(Navegador<S> n, Drawer<S> dw, Contexto cntxt, int tipoBotonera)
         {
         	super(n); 
             
             this.estadoactual = navigator.dameInicial();
-            this.frame = new FrameAnimador<S>(this, dw, cntxt);
+            this.frame = new FrameAnimador<S>(this, dw, cntxt,tipoBotonera);
             //this.frame.setDrawer(dw);
 	}
 

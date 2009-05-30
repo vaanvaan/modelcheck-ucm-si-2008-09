@@ -11,6 +11,7 @@ import ucm.si.Laberinto.Final;
 import ucm.si.Laberinto.Laberinto;
 import ucm.si.Laberinto.LaberintoPropo;
 import ucm.si.Laberinto.Posicion;
+import ucm.si.animadorGUI.AnimadorGrafico;
 import ucm.si.basico.ecuaciones.*;
 
 /**
@@ -42,7 +43,7 @@ public class DemoLaberinto {
         launcher.runCheck(pos);
         
         Drawer dw = new DrawerLaberinto();
-        launcher.launchGrafico(dw);
+        launcher.launchGrafico(dw,AnimadorGrafico.BOTONERA_CLASICA);
     }
 
 }

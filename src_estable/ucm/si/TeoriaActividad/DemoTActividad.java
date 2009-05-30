@@ -24,6 +24,7 @@ import ucm.si.TeoriaActividad.item.Item;
 import ucm.si.TeoriaActividad.item.ItemGenerator;
 import ucm.si.TeoriaActividad.item.ListaEstadosItems;
 import ucm.si.TeoriaActividad.proposiciones.ProposicionActividad;
+import ucm.si.animadorGUI.AnimadorGrafico;
 import ucm.si.animadorGUI.Drawer;
 import ucm.si.animadorGUI.util.Launcher;
 import ucm.si.basico.ecuaciones.And;
@@ -129,6 +130,6 @@ public class DemoTActividad {
                 }, interprete, formula);
         launcher.runCheck();
         Drawer drw = new DrawerActividad(interprete);
-        launcher.launchGrafico(drw);
+        launcher.launchGrafico(drw,AnimadorGrafico.BOTONERA_COMBO);
     }
 }
