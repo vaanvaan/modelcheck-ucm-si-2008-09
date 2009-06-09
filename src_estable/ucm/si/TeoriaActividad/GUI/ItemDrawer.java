@@ -45,44 +45,48 @@ public class ItemDrawer extends Component implements ListCellRenderer{
         super.paint(arg0);
         arg0.clearRect(0, 0, this.getWidth(), this.getHeight());
         Rectangle2D rect = arg0.getFont().getStringBounds(texto, arg0.getFontMetrics().getFontRenderContext());
-        Color c = mapeadoColores.get(texto);
+        Color c = Color.GREEN;//mapeadoColores.get(texto);
         Color cxor = Color.RED;
         if (!this.activado){
             c = escalaGrises(c);
             cxor = escalaGrises(cxor);
         }
-        int lado = (int)(rect.getHeight()*tam) - 2;
+        double lado = (rect.getHeight()*(double)tam) - (double)2;
         if (ei.equals(EstadoItem.FREE)){
             arg0.setColor(c);
-            arg0.fillOval(0, 1, lado, lado);
+            arg0.fillOval(0, 0, (int)(lado-1), (int)(lado-1));
             arg0.setColor(Color.black);
-            arg0.drawOval(0, 1, lado, lado);
+            arg0.drawOval(0, 0, (int)(lado-1), (int)(lado-1));
         } else if (ei.equals(EstadoItem.BUSY)){
-            arg0.setColor(cxor);
-            arg0.fillOval(0, 1, lado, lado);
+            /*arg0.setColor(cxor);
+            arg0.fillOval(0, 0, (int)(lado-1), (int)(lado-1));
             arg0.setColor(Color.black);
-            arg0.drawOval(0, 1, lado, lado);
+            arg0.drawOval(0, 0, (int)(lado-1), (int)(lado-1));
             arg0.setColor(c);
-            arg0.fillOval(2*(int)tam, 3*(int)tam, lado - 4*(int)tam, lado-4*(int)tam);
+            arg0.fillOval((int)(0.2*lado), (int)(0.2*lado), (int)(0.6*lado)-1, (int)(0.6*lado)-1);
             arg0.setColor(Color.black);
-            arg0.drawOval(2*(int)tam, 3*(int)tam, lado - 4*(int)tam, lado-4*(int)tam);
+            arg0.drawOval((int)(0.2*lado), (int)(0.2*lado), (int)(0.6*lado)-1, (int)(0.6*lado)-1);*/
+            arg0.setColor(cxor);
+            arg0.fillOval(0, 0, (int)(lado-1), (int)(lado-1));
+            arg0.setColor(Color.black);
+            arg0.drawOval(0, 0, (int)(lado-1), (int)(lado-1));
         } else {
-            arg0.setColor(c);
-            arg0.fillOval(0, 1, lado, lado);
+            /*arg0.setColor(c);
+            arg0.fillOval(0, 0, (int)(lado-1), (int)(lado-1));
             arg0.setColor(Color.black);
-            arg0.drawOval(0, 1, lado, lado);
+            arg0.drawOval(0, 0, (int)(lado-1), (int)(lado-1));*/
             arg0.setColor(cxor);
-            int ldp5 = lado/5;
-            int ldp2 = lado/2;
-            int[] px = new int[]{0,ldp5,ldp2,lado-ldp5,lado,ldp2+ldp5,lado,lado-ldp5,ldp2,ldp5,0,ldp2-ldp5};
-            int[] py = new int[]{ldp5+1,0+1,ldp2-ldp5+1,0+1,ldp5+1,ldp2+1,lado-ldp5+1,lado+1,ldp2+ldp5+1,lado+1,lado-ldp5+1,ldp2+1};
+            int ldp5 = (int)(lado/5.0);
+            int ldp2 = (int)(lado/2.0);
+            int[] px = new int[]{0,ldp5,ldp2,(int)lado-ldp5,(int)lado,ldp2+ldp5,(int)lado,(int)lado-ldp5,ldp2,ldp5,0,ldp2-ldp5};
+            int[] py = new int[]{ldp5+1,0+1,ldp2-ldp5+1,0+1,ldp5+1,ldp2+1,(int)lado-ldp5+1,(int)lado+1,ldp2+ldp5+1,(int)lado+1,(int)lado-ldp5+1,ldp2+1};
             arg0.fillPolygon(px, py, px.length);
             arg0.setColor(Color.black);
             arg0.drawPolygon(px, py, px.length);
         }
         arg0.setColor(Color.BLACK);
         arg0.setFont(arg0.getFont().deriveFont(tam*arg0.getFont().getSize()));
-        arg0.drawString(texto, lado+1, lado-1);
+        arg0.drawString(texto, (int)lado+1, (int)lado-1);
     }
 
     @Override
