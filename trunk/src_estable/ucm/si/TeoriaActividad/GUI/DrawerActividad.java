@@ -12,6 +12,7 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.TreeMap;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -94,11 +95,11 @@ public class DrawerActividad extends Drawer<EstadoTA> implements TreeSelectionLi
                 return d;
             }
         };
-        jlItems.setCellRenderer(new ItemDrawer(mapeadoColores, true,1.5F));
+        jlItems.setCellRenderer(new ItemDrawer(mapeadoColores, true,1F));
         jlItems.setAlignmentY(Component.TOP_ALIGNMENT);
         JPanel envoltorio = new JPanel();
         //envoltorio.setLayout(new BoxLayout(envoltorio, BoxLayout.Y_AXIS));
-        envoltorio.setLayout(new FlowLayout());
+        envoltorio.setLayout(new BoxLayout(envoltorio,BoxLayout.X_AXIS));
         envoltorio.add(jlItems);
         LinkedList<String> actividades = p.getActividadesOrdenadas();
         dmtNodes = new LinkedList<DefaultMutableTreeNode>();
@@ -158,12 +159,44 @@ public class DrawerActividad extends Drawer<EstadoTA> implements TreeSelectionLi
         panelActividades2.setAlignmentY(Component.TOP_ALIGNMENT);
         envoltorio.add(panelActividades2);
         jtActividadDetalle = new ActivityDrawer(mapeadoColores, p);
+        //jtActividadDetalle.setAlignmentY(Component.CENTER_ALIGNMENT);
+        //jtActividadDetalle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JPanel envoltorio2 = new JPanel(){
+
+            @Override
+            protected void paintComponent(Graphics arg0) {
+                super.paintComponent(arg0);
+                arg0.clearRect(0, 0, this.getWidth(), 28);
+                arg0.setColor(Color.black);
+                arg0.setFont(arg0.getFont().deriveFont(2.0F * arg0.getFont().getSize()));
+                arg0.drawString("Detalle Actividad", 16, 26);
+                arg0.drawLine(0, 27, this.getWidth(), 27);
+                arg0.drawRoundRect(0, 0, this.getWidth() - 1, this.getHeight() - 1, 30, 30);
+            }
+
+            @Override
+            public Dimension getPreferredSize() {
+                Dimension d = new Dimension(super.getPreferredSize());
+                d.height = d.height + 28;
+                d.width = Math.max(16 * 17, d.width);
+                return d;
+            }
+        };
+        envoltorio2.setLayout(new BorderLayout());
+        envoltorio2.add(Box.createRigidArea(new Dimension(16*17,28)),
+                BorderLayout.NORTH);
+        envoltorio2.add(Box.createRigidArea(new Dimension(16*17,15)),
+                BorderLayout.SOUTH);
+        envoltorio2.add(Box.createRigidArea(new Dimension(1,1)),
+                BorderLayout.EAST);
+        envoltorio2.add(Box.createRigidArea(new Dimension(1,1)),
+                BorderLayout.WEST);
+        envoltorio2.add(jtActividadDetalle,BorderLayout.CENTER);
+        envoltorio2.setAlignmentY(Component.TOP_ALIGNMENT);
+        envoltorio.add(envoltorio2);
         pane.setLayout(new BorderLayout());
         envoltorio.setAlignmentY(Component.LEFT_ALIGNMENT);
-        pane.add(envoltorio,BorderLayout.WEST);
-        jtActividadDetalle.setAlignmentY(Component.CENTER_ALIGNMENT);
-        jtActividadDetalle.setAlignmentX(Component.CENTER_ALIGNMENT);
-        envoltorio.add(jtActividadDetalle,BorderLayout.CENTER);
+        pane.add(envoltorio,BorderLayout.WEST);        
     }
 
     @Override
