@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author nico
+ * @author Niko, Jose Antonio, Ivan
  */
 class GrafoDoble<S> extends GrafoCaminos<S> {
 

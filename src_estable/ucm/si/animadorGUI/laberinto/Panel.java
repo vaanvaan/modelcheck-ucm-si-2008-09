@@ -11,7 +11,7 @@ import ucm.si.util.Contexto;
 
 /**
  *
- * @author Admin
+ * @author Niko, Jose Antonio, Ivan
  */
 public abstract class Panel<S> extends JPanel
 {

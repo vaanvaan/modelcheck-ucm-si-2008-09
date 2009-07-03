@@ -1,17 +1,27 @@
 package ucm.si.Checker;
 
 import java.util.List;
-
+/**
+ *
+ * @author Niko, Jose Antonio, Ivan Antonio
+ * @param <S>
+ */
 public class Cola<S> {
     NodoLista<S> ini, fin;
     int n;
-    
+
+    /**
+     * Contructor por defecto
+     */
     public Cola(){
         ini = null;
         fin = null;
         n = 0;
     }
-    
+    /**
+     * Constructor, necesita los elementos que se van a añadir a la cola.
+     * @param l
+     */
     public Cola(List<S> l){
         NodoLista<S> aux;
         n = l.size();
@@ -26,11 +36,19 @@ public class Cola<S> {
             }             
         }
     }
-    
+
+    /**
+     * Devuelve el tamaño de la cola
+     * @return Tamaño actual de la cola
+     */
     public int size(){
         return n;
     }
-    
+
+    /**
+     * Se añade a la cola el elemento s
+     * @param s Elemento a añadir
+     */
     public void offer(S s){
         if (ini!=null){
         NodoLista<S> aux = new NodoLista<S>(null,s);
@@ -43,10 +61,18 @@ public class Cola<S> {
         n++;
     }
 
+    /**
+     * Devuelve si la Cola esta vacia
+     * @return
+     */
     public boolean isEmpty() {
         return n==0;
     }
-    
+
+    /**
+     * Devuelve el primer elemento de la cola y lo elimina de la cabecera
+     * @return Primer elemento de la cola.
+     */
     public S poll(){
         S s = ini.getS();
         ini = ini.getAnt();

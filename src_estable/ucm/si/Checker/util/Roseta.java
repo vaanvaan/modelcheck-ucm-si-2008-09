@@ -11,7 +11,7 @@ import java.util.TreeMap;
 
 /**
  * 
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public class Roseta<S> extends TreeMap<S, List<StateAndLabel<S>>> {
 	public Roseta() {

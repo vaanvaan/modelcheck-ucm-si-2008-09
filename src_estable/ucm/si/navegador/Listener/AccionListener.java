@@ -12,7 +12,7 @@ import ucm.si.navegador.events.Retrocede;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public interface  AccionListener<S> extends EventListener
 {

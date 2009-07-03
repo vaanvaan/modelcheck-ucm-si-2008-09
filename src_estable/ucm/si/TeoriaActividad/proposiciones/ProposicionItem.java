@@ -9,7 +9,7 @@ import ucm.si.TeoriaActividad.item.EstadoItem;
 import ucm.si.TeoriaActividad.item.ListaEstadosItems;
 
 /**
- * @author Ivan
+ * @author Niko, Jose Antonio, Ivan
  *
  */
 public class ProposicionItem extends ProposicionTA{

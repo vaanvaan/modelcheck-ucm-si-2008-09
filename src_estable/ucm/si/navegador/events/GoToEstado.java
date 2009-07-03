@@ -10,7 +10,7 @@ import java.util.EventObject;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public class GoToEstado<S> extends Accion<S> {
     

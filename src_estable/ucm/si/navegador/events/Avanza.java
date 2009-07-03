@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public class Avanza<S> extends Accion<S>{
   

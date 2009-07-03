@@ -19,7 +19,7 @@ import ucm.si.TeoriaActividad.item.ListaEstadosItems;
 
 /**
  *
- * @author José Antonio
+ * @author Niko, Jose Antonio, Ivan Antonio
  */
 public class EstadoTA implements Comparable<EstadoTA> {
 

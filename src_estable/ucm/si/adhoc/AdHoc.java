@@ -22,7 +22,7 @@ import ucm.si.basico.ecuaciones.Not;
 
 /**
  *
- * @author nico
+ * @author Niko, Jose Antonio, Ivan
  */
 public class AdHoc implements Interprete<Integer>{
     private ArrayList<Integer> iniciales;

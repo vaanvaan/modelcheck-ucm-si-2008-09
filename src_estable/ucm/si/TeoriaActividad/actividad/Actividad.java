@@ -12,7 +12,7 @@ import ucm.si.TeoriaActividad.item.Item;
 
 /**
  *
- * @author José Antonio
+ * @author Niko, Jose Antonio, Ivan Antonio
  */
 public class Actividad implements Comparable<Actividad> {
 

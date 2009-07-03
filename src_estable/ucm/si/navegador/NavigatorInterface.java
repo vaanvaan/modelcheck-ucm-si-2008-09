@@ -20,7 +20,7 @@ import ucm.si.navegador.events.Retrocede;
 
 /**
  *
- * @author José Antonio
+ * @author Niko, Jose Antonio, Ivan Antonio
  */
 
 // Notengo seguro el usar los objetos ya implementados en la api java para el patron Observer

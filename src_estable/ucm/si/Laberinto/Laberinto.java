@@ -24,7 +24,7 @@ import ucm.si.basico.ecuaciones.Proposicion;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public class Laberinto implements Interprete<Posicion> {
 

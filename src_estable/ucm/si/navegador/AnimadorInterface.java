@@ -13,8 +13,10 @@ import java.util.Observer;
 import ucm.si.navegador.Listener.AccionListener;
 
 /**
- *
- * @author Pilar
+ * Clase que funciona como interfaz. Esta claase implementa un patron oyente con el navegador.
+ * Esta interfaz se encarga de avisar a su implementacion de los cambios realizados en el navegador, y dar se alta como oyente en el navegador.
+ * @author Niko, Jose Antonio, Ivan Antonio
+ * @param <S>
  */
 public abstract class AnimadorInterface<S> implements AccionListener<S>
 {

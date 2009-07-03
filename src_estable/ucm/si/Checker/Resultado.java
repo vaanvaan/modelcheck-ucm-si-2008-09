@@ -4,7 +4,7 @@ import java.util.List;
 import ucm.si.util.GrafoCaminos;
 
 /**
- *  @author nico
+ *  @author Niko, Jose Antonio, Ivan
  */
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.04933AD7-03D5-10E9-DB99-5AB43CA44787]

@@ -9,7 +9,7 @@ import java.util.EventObject;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public class Retrocede<S> extends Accion<S>{
 

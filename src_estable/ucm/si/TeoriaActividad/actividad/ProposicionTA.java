@@ -7,7 +7,7 @@ import ucm.si.TeoriaActividad.estado.EstadoTA;
 import ucm.si.basico.ecuaciones.Proposicion;
 
 /**
- * @author Ivan
+ * @author Niko, Jose Antonio, Ivan
  *
  */
 public abstract class ProposicionTA extends Proposicion<EstadoTA>{

@@ -7,6 +7,6 @@ package ucm.si.navegador;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public enum  AccionEnum { AVANZA, RETROCEDE, GOTOESTADO };

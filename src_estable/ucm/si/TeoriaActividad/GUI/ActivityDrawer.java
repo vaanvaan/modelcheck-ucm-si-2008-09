@@ -26,7 +26,7 @@ import ucm.si.TeoriaActividad.item.Item;
 
 /**
  *
- * @author nico
+ * @author Niko, Jose Antonio, Ivan
  */
 public class ActivityDrawer extends JPanel{
 

@@ -15,7 +15,7 @@ import java.util.TreeSet;
 
 /**
  *
- * @author nico
+ * @author Niko, Jose Antonio, Ivan
  */
 // Es posible que los subgrafos se guarden en paralelismo con la parte de formula a analizar
 //  eso hay que estudiarlo con tranquilidad, por que sino en la navegacion pueden aparacer problemas.

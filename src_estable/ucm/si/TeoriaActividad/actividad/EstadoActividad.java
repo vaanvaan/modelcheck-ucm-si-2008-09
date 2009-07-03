@@ -7,6 +7,6 @@ package ucm.si.TeoriaActividad.actividad;
 
 /**
  *
- * @author José Antonio
+ * @author Niko, Jose Antonio, Ivan Antonio
  */
 public enum EstadoActividad {Waiting, Executing, Finalized};

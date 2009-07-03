@@ -9,7 +9,7 @@ import ucm.si.basico.ecuaciones.Proposicion;
 
 /**
  *
- * @author nico
+ * @author Niko, Jose Antonio, Ivan
  */
 public class Final extends Proposicion<Posicion>{
 

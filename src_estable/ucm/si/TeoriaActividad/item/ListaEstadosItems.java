@@ -13,7 +13,7 @@ import java.util.ListIterator;
 
 /**
  *
- * @author José Antonio
+ * @author Niko, Jose Antonio, Ivan Antonio
  */
 public class ListaEstadosItems
 {

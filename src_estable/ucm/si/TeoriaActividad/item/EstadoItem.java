@@ -7,6 +7,6 @@ package ucm.si.TeoriaActividad.item;
 
 /**
  *
- * @author José Antonio
+ * @author Niko, Jose Antonio, Ivan Antonio
  */
 public enum EstadoItem { BUSY, DISPOSED, FREE };

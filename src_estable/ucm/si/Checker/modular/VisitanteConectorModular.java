@@ -11,7 +11,11 @@ import ucm.si.Checker.tabulacion.TabulacionFormulas;
 import ucm.si.Checker.tabulacion.TabulacionMemSistema;
 import ucm.si.basico.ecuaciones.*;
 
-
+/**
+ * Este visitante se compone de otros vmodulos que se encargan de relizar busquedas sobre una operacion en concreto segun se recorre una formula.
+ * @author Niko, Jose Antonio, Ivan Antonio
+ * @param <S>
+ */
 public class VisitanteConectorModular<S> extends Visitante<S>{
     private Interprete<S> interprete = null;
     private TabulacionFormulas<S> tabFormulas;

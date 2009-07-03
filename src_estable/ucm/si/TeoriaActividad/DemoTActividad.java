@@ -35,7 +35,7 @@ import ucm.si.basico.ecuaciones.Proposicion;
 import ucm.si.util.Contexto;
 
 /**
- * @author Ivan
+ * @author Niko, Jose Antonio, Ivan
  *
  */
 public class DemoTActividad {

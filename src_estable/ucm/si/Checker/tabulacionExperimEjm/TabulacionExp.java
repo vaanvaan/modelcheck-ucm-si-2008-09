@@ -11,7 +11,7 @@ import ucm.si.util.GrafoCaminos;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public interface TabulacionExp<S> extends TabulacionFormulas<S> 
 {

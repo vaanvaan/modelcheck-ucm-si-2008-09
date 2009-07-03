@@ -16,7 +16,7 @@ import java.util.TreeSet;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public class TLG<S> {
 

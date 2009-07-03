@@ -7,7 +7,7 @@ package ucm.si.TeoriaActividad.actividad;
 
 /**
  *
- * @author José Antonio
+ * @author Niko, Jose Antonio, Ivan Antonio
  */
 public class Contexto extends ucm.si.util.Contexto {
 

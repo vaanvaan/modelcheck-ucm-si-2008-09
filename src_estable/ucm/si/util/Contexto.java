@@ -7,7 +7,7 @@ package ucm.si.util;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public abstract class Contexto 
 {

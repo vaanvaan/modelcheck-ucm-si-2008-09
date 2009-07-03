@@ -11,7 +11,7 @@ import javax.swing.JComboBox;
 import ucm.si.Checker.util.StateAndLabel;
 
 /**
- * @author usuario_local
+ * @author Niko, Jose Antonio, Ivan
  *
  */
 public class ComboBoxExtend<D> extends JComboBox{

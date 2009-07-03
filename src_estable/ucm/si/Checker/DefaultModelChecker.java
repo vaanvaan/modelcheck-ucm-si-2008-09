@@ -15,7 +15,7 @@ import ucm.si.basico.ecuaciones.Formula;
 
 /**
  *
- * @author nico
+ * @author Niko, Jose Antonio, Ivan
  */
 public class DefaultModelChecker<S> implements ModelChecker<S>{
 
