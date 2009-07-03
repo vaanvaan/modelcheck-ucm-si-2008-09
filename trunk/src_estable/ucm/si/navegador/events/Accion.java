@@ -9,7 +9,7 @@ import java.util.EventObject;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public class Accion<S> extends EventObject{
 

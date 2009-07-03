@@ -10,7 +10,7 @@ import java.util.Set;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public class Repositorio 
 {

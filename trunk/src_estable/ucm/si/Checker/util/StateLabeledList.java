@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public class StateLabeledList<S> 
 {

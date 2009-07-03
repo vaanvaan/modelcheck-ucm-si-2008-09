@@ -14,7 +14,7 @@ import ucm.si.util.GrafoCaminos;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public class TabulacionMemSistemaconEjemployContraEjemplo<S> implements TabulacionExp<S>
 {

@@ -14,8 +14,10 @@ import ucm.si.basico.ecuaciones.Or;
 import ucm.si.basico.ecuaciones.Proposicion;
 
 /**
- *
- * @author nico
+ * Esta calse funciona como una interfaz.
+ * Define el visitante que recorrerá la formula proporcionada al model check. Esta clase implementa un pàtron visitor.
+ * @author Niko, Jose Antonio, Ivan Antonio
+ * @param <S>
  */
 public abstract class Visitante<S> {
 

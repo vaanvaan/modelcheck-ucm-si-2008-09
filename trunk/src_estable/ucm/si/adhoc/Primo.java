@@ -10,7 +10,7 @@ import ucm.si.basico.ecuaciones.Proposicion;
 
 /**
  *
- * @author nico
+ * @author Niko, Jose Antonio, Ivan
  */
 public class Primo extends Proposicion<Integer>{
     private static boolean[] criba;

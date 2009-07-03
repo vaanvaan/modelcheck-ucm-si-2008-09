@@ -9,7 +9,7 @@ import ucm.si.Checker.Resultado;
 
 /**
  *
- * @author nico
+ * @author Niko, Jose Antonio, Ivan
  */
 public class ModuloVisitante {
   protected Resultado resParcial = new Resultado(Resultado.COD_TRUE);

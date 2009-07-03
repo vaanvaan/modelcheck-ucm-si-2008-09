@@ -9,7 +9,7 @@ import ucm.si.TeoriaActividad.actividad.ProposicionTA;
 import ucm.si.TeoriaActividad.estado.EstadoTA;
 
 /**
- * @author Ivan
+ * @author Niko, Jose Antonio, Ivan
  *
  *OJO: Aqui hago si la clave por la que se pregunta no esta en la lista de actividades?
  * de momento es un sysout y return false.

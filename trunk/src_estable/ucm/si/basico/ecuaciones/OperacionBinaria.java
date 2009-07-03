@@ -7,7 +7,7 @@ package ucm.si.basico.ecuaciones;
 
 /**
  *
- * @author nico
+ * @author Niko, Jose Antonio, Ivan
  */
 abstract class OperacionBinaria extends Operacion{
     

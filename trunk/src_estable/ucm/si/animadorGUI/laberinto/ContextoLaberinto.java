@@ -10,7 +10,7 @@ import ucm.si.Laberinto.Laberinto;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public class ContextoLaberinto extends Contexto 
 {

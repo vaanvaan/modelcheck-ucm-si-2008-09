@@ -2,7 +2,7 @@ package ucm.si.basico.ecuaciones;
 
 
 /**
- *  @author nico
+ *  @author Niko, Jose Antonio, Ivan
  */
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.057CEE6A-9B4E-FA5F-B072-0244CDC669A2]

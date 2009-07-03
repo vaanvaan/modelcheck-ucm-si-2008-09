@@ -7,7 +7,7 @@ import ucm.si.TeoriaActividad.item.Item;
 import ucm.si.basico.ecuaciones.Proposicion;
 
 /**
- * @author Ivan
+ * @author Niko, Jose Antonio, Ivan
  *
  */
 public class ProposicionItem extends Proposicion<Item>{

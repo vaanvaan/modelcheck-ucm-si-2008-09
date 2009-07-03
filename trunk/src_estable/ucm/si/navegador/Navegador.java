@@ -20,8 +20,10 @@ import ucm.si.navegador.events.Retrocede;
 import ucm.si.util.GrafoCaminos;
 
 /**
- *
- * @author Pilar
+ * Esta clase se encarga realizar las operaciones de navegacion sobre el grafo resultado. Ya sea un ejemplo o un contrajemplo.
+ * Y tambien de avisar a los oyentes que se ayan registrado.
+ * @author Niko, Jose Antonio, Ivan Antonio
+ * @param <S>
  */
 public class Navegador<S> extends NavigatorInterface<S> {
 

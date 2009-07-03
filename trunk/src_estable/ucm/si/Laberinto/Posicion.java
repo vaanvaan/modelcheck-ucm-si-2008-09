@@ -10,7 +10,7 @@ package ucm.si.Laberinto;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public class Posicion implements Comparable<Posicion>
 {

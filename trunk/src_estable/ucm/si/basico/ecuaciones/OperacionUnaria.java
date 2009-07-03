@@ -9,7 +9,7 @@ import ucm.si.Checker.VisitanteConector;
 
 /**
  *
- * @author nico
+ * @author Niko, Jose Antonio, Ivan
  */
 abstract class OperacionUnaria extends Operacion{
       

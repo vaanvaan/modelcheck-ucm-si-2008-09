@@ -33,7 +33,7 @@ import ucm.si.animadorGUI.PanelInterface;
 
 /**
  *
- * @author nico
+ * @author Niko, Jose Antonio, Ivan
  */
 public class DrawerActividad extends Drawer<EstadoTA> implements TreeSelectionListener {
 

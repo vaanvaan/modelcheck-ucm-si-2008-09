@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author José Antonio
+ * @author Niko, Jose Antonio, Ivan Antonio
  */
 public class ActividadGenerator
 {

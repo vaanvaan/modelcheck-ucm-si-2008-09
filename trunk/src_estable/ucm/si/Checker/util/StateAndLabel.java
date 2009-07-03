@@ -7,7 +7,7 @@ package ucm.si.Checker.util;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public class StateAndLabel<S> implements Comparable<S>
 {

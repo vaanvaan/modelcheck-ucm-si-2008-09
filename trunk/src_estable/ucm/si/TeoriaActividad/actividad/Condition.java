@@ -9,7 +9,7 @@ import ucm.si.TeoriaActividad.estado.EstadoTA;
 
 /**
  *
- * @author José Antonio
+ * @author Niko, Jose Antonio, Ivan Antonio
  */
 public interface Condition
 {

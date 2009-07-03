@@ -18,7 +18,7 @@ import ucm.si.TeoriaActividad.item.EstadoItem;
 
 /**
  *
- * @author nico
+ * @author Niko, Jose Antonio, Ivan
  */
 public class ItemDrawer extends Component implements ListCellRenderer{
     private String texto;

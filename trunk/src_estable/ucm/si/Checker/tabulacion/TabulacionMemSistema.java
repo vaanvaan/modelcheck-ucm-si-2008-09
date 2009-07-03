@@ -15,7 +15,7 @@ import ucm.si.basico.ecuaciones.Formula;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public class TabulacionMemSistema<S> implements TabulacionFormulas<S>
 {

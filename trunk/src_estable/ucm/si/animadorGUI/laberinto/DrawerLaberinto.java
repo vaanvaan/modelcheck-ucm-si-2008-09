@@ -20,7 +20,7 @@ import ucm.si.Laberinto.Posicion;
 
 /**
  *
- * @author Admin
+ * @author Niko, Jose Antonio, Ivan
  */
 public class DrawerLaberinto extends Drawer<Posicion> {
 

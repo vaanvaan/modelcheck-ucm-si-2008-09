@@ -6,7 +6,7 @@ import ucm.si.basico.ecuaciones.Formula;
 import ucm.si.Checker.Resultado;
 
 /**
- *  @author nico
+ *  @author Niko, Jose Antonio, Ivan
  */
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.2275D25C-FD9F-315D-5999-A3E0B8FEC6F3]

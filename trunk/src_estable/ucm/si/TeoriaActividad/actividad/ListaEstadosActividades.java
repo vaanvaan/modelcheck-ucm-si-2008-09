@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author José Antonio
+ * @author Niko, Jose Antonio, Ivan Antonio
  *
  * Se encarga de
  */

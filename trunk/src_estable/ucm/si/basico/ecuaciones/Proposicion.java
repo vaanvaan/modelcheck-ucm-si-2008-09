@@ -4,7 +4,7 @@ package ucm.si.basico.ecuaciones;
 import ucm.si.Checker.Visitante;
 
 /**
- *  @author nico
+ *  @author Niko, Jose Antonio, Ivan
  */
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.0FFB3057-BDFA-07A4-5C6D-3B50EE5B4DAC]

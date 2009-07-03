@@ -24,8 +24,9 @@ import ucm.si.navegador.NavigatorInterface;
 import ucm.si.util.GrafoCaminos;
 
 /**
- *
- * @author Pilar
+ * Es una facilidad que se usa para lanzar una operacion de modelcheck asi se oculta operaciones tediosas y repetitivas.
+ * @author Niko, Jose Antonio, Ivan Antonio
+ * @param <S>
  */
 public class Launcher<S> 
 {
@@ -37,6 +38,14 @@ public class Launcher<S>
     private Formula formula;
     private Resultado<S> resultado;
 
+    /**
+     * Constructor
+     * @param navegador
+     * @param contexto
+     * @param checker
+     * @param interprete
+     * @param formula
+     */
     public Launcher(NavigatorInterface<S> navegador, Contexto contexto, ModelChecker checker, Interprete<S> interprete, Formula formula) {
         this.navegador = navegador;
         this.contexto = contexto;
@@ -45,6 +54,12 @@ public class Launcher<S>
         this.formula = formula;
     }
 
+    /**
+     * Constructor
+     * @param contexto
+     * @param interprete
+     * @param formula
+     */
     public Launcher(Contexto contexto, Interprete<S> interprete, Formula formula) {
         this.contexto = contexto;
         this.interprete = interprete;
@@ -54,18 +69,33 @@ public class Launcher<S>
         
     }
 
+    /**
+     * Lanzar un chekeo sobre el conjunto de estados iniciales que proporciona el interprete
+     * @return
+     */
     public Resultado<S> runCheck()
     {
         S ini = this.interprete.iniciales().get(0);
         return this.runCheck(ini);
     }
-    
+
+
+    /**
+     * Lanzar un chekeo sobre un estado marcado
+     * @param inicio
+     * @return
+     */
     public Resultado<S> runCheck(S inicio)
     {
         this.resultado = this.checker.chequear(interprete, formula, inicio);
         return this.resultado;
     }
-    
+
+    /**
+     * Lanza el animadro grafico una vez que se ha realizado el chequeo.
+     * @param dw
+     * @param tipoBotonera
+     */
     public void launchGrafico(Drawer<S> dw , int tipoBotonera)
     {
         Resultado<S> res = this.resultado;

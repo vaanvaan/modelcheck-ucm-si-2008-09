@@ -18,11 +18,19 @@ import ucm.si.Checker.util.StateAndLabel;
 import ucm.si.Checker.util.StateLabeledList;
 
 /**
- *
- * @author nico
+ * Clase envoltorio que se encarga de envolver un interprete. <p>
+ * Este envoltorio se dedica a evitar llamadas innecesarias a el interprete
+ * almacenando el internamente el grafo del cual esta compuesto la aparte
+ * intepretada del modelo hsta el momento. Por lo tanto la operacion del wraper consite en
+ * ante una peticion de transitar si la trnasiciones a partir de el estado pregunta no estan almacenadas se llama al interprete, seguidamente se alamecena el resutlado recivido y se devulve el resultado como un interprete normal.
+ * Si se tiene las transiciones para ese estado solicitado, se prescinde de llamr al interprete y se procede a consultar el grafo almacenado.
+ * @author Niko, Jose Antonio, Ivan
+ * @param <S>
  */
 public class InterpreteWrapper<S> implements Interprete<S> {
-    
+    /**
+     * Nombre del interprete proporcionado si este viene dado.
+     */
     private String nombre;
     private Interprete interprete;
     
@@ -32,13 +40,21 @@ public class InterpreteWrapper<S> implements Interprete<S> {
     
     
     private TreeMap<S, List<S>> padres = new TreeMap<S, List<S>>();
-    
+
+    /**
+     * Constructor, necestia conocer el interprete al cual va a envolver
+     * @param interprete  Interprete que esta clase envolverá
+     */
     public InterpreteWrapper(Interprete interprete) {
         this.interprete = interprete;
         this.nombre = this.interprete.getClass().getName();
         
     }
 
+    /**
+     * Constructor. Si no se tiene una isntacia del inteprrete a envolver, se le proporciona el nombre cpmpleto de la clase Inteprete a envolver.
+     * @param nombre
+     */
     public InterpreteWrapper(String nombre) {
         try {
             this.nombre = nombre;
@@ -52,6 +68,7 @@ public class InterpreteWrapper<S> implements Interprete<S> {
             Logger.getLogger(InterpreteWrapper.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 
     public List<S> iniciales() 
     {
@@ -124,6 +141,11 @@ public class InterpreteWrapper<S> implements Interprete<S> {
         }
     }
 
+    /**
+     * Operación realizada para colocar al padre de una transicon en el grafo. Y asi de paso actualizar el resto de elementos del grafo que comaprtan dicho padre para la transicion.
+     * @param state
+     * @param retorno
+     */
     private void colocarPadre(S state, List<S> retorno)
     {
         for(int i = 0; i< retorno.size(); i++)

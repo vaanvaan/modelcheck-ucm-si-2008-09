@@ -16,7 +16,7 @@ import ucm.si.basico.ecuaciones.*;
 
 /**
  *
- * @author Pilar
+ * @author Niko, Jose Antonio, Ivan
  */
 public class DemoLaberinto {
 

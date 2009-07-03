@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Admin
+ * @author Niko, Jose Antonio, Ivan
  */
 public abstract class PanelInterface<S> extends JPanel
 {
