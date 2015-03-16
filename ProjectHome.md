@@ -1,0 +1,1 @@
+This is a last year proyect from de UCM´s Computational Science School. It Consists in a FrameWork to pragram and use model-checkings.
